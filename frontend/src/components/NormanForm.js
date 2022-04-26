@@ -6,7 +6,7 @@ import Radio from "./Radio"
 
 import { Button, Form } from "react-bootstrap";
 
-import { useTransition, useSpring, animated } from "react-spring";
+import { useTransition, animated } from "react-spring";
 
 
 export default function NormanForm({ handleSubmitNorman, handleChangeWhichRoute, normanStay, handleChangeNormanStay, handleNormanForm, setPopForm}) {

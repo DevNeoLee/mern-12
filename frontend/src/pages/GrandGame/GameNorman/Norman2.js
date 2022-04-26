@@ -22,7 +22,7 @@ export default function Norman2({ handleChangeWhichRoute, handleSubmitNorman, ha
     const data = JSON.parse(JSON.stringify(original_data))
 
 
-    console.log("Data: ", JSON.stringify(data))
+    // console.log("Data: ", JSON.stringify(data))
 
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);
