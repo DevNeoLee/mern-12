@@ -42,7 +42,7 @@ export default function Erica3({ round, ericaHealth, ericaMessageForNorman, eric
  
                             <p>Your Score: ...{}</p>
                         <div className="gameProgressBlock">
-                            <ProgressBar now={ericaHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0" }} variant="primary" label={`Score: ${ericaHealth} of 100`} />
+                            <ProgressBar now={ericaHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0" }} variant="primary" label={ericaHealth} />
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>
                         </div>
                     </animated.div>

@@ -41,11 +41,11 @@ export default function NormanForm({ handleSubmitNorman, handleChangeWhichRoute,
                         <Form.Group onChange={handleChangeNormanStay}>
                             <div className="gameQuestion">
                                 <Form.Label htmlFor={`radio`}>You check flood risk indivation. What is your decision?</Form.Label>
-                                <Radio label='Stay' name="questionNorman2" value='true' required/>
-                                <Radio label='Evacuate' name="questionNorman2" value='false' required/>
+                                <Radio label='Stay' name="questionNorman2" value='stayon' required/>
+                                <Radio label='Evacuate' name="questionNorman2" value='stayoff' required/>
                             </div>
                         </Form.Group>
-                            {normanStay === 'false' && 
+                            {normanStay === 'stayoff' && 
                             (
                                 <Form.Group onChange={handleChangeWhichRoute}>
                                     <div className="gameQuestion2">

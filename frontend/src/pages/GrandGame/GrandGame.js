@@ -76,16 +76,16 @@ export default function GrandGame() {
     const [resultReady, setResultReady] = useState(false)
 
     const [peteDecisions, setPeteDecisions] = useState([
-        {stay: "", whichRoute: ""},
-        { stay: "", whichRoute: ""},
-        { stay: "", whichRoute: ""},
-        { stay: "", whichRoute: ""}
+        {stay: "", whichRoute: "", role: ""},
+        { stay: "", whichRoute: "", role: ""},
+        { stay: "", whichRoute: "", role: ""},
+        { stay: "", whichRoute: "", role: ""}
     ])
     const [normanDecisions, setNormanDecisions] = useState([
-        { stay: "", whichRoute: "" },
-        { stay: "", whichRoute: "" },
-        { stay: "", whichRoute: "" },
-        { stay: "", whichRoute: "" }
+        { stay: "", whichRoute: "", role: ""},
+        { stay: "", whichRoute: "", role: ""},
+        { stay: "", whichRoute: "", role: ""},
+        { stay: "", whichRoute: "", role: ""}
     ])
 
     const [levelOfWarning, setLevelOfWarning] = useState('')
@@ -93,8 +93,8 @@ export default function GrandGame() {
     const [messageToPete, setMessageToPete] = useState('')
     const [messageFromErica, setMessageFromErica] = useState('')
     
-    const [petePower, setPetePower] = useState(true)
-    const [normanStay, setNormanStay] = useState(true)
+    const [petePower, setPetePower] = useState("poweron")
+    const [normanStay, setNormanStay] = useState("stayon")
 
 
     const [whichRoute, setWhichRoute] = useState("")
@@ -121,11 +121,15 @@ export default function GrandGame() {
     
 
 
-    const [electricity, setElectricity] = useState(true)
+    const [electricity, setElectricity] = useState('poweron')
 
     const [ players, setPlayers ] = useState([])
 
     const normanRoles = ['NormanA', 'NormanB', 'NormanC'];
+
+    const [waterDepthEndupNorman, setWaterDepthEndupNorman] = useState(0)
+    const [waterDepthEndupPete, setWaterDepthEndupPete] = useState(0)
+
 
   
 
@@ -179,27 +183,42 @@ export default function GrandGame() {
             setNormanDecisions(prev => (
                 prev.map((ele, idx) => {
                     if (idx === (round - 1)) {
-                        return { stay: data.stay, whichRoute: data.whichRoute }
+                        return { stay: data.stay, whichRoute: data.whichRoute, role: data.role }
                     } else {
                         return ele
                     }
                 })
-
+         
             ))
+            console.log('norman data added to your states!')
+
         }))
 
         socket.on("pete_message", (data => {
             console.log('Pete data from Pete received: ', data)
             console.log('current peteDecisions: ', peteDecisions)
+            console.log('data.stay: poweroff?', data.stay)
+
+            if (data.stay === 'poweroff')  {
+                setElectricity('poweroff')
+            } else if (data.stay === 'poweron') {
+                setElectricity('poweron')
+            }
+        
+
             setPeteDecisions(prev => (
                 prev.map((ele, idx) => {
                     if (idx === (round - 1)) {
-                        return { stay: data.stay, whichRoute: data.whichRoute }
+                        return { stay: data.stay, whichRoute: data.whichRoute, role: data.role}
                     } else {
                         return ele
                     }
                 })
             ))
+
+           
+
+            console.log('pete data added to your states!')
         }))
     }
 
@@ -239,10 +258,9 @@ export default function GrandGame() {
             //// render result page /////
             
             setResultReady(true)
-            console.log('!!!!!!!Now result Ready!!!!!!!')
-            console.log("Two Decisions: " + "norman: " + normanDecisions + "pete: " + peteDecisions)
+            console.log('!!!!!!!calcuation done')
         } else {
-            console.log("result page is not ready yet: " + 'NormanDecisions: ' + normanDecisions + 'PeteDecisions: ' + peteDecisions)
+            console.log("result page is not ready yet: " + 'NormanDecisions: ' + JSON.stringify(normanDecisions) + 'PeteDecisions: ' + JSON.stringify(peteDecisions))
         }
 
     },[normanDecisions, peteDecisions])
@@ -251,44 +269,50 @@ export default function GrandGame() {
 
 
     const calculateScore = (normanDecisions, peteDecisions) => {
-        // normanScore update
-        const stayedHome = normanDecisions[round - 1].stay === 'true' ||
-            normanDecisions[round - 1].stay === true //boolean 이 아니고 string 임.
 
+        //지금 라운드의 자료
+        const stayedHome = normanDecisions[round - 1].stay === 'stayon' 
+        const stayedHomePete = peteDecisions[round - 1].stay === 'poweron'
 
         console.log('stayed home ? : ', stayedHome)
+        console.log('stayed home pete? : ', stayedHomePete)
 
-        console.log('노만의 결정은 ? : ', normanDecisions[round - 1])
 
+        console.log('노만의 결정은 ? : ', normanDecisions[round - 1].stay)
+        console.log('pete의 결정은 ? : ', peteDecisions[round - 1].stay)
 
         let travelRisk;
+        let travelRiskPete;
         let powerOutrageRisk;
+    
         let criticalRisk;
+        let criticalRiskPete;
         let decidedAreaNorman;
-        let waterDepthEndupNorman;
-        let waterDepthEndupPete;
-        
-
-
-        
+        let decidedAreaPete;
 
         if (stayedHome) {
             console.log('======== stayed home norman =========')
             travelRisk = 0;
 
-            decidedAreaNorman = role;
+            decidedAreaNorman = normanDecisions[round - 1].role
 
-            if (electricity === true) {
+            console.log('normanDecisions[round - 1]: ', normanDecisions[round - 1])
+            console.log('normanDecisions[round - 1].role: ', normanDecisions[round - 1].role)
+
+            console.log("decidedAreaNorman: ", decidedAreaNorman)
+
+            if (electricity === 'poweron') {
                 powerOutrageRisk = 0;
-            } else {
+            } else if (electricity === 'poweroff') {
                 powerOutrageRisk = 5;
             }
 
             //find the water depth you end up, data array 에서 찾아야함
             //다음 라운드의 current wtaer depth 값임
             data[`round${round + 1}`].map(ele => {
-                if (ele.name === role) {
-                    waterDepthEndupNorman = parseInt(ele['Current Water Depth'])
+                if (ele.name.toLowerCase() === decidedAreaNorman.toLowerCase()) {
+                    setWaterDepthEndupNorman(ele['Current Water Depth'])
+                    console.log('자료 안입니다.')
                 }
             })
 
@@ -315,9 +339,12 @@ export default function GrandGame() {
 
             powerOutrageRisk = 0;
 
+            console.log("decidedAreaNorman: ", decidedAreaNorman)
+
+
             data[`round${round + 1}`].map(ele => {
                 if (ele.name.toLowerCase() === decidedAreaNorman) {
-                    waterDepthEndupNorman = ele['Current Water Depth']
+                    setWaterDepthEndupNorman(ele['Current Water Depth'])
                 }
             })
             
@@ -327,6 +354,15 @@ export default function GrandGame() {
             } else {
                 criticalRisk = 0;
             }
+
+
+            console.log('======== went out norman =========')
+
+            console.log('travelRisk: ', travelRisk)
+            console.log('powerOutrageRisk: ', powerOutrageRisk)
+            console.log('criticalRisk: ', criticalRisk)
+            console.log('decidedAreaNorman: ', decidedAreaNorman)
+            console.log('waterDepthEndupNorman: ', waterDepthEndupNorman)
         }
 
         setNormanHealth(prev => 
@@ -334,16 +370,92 @@ export default function GrandGame() {
         )
 
         //peteScore update
+        if (stayedHomePete) {
+            console.log('======== stayed home pete =========')
+            travelRiskPete = 0;
 
+            decidedAreaPete = peteDecisions[round - 1].role
+
+            console.log('peteDecisions[round - 1]: ', peteDecisions[round - 1])
+            console.log('peteDecisions[round - 1].role: ', peteDecisions[round - 1].role)
+
+            console.log("decidedAreaPete: ", decidedAreaPete)
+
+            if (electricity === 'poweron') {
+                powerOutrageRisk = 0;
+            } else if (electricity === 'poweroff') {
+                powerOutrageRisk = 5;
+            }
+
+            //find the water depth you end up, data array 에서 찾아야함
+            //다음 라운드의 current wtaer depth 값임
+            data[`round${round + 1}`].map(ele => {
+
+                console.log("ele.name.toLowerCase(): ", ele.name.toLowerCase())
+                console.log(" decidedAreaPete.toLowerCase(): ", decidedAreaPete.toLowerCase())
+
+                if (ele.name.toLowerCase() === decidedAreaPete.toLowerCase()) {
+                    setWaterDepthEndupPete(ele['Current Water Depth'])
+                    console.log('자료 안입니다.ele["Current Water Depth"]: ', ele['Current Water Depth'])
+                }
+            })
+
+            //when the result of the waterDepth in the house above 30cm
+            if (waterDepthEndupPete > 30) {
+                criticalRiskPete = 80;
+            } else {
+                criticalRiskPete = 0;
+            }
+
+
+            console.log('travelRisk: ', travelRiskPete)
+            console.log('powerOutrageRisk: ', powerOutrageRisk)
+            console.log('criticalRisk: ', criticalRiskPete)
+            console.log('decidedAreaPete: ', decidedAreaPete)
+            console.log('waterDepthEndupPete: ', waterDepthEndupPete)
+
+
+            ///now in case of 'left home'
+        } else {
+            decidedAreaPete = peteDecisions[round - 1].whichRoute;
+
+            travelRiskPete = 5;
+
+            powerOutrageRisk = 0;
+
+            console.log("decidedAreaPete: ", decidedAreaPete)
+            console.log('일로 왓나요?')
+
+            data[`round${round + 1}`].map(ele => {
+                if (ele.name.toLowerCase() === decidedAreaPete.toLowerCase()) {
+                    setWaterDepthEndupPete(ele['Current Water Depth'])
+                    console.log("water level pete: ", )
+                }
+            })
+
+            //when the result of the waterDepth in the house above 30cm
+            if (waterDepthEndupPete > 30) {
+                criticalRiskPete = 80;
+            } else {
+                criticalRiskPete = 0;
+            }
+
+
+            console.log('======== went out Pete =========')
+
+            console.log('travelRisk: ', travelRiskPete)
+            console.log('powerOutrageRisk: ', powerOutrageRisk)
+            console.log('criticalRisk: ', criticalRiskPete)
+            console.log('decidedAreaPete: ', decidedAreaPete)
+            console.log('waterDepthEndupPete: ', waterDepthEndupPete)
+        }
+
+        console.log("hmm: ", 100 - travelRiskPete - powerOutrageRisk - criticalRiskPete)
+
+        setPeteHealth(prev =>
+            (prev - travelRiskPete - powerOutrageRisk - criticalRiskPete)
+        )
         //ericaScore update
-
-        console.log('======== went out norman =========')
-
-        console.log('travelRisk: ', travelRisk)
-        console.log('powerOutrageRisk: ', powerOutrageRisk)
-        console.log('criticalRisk: ', criticalRisk)
-        console.log('decidedAreaNorman: ', decidedAreaNorman)
-        console.log('waterDepthEndupNorman: ', waterDepthEndupNorman)
     }
 
 
@@ -398,16 +510,19 @@ export default function GrandGame() {
         setPeteDecisions(prev => (
            prev.map((ele, idx) => {
                if (idx === (round - 1)) {
-                   return { stay: petePower, whichRoute: whichRoutePete }
+                   return { stay: petePower, whichRoute: whichRoutePete, role: role }
+               } else {
+                   return ele
                }
            })
         ))
+
 
         setElectricity(petePower)
         // setPetePower(true)
 
         // socket interaction
-        socket.emit('pete_message', { stay: petePower, whichRoute: whichRoutePete })
+        socket.emit('pete_message', { stay: petePower, whichRoute: whichRoutePete, role: 'pete'})
     }
 
     const handleChangePetePower = (e) => {
@@ -433,7 +548,9 @@ export default function GrandGame() {
         setNormanDecisions(prev => (
             prev.map((ele, idx) => {
                 if (idx === (round - 1)) {
-                    return { stay: normanStay, whichRoute: whichRoute }
+                    return { stay: normanStay, whichRoute: whichRoute, role: role }
+                } else {
+                    return ele
                 }
             })
         ))
@@ -441,7 +558,7 @@ export default function GrandGame() {
         // setWhichRoute('')
         
         const normanData = {
-            stay: normanStay, whichRoute
+            stay: normanStay, whichRoute, role: role
         }
         // socket interaction
         socket.emit('norman_message', normanData)
@@ -572,7 +689,7 @@ export default function GrandGame() {
         <Norman0 step={step} />,
         <Norman1 step={step} />,
         <Norman2 step={step} data={data} handleChangeWhichRoute={handleChangeWhichRoute} normanStay={normanStay} handleSubmitNorman={handleSubmitNorman} handleChangeNormanStay={handleChangeNormanStay} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} normanHealth={normanHealth} messageToNorman={messageToNorman} role={role} messageFromErica = { messageFromErica}/>,
-        <Norman3 step={step} normanHealth={normanHealth}/>,
+        <Norman3 step={step} whichRoute={whichRoute} normanStay={normanStay} electricity={electricity} normanHealth={normanHealth} waterDepthEndupNorman={waterDepthEndupNorman} />,
         <Norman4 step={step} />,
         <Norman5 step={step} />
     ];
@@ -581,7 +698,7 @@ export default function GrandGame() {
         <Pete0 step={step} />,
         <Pete1 step={step} />,
         <Pete2 step={step} data={data} handleChangePetePower={handleChangePetePower} handleSubmitPete={handleSubmitPete} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} peteHealth={peteHealth} petePower={petePower} whichRoutePete={whichRoutePete} handleChangeWhichRoutePete={handleChangeWhichRoutePete} messageToPete={messageToPete} messageFromErica={messageFromErica}/>,
-        <Pete3 step={step} peteHealth={peteHealth}/>
+        <Pete3 step={step} peteHealth={peteHealth} whichRoutePete={whichRoutePete} electricity={electricity} petePower={petePower} waterDepthEndupPete={waterDepthEndupPete}/>
     ];
     
     const Buttons = () => (

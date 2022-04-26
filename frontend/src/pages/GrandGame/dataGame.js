@@ -37,7 +37,7 @@ export const original_data = {
             congestion: false
         },
         {
-            name: 'powerstation1',
+            name: 'Pete',
             "Current Water Depth": 8,
             "Depth Estimate within an Hour": 14,
             electricity: true
@@ -47,19 +47,19 @@ export const original_data = {
     round2: [
         {
             name: 'normanA',
-            "Current Water Depth": 40,
+            "Current Water Depth": 10,
             "Depth Estimate within an Hour": 17,
             electricity: true
         },
         {
             name: 'normanB',
-            "Current Water Depth": 45,
+            "Current Water Depth": 15,
             "Depth Estimate within an Hour": 20,
             electricity: true
         },
         {
             name: 'normanC',
-            "Current Water Depth": 46,
+            "Current Water Depth": 16,
             "Depth Estimate within an Hour": 18,
             electricity: true
         },
@@ -82,7 +82,7 @@ export const original_data = {
             electricity: true
         },
         {
-            name: 'powerstation1',
+            name: 'Pete',
             "Current Water Depth": 16,
             "Depth Estimate within an Hour": 22,
             electricity: true
@@ -127,7 +127,7 @@ export const original_data = {
             electricity: true
         },
         {
-            name: 'powerstation1',
+            name: 'Pete',
             "Current Water Depth": 24,
             "Depth Estimate within an Hour": 24,
             electricity: true
@@ -172,7 +172,7 @@ export const original_data = {
             electricity: true
         },
         {
-            name: 'powerstation1',
+            name: 'Pete',
             "Current Water Depth": 26,
             "Depth Estimate within an Hour": 28,
             electricity: true

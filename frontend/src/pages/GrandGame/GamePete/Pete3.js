@@ -6,7 +6,7 @@ import { Form, Button, ProgressBar, Table } from "react-bootstrap";
 import { useTransition, useSpring, animated } from "react-spring";
 
 
-export default function Pete3({ round, peteHealth }) {
+export default function Pete3({ round, peteHealth, whichRoutePete, electricity, petePower, waterDepthEndupPete }) {
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -35,11 +35,12 @@ export default function Pete3({ round, peteHealth }) {
                         <div style={style} className="personContainer">
                             <img src="/pete.png" alt="role_person_image" />
                         </div>
-                        <p>Water depth reached { }...ft in this round.</p>
-                        <p>There is no damage to the substation</p>
-                        <p>Your performance is {}...(customers suffered) </p>
+                        <h4>Your Decision: {petePower === "poweron" ? <span>You maintained the power in the city.</span> : <span>You turned off the power and went out to {whichRoutePete}</span>}</h4>
+                        <p>Water depth reached {waterDepthEndupPete}cm in this round.</p>
+                        {/* <p>There is no damage to the substation</p> */}
+                        <p>Your performance is {peteHealth}...(customers suffered) </p>
                         <div className="gameProgressBlock">
-                            <ProgressBar now={peteHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0" }} variant="primary" label={`Score: ${peteHealth} of 100`} />
+                            <ProgressBar now={peteHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0" }} variant="primary" label={peteHealth} />
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>
                         </div>
                     </animated.div>

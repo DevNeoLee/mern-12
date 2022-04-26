@@ -32,11 +32,11 @@ export default function PeteForm({ whichRoutePete, handleSubmitPete, petePower, 
                         <Form.Group onChange={handleChangePetePower}>
                             <div className="gameQuestion">
                                 <Form.Label htmlFor={`radio`}>You check flood risk indivation. What is your decision?</Form.Label>
-                                <Radio label='Keep providing electricity service' name="questionPete2" value={true} required />
-                                <Radio label='Shut down' name="questionPete2" value='false' required />
+                                <Radio label='Keep providing electricity service' name="questionPete2" value='poweron' required />
+                                <Radio label='Shut down' name="questionPete2" value='poweroff' required />
                             </div>
                         </Form.Group>
-                        {petePower === 'false' &&
+                        {petePower === 'poweroff' &&
                             (
                             <Form.Group onChange={handleChangeWhichRoutePete}>
                                     <div className="gameQuestion2">

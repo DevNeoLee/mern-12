@@ -6,7 +6,7 @@ import { Form, Button, ProgressBar, Table } from "react-bootstrap";
 import { useTransition, useSpring, animated } from "react-spring";
 
 
-export default function Norman3({ round, normanHealth }) {
+export default function Norman3({ whichRoute, normanStay, round, normanHealth, waterDepthEndupNorman, electricity}) {
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -19,6 +19,13 @@ export default function Norman3({ round, normanHealth }) {
             duration: 500 // duration for the whole animation form start to end
         }
     });
+
+    console.log("round: ", round)
+    console.log("normanStay: ", normanStay)
+    console.log("whichRoute: ", whichRoute)
+    console.log("normanHealth: ", normanHealth)
+    console.log("waterDepthEndupNorman: ", waterDepthEndupNorman)
+    console.log("electricity: ", electricity)
 
     return (
         <>
@@ -35,15 +42,18 @@ export default function Norman3({ round, normanHealth }) {
                         <div style={style} className="personContainer">
                             <img src="/norman.png" alt="role_person_image" />
                         </div>
-                        <h4>Your Decision: {}...</h4>
-                        <p>Water depth reached {}... ft in this round. </p>
+                        <h4>Your Decision: {normanStay === "stayon" ? <span>You stayed in your house</span> : <span>You went to {whichRoute}</span>}</h4>
+                        <p>Water depth is reached to {waterDepthEndupNorman} cm. </p>
                         {/* if stayed home*/}
-                        <p>There is power outage in your house.</p>
+                        {electricity === 'poweroff' && (
+                            <p>There is power outage in your location you end up.</p>
+                        )}
                         {/* if left home*/}
-                        <p>There is congestion on Route A</p>
-                        <p>Your wellbeing is {normanHealth} now( decreased with the damages you suffered)</p>
+                        {/* <p>There is congestion on Route A</p> */}
+                        <p>Your wellbeing is {normanHealth} now.</p>
+                        { normanHealth !== 100  && <p>( decreased with the damages you suffered)</p>}
                         <div className="gameProgressBlock">
-                            <ProgressBar now={normanHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0", backgroundColor: "black"}} variant="primary" label={`Score: ${normanHealth} of 100`} />
+                            <ProgressBar now={normanHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0", backgroundColor: "black"}} variant="primary" label={normanHealth}/>
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>
                         </div>
                     </animated.div>
