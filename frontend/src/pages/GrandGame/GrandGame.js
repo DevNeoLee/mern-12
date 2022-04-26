@@ -27,9 +27,12 @@ import { useEffect, useState } from 'react'
 
 import io from 'socket.io-client'
 
+import { original_data } from './dataGame'
+
 
 export default function GrandGame() {
-    // const roles = ['Erica', 'Pete', 'Norman']
+
+    const data = JSON.parse(JSON.stringify(original_data))
     
     const [role, setRole] = useState('')
     const [pageQuantity, setPageQuantity] = useState(4)
@@ -207,7 +210,7 @@ export default function GrandGame() {
         if ((normanDecisions[round - 1]) && (peteDecisions[round - 1])) {
 
             ////// calculate socres here///////
-
+            calculateScore(normanDecisions, peteDecisions)
             ////// feed the date /////
 
 
@@ -225,8 +228,49 @@ export default function GrandGame() {
 
 
 
-    const calculateScore = (normanS, ericaS, peteS) => {
+    const calculateScore = (normanDecisions, peteDecisions) => {
+        // normanScore update
+        const stayedHome = normanDecisions[round - 1].normanStay //boolean
+
+        let stayedHomeRisk;
+        let powerOutrageRisk;
+        let criticalRisk;
+        let decidedAreaNorman;
+
+
+
         
+
+        if (stayedHome) {
+            stayedHomeRisk = 0;
+
+            decidedAreaNorman = role;
+
+            if (electricity === true) {
+                powerOutrageRisk = 0;
+            } else {
+                powerOutrageRisk = 5;
+            }
+
+            //when the result of the waterDepth in the house above 30cm
+            // if ( ){
+            //     criticalRisk = 80;
+            // } else {
+            //     criticalRisk = 0;
+            // }
+        } else {
+            stayedHomeRisk = 5;
+        }
+
+        // setNormanHealth(prev => 
+        //     prev - stayedHomeRisk - powerOutrageRisk - 
+        // )
+
+        //peteScore update
+
+        //ericaScore update
+
+
     }
 
 
@@ -431,7 +475,7 @@ export default function GrandGame() {
     const ericas = [
         <Erica0 step={step} role setRole />,
         <Erica1 step={step}/>,
-        <Erica2 setWaitPopupErica={setWaitPopupErica} waitPopupErica={waitPopupErica} handleSubmitErica={handleSubmitErica} round={round} handleChangeWarning={handleChangeWarning} handleChangeMessageToNorman={handleChangeMessageToNorman} handleChangeMessageToPete={handleChangeMessageToPete} levelOfWarning={levelOfWarning} messageToPete={messageToPete} messageToNorman={messageToNorman} ericaHealth={ericaHealth} players={players}/>,
+        <Erica2 data={data} setWaitPopupErica={setWaitPopupErica} waitPopupErica={waitPopupErica} handleSubmitErica={handleSubmitErica} round={round} handleChangeWarning={handleChangeWarning} handleChangeMessageToNorman={handleChangeMessageToNorman} handleChangeMessageToPete={handleChangeMessageToPete} levelOfWarning={levelOfWarning} messageToPete={messageToPete} messageToNorman={messageToNorman} ericaHealth={ericaHealth} players={players}/>,
         <Erica3 step={step} ericaHealth={ericaHealth}/>,
         <Erica4 step={step} ericaHealth={ericaHealth}/>
     ];
@@ -439,7 +483,7 @@ export default function GrandGame() {
     const normans = [
         <Norman0 step={step} />,
         <Norman1 step={step} />,
-        <Norman2 step={step} handleChangeWhichRoute={handleChangeWhichRoute} normanStay={normanStay} handleSubmitNorman={handleSubmitNorman} handleChangeNormanStay={handleChangeNormanStay} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} normanHealth={normanHealth} messageToNorman={messageToNorman} role={role} messageFromErica = { messageFromErica}/>,
+        <Norman2 step={step} data={data} handleChangeWhichRoute={handleChangeWhichRoute} normanStay={normanStay} handleSubmitNorman={handleSubmitNorman} handleChangeNormanStay={handleChangeNormanStay} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} normanHealth={normanHealth} messageToNorman={messageToNorman} role={role} messageFromErica = { messageFromErica}/>,
         <Norman3 step={step} normanHealth={normanHealth}/>,
         <Norman4 step={step} />,
         <Norman5 step={step} />
@@ -448,7 +492,7 @@ export default function GrandGame() {
     const petes = [
         <Pete0 step={step} />,
         <Pete1 step={step} />,
-        <Pete2 step={step} handleChangePetePower={handleChangePetePower} handleSubmitPete={handleSubmitPete} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} peteHealth={peteHealth} messageToPete={messageToPete} messageFromErica={messageFromErica}/>,
+        <Pete2 step={step} data={data} handleChangePetePower={handleChangePetePower} handleSubmitPete={handleSubmitPete} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} peteHealth={peteHealth} messageToPete={messageToPete} messageFromErica={messageFromErica}/>,
         <Pete3 step={step} peteHealth={peteHealth}/>
     ];
     

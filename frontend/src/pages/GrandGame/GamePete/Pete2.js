@@ -15,11 +15,7 @@ import { AreaChart, Area, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tool
 
 import { Link } from "react-router-dom"
 
-import { original_data } from './../dataGame'
-
-export default function Pete2({ handleChangePetePower, handleSubmitPete, popForm, setPopForm, messageFromErica, round, electricity, messageToPete, step, normanQuestion, peteHealth }) {
-
-    const data = JSON.parse(JSON.stringify(original_data))
+export default function Pete2({ data, handleChangePetePower, handleSubmitPete, popForm, setPopForm, messageFromErica, round, electricity, messageToPete, step, normanQuestion, peteHealth }) {
 
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);
@@ -293,21 +289,21 @@ export default function Pete2({ handleChangePetePower, handleSubmitPete, popForm
                             </div>
                             <div className="normanHouse_tooltipB">
                                 <h3>Norman B House</h3>
-                                <p>Current Water Depth: <span>{data.round1[0]["Current Water Depth"]} cm</span></p>
-                                <p>Depth Estimate within an Hour: <span>{data.round1[0]["Depth Estimate within an Hour"]} cm</span></p>
+                                <p>Current Water Depth: <span>{data.round1[1]["Current Water Depth"]} cm</span></p>
+                                <p>Depth Estimate within an Hour: <span>{data.round1[1]["Depth Estimate within an Hour"]} cm</span></p>
                                 <p>Electricity: <span>ON</span>{ }</p>
                             </div>
                             <div className="normanHouse_tooltipC">
                                 <h3>Norman C House</h3>
-                                <p>Current Water Depth: <span>{data.round1[0]["Current Water Depth"]} cm</span></p>
-                                <p>Depth Estimate within an Hour: <span>{data.round1[0]["Depth Estimate within an Hour"]} cm</span></p>
+                                <p>Current Water Depth: <span>{data.round1[2]["Current Water Depth"]} cm</span></p>
+                                <p>Depth Estimate within an Hour: <span>{data.round1[2]["Depth Estimate within an Hour"]} cm</span></p>
                                 <p>Electricity: <span>ON</span>{ }</p>
                             </div>
 
                             <div className="peteHouse_tooltip">
                                 <h3>Pete Power House</h3>
-                                <p>Current Water Depth: <span>{data.round1[0]["Current Water Depth"]} cm</span></p>
-                                <p>Depth Estimate within an Hour: <span>{data.round1[0]["Depth Estimate within an Hour"]} cm</span></p>
+                                <p>Current Water Depth: <span>{data.round1[6]["Current Water Depth"]} cm</span></p>
+                                <p>Depth Estimate within an Hour: <span>{data.round1[6]["Depth Estimate within an Hour"]} cm</span></p>
                                 <p>Electricity: <span>ON</span>{ }</p>
                             </div>
                         </div>
