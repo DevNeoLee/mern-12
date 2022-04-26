@@ -35,12 +35,12 @@ export default function Erica3({ round, ericaHealth, ericaMessageForNorman, eric
                         <div style={style} className="personContainer">
                             <img src="/erica.png" alt="role_person_image" />
                         </div>
-                        <p>Your Risk Level to City: {ericaMessageForNorman}</p>
-                        <p>Your Message to Normans: {ericaMessageForNorman}</p>
-                        <p>Your Message to Pete: {ericaMessageForPete}</p>
-                        <p>Your Action Analysis: Your Response to the Flood Risk....</p>
-                        <p>
-                            Your Score: {ericaHealth}</p>
+                        <p>Your Message to Citizen: ...{ericaMessageForNorman}</p>
+                        <p>Your Message to Pete: ... {ericaMessageForNorman}</p>
+                        <p>Your Levl of Warning: ...{ericaMessageForPete}</p>
+                        <p>Your Score: Your score as a city emergency manager is calcuated based on the whole citizen and Pete's performance on the last round.</p>
+ 
+                            <p>Your Score: ...{}</p>
                         <div className="gameProgressBlock">
                             <ProgressBar now={ericaHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0" }} variant="primary" label={`Score: ${ericaHealth} of 100`} />
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>

@@ -35,12 +35,9 @@ export default function Pete3({ round, peteHealth }) {
                         <div style={style} className="personContainer">
                             <img src="/pete.png" alt="role_person_image" />
                         </div>
-                        <p>Your Risk Level to City: </p>
-                        <p>Your Message to Normans: </p>
-                        <p>Your Message to Pete: </p>
-                        <p>Your Action Analysis: Your Response to the Flood Risk....</p>
-                        <p>
-                            Your Score: {peteHealth}</p>
+                        <p>Water depth reached { }...ft in this round.</p>
+                        <p>There is no damage to the substation</p>
+                        <p>Your performance is {}...(customers suffered) </p>
                         <div className="gameProgressBlock">
                             <ProgressBar now={peteHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0" }} variant="primary" label={`Score: ${peteHealth} of 100`} />
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>

@@ -15,9 +15,14 @@ import { AreaChart, Area, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tool
 
 import { Link } from "react-router-dom"
 
-import { data } from './../dataGame'
+import { original_data } from './../dataGame'
 
 export default function Norman2({ handleChangeWhichRoute, handleSubmitNorman, handleChangeNormanStay, normanStay, popForm, setPopForm, messageFromErica, round, role, electricity, messageToNorman, step, normanQuestion, normanHealth }) {
+
+    const data = JSON.parse(JSON.stringify(original_data))
+
+
+    console.log("Data: ", JSON.stringify(data))
 
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);

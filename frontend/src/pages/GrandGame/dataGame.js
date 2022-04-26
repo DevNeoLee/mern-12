@@ -1,4 +1,4 @@
-export const data = {
+export const original_data = {
     round1: [
         {
             name: 'normanHouse1',

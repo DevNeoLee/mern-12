@@ -35,12 +35,13 @@ export default function Norman3({ round, normanHealth }) {
                         <div style={style} className="personContainer">
                             <img src="/norman.png" alt="role_person_image" />
                         </div>
-                        <p>Your Risk Level to City: </p>
-                        <p>Your Message to Normans: </p>
-                        <p>Your Message to Pete: </p>
-                        <p>Your Action Analysis: Your Response to the Flood Risk....</p>
-                        <p>
-                            Your Score: {normanHealth}</p>
+                        <h4>Your Decision: {}...</h4>
+                        <p>Water depth reached {}... ft in this round. </p>
+                        {/* if stayed home*/}
+                        <p>There is power outage in your house.</p>
+                        {/* if left home*/}
+                        <p>There is congestion on Route A</p>
+                        <p>Your wellbeing is {}... (you suffered damages)</p>
                         <div className="gameProgressBlock">
                             <ProgressBar now={normanHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0" }} variant="primary" label={`Score: ${normanHealth} of 100`} />
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>

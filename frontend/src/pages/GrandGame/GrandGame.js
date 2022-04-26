@@ -46,7 +46,7 @@ export default function GrandGame() {
         final_score: 100,
     })
     
-    const [messages, setMessages] = useState({
+    const [messagesStorageErica, setMessagesStorageErica] = useState({
         round1: {
             toNorman: [],
             toPete: [],
@@ -96,6 +96,13 @@ export default function GrandGame() {
     const [normanHealth, setNormanHealth] = useState(100)
     const [ericaHealth, setEricaHealth] = useState(100)
     const [peteHealth, setPeteHealth] = useState(100)
+
+    const [decidedArea, setDecidedArea] = useState('')
+
+    //if decidedArea's water depth above 30cm
+    const [critical, setCritical] = useState(false)
+
+    
 
 
     const [electricity, setElectricity] = useState(true)
@@ -183,18 +190,29 @@ export default function GrandGame() {
 // },[setSocket])
 
     useEffect(() => {
-       console.log("messages: ", JSON.stringify(messages))
-    }, [messages])
+        console.log("messages storage Erica: ", JSON.stringify(messagesStorageErica))
+    }, [messagesStorageErica])
 
     useEffect(() => {
         handleRoleChange(role)
     }, [role])
     
+
+    /////////////////////round complete dececion logic////////////////////
     useEffect(()=> {
         console.log('NormanDecisions: ',normanDecisions)
         console.log('PeteDecisions: ', peteDecisions)
 
+        //만약 노만과 피터가 자료를 서로 보내줘서 두명의 자료가 모두 압데이트 되어 모두 null이 아니라면
         if ((normanDecisions[round - 1]) && (peteDecisions[round - 1])) {
+
+            ////// calculate socres here///////
+
+            ////// feed the date /////
+
+
+            //// render result page /////
+            
             setResultReady(true)
             console.log('!!!!!!!Now result Ready!!!!!!!')
             console.log("Two Decisions: " + "norman: " + normanDecisions + "pete: " + peteDecisions)
@@ -204,7 +222,13 @@ export default function GrandGame() {
 
     },[normanDecisions, peteDecisions])
 
-    // socket.emit('role')
+
+
+
+    const calculateScore = (normanS, ericaS, peteS) => {
+        
+    }
+
 
     const giveRoleRandomly = () => {
         console.log('***************giveRoleRandomly clicked!**********')
@@ -318,7 +342,7 @@ export default function GrandGame() {
         console.log("current messages! Pete: " + messageToPete + "Norman: " + messageToNorman + "LevelOfWarning: " + levelOfWarning)
         switch(round) {
             case 1:
-                setMessages(prevState => ({
+                setMessagesStorageErica(prevState => ({
                     ...prevState, round1: {
                         toNorman: [...prevState.round1.toNorman, messageToNorman],
                         toPete: [...prevState.round1.toPete, messageToPete],
@@ -333,7 +357,7 @@ export default function GrandGame() {
 
                 break;
             case 2:
-                setMessages(prevState => ({
+                setMessagesStorageErica(prevState => ({
                     ...prevState, round1: {
                         toNorman: [...prevState.round1.toNorman, messageToNorman],
                         toPete: [...prevState.round1.toPete, messageToPete],
@@ -348,7 +372,7 @@ export default function GrandGame() {
 
                 break;
             case 3:
-                setMessages(prevState => ({
+                setMessagesStorageErica(prevState => ({
                     ...prevState, round1: {
                         toNorman: [...prevState.round1.toNorman, messageToNorman],
                         toPete: [...prevState.round1.toPete, messageToPete],
@@ -363,7 +387,7 @@ export default function GrandGame() {
 
                 break;
             case 4:
-                setMessages(prevState => ({
+                setMessagesStorageErica(prevState => ({
                     ...prevState, round1: {
                         toNorman: [...prevState.round1.toNorman, messageToNorman],
                         toPete: [...prevState.round1.toPete, messageToPete],
@@ -381,7 +405,7 @@ export default function GrandGame() {
 
        
         
-        console.log("erica_messages on frontend: ", JSON.stringify(messages.round1))
+        console.log("erica_messages on frontend: ", JSON.stringify(messagesStorageErica.round1))
 
     } 
 

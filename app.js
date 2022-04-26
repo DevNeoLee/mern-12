@@ -90,30 +90,12 @@ io.on("connection", socket => {
         let room = io.sockets.adapter.rooms.get('room1')
         console.log('form content from norman: ', data)
         socket.broadcast.to('room1').emit('norman_message', data)
-        // socket.to('room1').emit('welcome', msg)
-        // socket.to('room1').emit('welcome')
-
-        // room && console.log("몇: ", room.size)
-        // console.log("방들: ", socket.rooms)
-        // room && console.log("몇: ", room.size)
-        // console.log("사람들: ", io.sockets.adapter.rooms.get('room1').size)
-        // console.log('who joined: ', socket.id)
-
     })
 
     socket.on('pete_message', (data) => {
         let room = io.sockets.adapter.rooms.get('room1')
         console.log('form content from pete: ', data)
         socket.broadcast.to('room1').emit('pete_message', data)
-        // socket.to('room1').emit('welcome', msg)
-        // socket.to('room1').emit('welcome')
-
-        // room && console.log("몇: ", room.size)
-        // console.log("방들: ", socket.rooms)
-        // room && console.log("몇: ", room.size)
-        // console.log("사람들: ", io.sockets.adapter.rooms.get('room1').size)
-        // console.log('who joined: ', socket.id)
-
     })
 
     //메세지와 동시에 펑션을 'done'을 받아서 실행할수 있음.
