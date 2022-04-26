@@ -9,7 +9,7 @@ import { Button, Form, Spinner } from "react-bootstrap";
 import { useTransition, useSpring, animated } from "react-spring";
 
 
-export default function WaitModalErica({ handleWaitModal }) {
+export default function WaitModalErica({ setWaitPopupErica }) {
 
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
@@ -29,7 +29,7 @@ export default function WaitModalErica({ handleWaitModal }) {
             {transition2((style, item) =>
                 <animated.div style={style} className="roleframe">
                     <p>
-                        Now, Erica would wait for Pete and Norman's Choice Submit for now, please wait up to 15 ses.</p>
+                        Now, Erica would wait for Pete and Norman's Choice Submit for now, please wait until everyone decided on their problems</p>
 
                         <div className="spinner">
                             <div className="spinnerPerson">
@@ -46,7 +46,7 @@ export default function WaitModalErica({ handleWaitModal }) {
                                 <img src="/erica.png" width="100px" />
                             </div>
                         </div>
-                        <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={handleWaitModal}>Got it! Okay.</Button></div>
+                    {/* <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={()=>setWaitPopupErica(false)}>Got it! Okay.</Button></div> */}
 
                 </animated.div>
             )}

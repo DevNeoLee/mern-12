@@ -74,7 +74,7 @@ io.on("connection", socket => {
     socket.on('erica_message', (msg) => {
         let room = io.sockets.adapter.rooms.get('room1')
         console.log('messages from Erica: ', msg)
-        socket.broadcast.to('room1').emit('erica_message', msg)
+        io.in('room1').emit('erica_message', msg)
         // socket.to('room1').emit('welcome', msg)
         // socket.to('room1').emit('welcome')
 
