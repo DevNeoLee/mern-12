@@ -6,7 +6,7 @@ import { Form, Button, ProgressBar, Table } from "react-bootstrap";
 import { useTransition, useSpring, animated } from "react-spring";
 
 
-export default function Norman3({ whichRoute, normanStay, round, normanHealth, waterDepthEndupNorman, electricity}) {
+export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute, normanStay, round, normanHealth, waterDepthEndupNorman, electricity}) {
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -53,7 +53,7 @@ export default function Norman3({ whichRoute, normanStay, round, normanHealth, w
                         <p>Your wellbeing is {normanHealth} now.</p>
                         { normanHealth !== 100  && <p>( decreased with the damages you suffered)</p>}
                         <div className="gameProgressBlock">
-                            <ProgressBar now={normanHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0", backgroundColor: "black"}} variant="primary" label={normanHealth}/>
+                            <ProgressBar now={normanHealth} style={{ fontSize: "1.1rem", height: "27px", backgroundColor: "black"}} variant="primary" label={normanHealth}/>
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>
                         </div>
                     </animated.div>
@@ -73,33 +73,33 @@ export default function Norman3({ whichRoute, normanStay, round, normanHealth, w
                             <tbody>
                                 <tr>
                                     <td>Erica</td>
-                                    <td>risk scale</td>
+                                    <td>{ericaHealth > 85 ? <span>Under Control</span> : <span>Risky</span>}</td>
                                     <td>1</td>
-                                    <td>90</td>
+                                    <td>{ericaHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Pete</td>
-                                    <td>Keep Power</td>
+                                    <td>{petePower === 'poweron' ? <span>Keep Power</span> : <span>Power Off</span>}</td>
                                     <td>1</td>
-                                    <td>80</td>
+                                    <td>{peteHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman A</td>
-                                    <td>Keep Power</td>
+                                    <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
                                     <td>1</td>
-                                    <td>80</td>
+                                    <td>{normanHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman B</td>
-                                    <td>Keep Power</td>
+                                    <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
                                     <td>1</td>
-                                    <td>80</td>
+                                    <td>{normanHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman C</td>
-                                    <td>Keep Power</td>
+                                    <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
                                     <td>1</td>
-                                    <td>80</td>
+                                    <td>{normanHealth}</td>
                                 </tr>
                             </tbody>
                         </Table>

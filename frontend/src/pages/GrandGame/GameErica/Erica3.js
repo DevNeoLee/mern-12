@@ -6,7 +6,7 @@ import { Form, Button, ProgressBar, Table } from "react-bootstrap";
 import { useTransition, useSpring, animated } from "react-spring";
 
 
-export default function Erica3({ round, ericaHealth, ericaMessageForNorman, ericaMessageForPete }) {
+export default function Erica3({ petePower, round, ericaHealth, peteHealth, normanHealth, normanStay, messagesStorageErica }) {
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -31,18 +31,18 @@ export default function Erica3({ round, ericaHealth, ericaMessageForNorman, eric
             <div className="resultContainer">
                 {transition2((style, item) =>
                     <animated.div style={style} className="resultLeft">
-                        <h3>Your Round Result</h3>
+                        <h3>Your Round {round} Result</h3>
                         <div style={style} className="personContainer">
                             <img src="/erica.png" alt="role_person_image" />
                         </div>
-                        <p>Your Message to Citizen: ...{ericaMessageForNorman}</p>
-                        <p>Your Message to Pete: ... {ericaMessageForNorman}</p>
-                        <p>Your Levl of Warning: ...{ericaMessageForPete}</p>
+                        <p>Your Message to Citizen: {messagesStorageErica[`round${round}`].toNorman }</p>
+                        <p>Your Message to Pete: {messagesStorageErica[`round${round}`].toPete}</p>
+                        <p>Your Levl of Warning: {messagesStorageErica[`round${round}`].levelOfWarning}</p>
                         <p>Your Score: Your score as a city emergency manager is calcuated based on the whole citizen and Pete's performance on the last round.</p>
  
-                            <p>Your Score: ...{}</p>
+                        <p>Your Score: {ericaHealth}</p>
                         <div className="gameProgressBlock">
-                            <ProgressBar now={ericaHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0" }} variant="primary" label={ericaHealth} />
+                            <ProgressBar now={ericaHealth} style={{ fontSize: "1.1rem", height: "27px", backgroundColor: 'black'  }} variant="primary" label={ericaHealth} />
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>
                         </div>
                     </animated.div>
@@ -62,33 +62,33 @@ export default function Erica3({ round, ericaHealth, ericaMessageForNorman, eric
                             <tbody>
                                 <tr>
                                     <td>Erica</td>
-                                    <td>risk scale</td>
+                                    <td>{ericaHealth > 85 ?  <span>Under Control</span> : <span>Risky</span>}</td>
                                     <td>1</td>
-                                    <td>90</td>
+                                    <td>{ericaHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Pete</td>
-                                    <td>Keep Power</td>
+                                    <td>{petePower === 'poweron' ? <span>Keep Power</span> : <span>Power Off</span>}</td>
                                     <td>1</td>
-                                    <td>80</td>
+                                    <td>{peteHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman A</td>
-                                    <td>Keep Power</td>
+                                    <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
                                     <td>1</td>
-                                    <td>80</td>
+                                    <td>{normanHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman B</td>
-                                    <td>Keep Power</td>
+                                    <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
                                     <td>1</td>
-                                    <td>80</td>
+                                    <td>{normanHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman C</td>
-                                    <td>Keep Power</td>
+                                    <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
                                     <td>1</td>
-                                    <td>80</td>
+                                    <td>{normanHealth}</td>
                                 </tr>
                             </tbody>
                         </Table>
