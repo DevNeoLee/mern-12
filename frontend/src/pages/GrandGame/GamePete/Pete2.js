@@ -15,7 +15,7 @@ import { AreaChart, Area, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tool
 
 import { Link } from "react-router-dom"
 
-export default function Pete2({ data, handleChangePetePower, handleSubmitPete, popForm, setPopForm, messageFromErica, round, electricity, messageToPete, step, normanQuestion, peteHealth }) {
+export default function Pete2({ data, handleChangeWhichRoutePete, whichRoutePete, handleChangePetePower, handleSubmitPete, popForm, setPopForm, messageFromErica, round, electricity, messageToPete, step, normanQuestion, petePower, peteHealth }) {
 
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);
@@ -143,7 +143,7 @@ export default function Pete2({ data, handleChangePetePower, handleSubmitPete, p
     return (
         <>
             <div className={popup ? `petePopup` : `petePopup petePopClose`}><PetePopup setPopup={setPopup} /></div>
-            <div className={popForm ? `peteForm` : `peteForm peteFormClose`}><PeteForm setPopForm={setPopForm} handleSubmitPete={handleSubmitPete} handleChangePetePower={handleChangePetePower} /></div>
+            <div className={popForm ? `peteForm` : `peteForm peteFormClose`}><PeteForm handleChangeWhichRoutePete={handleChangeWhichRoutePete} whichRoutePete={whichRoutePete} setPopForm={setPopForm} handleSubmitPete={handleSubmitPete} handleChangePetePower={handleChangePetePower} petePower={petePower}/></div>
             <div className={waitPopup ? `waitModal` : `waitModal waitModalClose`}><WaitModalPete handleWaitModal={handleWaitModal} /></div>
 
             <div className="gameBlockContainer">

@@ -47,19 +47,19 @@ export const original_data = {
     round2: [
         {
             name: 'normanA',
-            "Current Water Depth": 10,
+            "Current Water Depth": 40,
             "Depth Estimate within an Hour": 17,
             electricity: true
         },
         {
             name: 'normanB',
-            "Current Water Depth": 15,
+            "Current Water Depth": 45,
             "Depth Estimate within an Hour": 20,
             electricity: true
         },
         {
             name: 'normanC',
-            "Current Water Depth": 16,
+            "Current Water Depth": 46,
             "Depth Estimate within an Hour": 18,
             electricity: true
         },

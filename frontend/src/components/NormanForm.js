@@ -50,9 +50,9 @@ export default function NormanForm({ handleSubmitNorman, handleChangeWhichRoute,
                                 <Form.Group onChange={handleChangeWhichRoute}>
                                     <div className="gameQuestion2">
                                         <Form.Label htmlFor={`radio`}>Which way is your decision?</Form.Label>
-                                        <Radio label='Route A' name="questionNorman3" value="routeA" required/>
-                                        <Radio label='Route B' name="questionNorman3" value="routeB" required/>
-                                        <Radio label='Route C' name="questionNorman3" value="routeC" required/>
+                                        <Radio label='Route 1' name="questionNorman3" value="route1" required/>
+                                        <Radio label='Route 2' name="questionNorman3" value="route2" required/>
+                                        <Radio label='Route 3' name="questionNorman3" value="route3" required/>
                                     </div>
                                 </Form.Group>
                             )

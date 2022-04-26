@@ -41,9 +41,9 @@ export default function Norman3({ round, normanHealth }) {
                         <p>There is power outage in your house.</p>
                         {/* if left home*/}
                         <p>There is congestion on Route A</p>
-                        <p>Your wellbeing is {}... (you suffered damages)</p>
+                        <p>Your wellbeing is {normanHealth} now( decreased with the damages you suffered)</p>
                         <div className="gameProgressBlock">
-                            <ProgressBar now={normanHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0" }} variant="primary" label={`Score: ${normanHealth} of 100`} />
+                            <ProgressBar now={normanHealth} style={{ fontSize: "1.1rem", height: "27px", borderRadius: "5px 5px 0 0", backgroundColor: "black"}} variant="primary" label={`Score: ${normanHealth} of 100`} />
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>
                         </div>
                     </animated.div>
