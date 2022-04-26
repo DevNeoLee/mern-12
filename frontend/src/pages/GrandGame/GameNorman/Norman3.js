@@ -38,7 +38,7 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
             <div className="resultContainer">
                 {transition2((style, item) =>
                     <animated.div style={style} className="resultLeft">
-                        <h3>Your Round Result</h3>
+                        <h3>Your Round {round} Result</h3>
                         <div style={style} className="personContainer">
                             <img src="/norman.png" alt="role_person_image" />
                         </div>
