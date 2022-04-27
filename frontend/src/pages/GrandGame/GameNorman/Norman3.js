@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { HeartFill } from 'react-bootstrap-icons';
 import { Form, Button, ProgressBar, Table } from "react-bootstrap";
@@ -20,6 +20,8 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
         }
     });
 
+    const navigate = useNavigate();
+
     console.log("round: ", round)
     console.log("normanStay: ", normanStay)
     console.log("whichRoute: ", whichRoute)
@@ -38,7 +40,6 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
             <div className="resultContainer">
                 {transition2((style, item) =>
                     <animated.div style={style} className="resultLeft">
-                        <h3>Your Round {round} Result</h3>
                         <div style={style} className="personContainer">
                             <img src="/norman.png" alt="role_person_image" />
                         </div>
@@ -60,7 +61,7 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
                 )}
                 {transition2((style, item) =>
                     <animated.div style={style} className="resultRight">
-                        <h3>Whole Player Summary</h3>
+                        <h3>Players Summary</h3>
                         <Table striped bordered hover size="lg" responsive>
                             <thead>
                                 <tr>
@@ -103,6 +104,7 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
                                 </tr>
                             </tbody>
                         </Table>
+                        <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={() => navigate('/gameend')}>Next</Button></div>
                     </animated.div>
                 )}
             </div>

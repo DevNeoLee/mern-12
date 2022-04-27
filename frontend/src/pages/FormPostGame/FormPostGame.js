@@ -57,7 +57,7 @@ export default function FormPostGame() {
         </Button>
       )}
       {step === pageQuantity && (
-        <Button onClick={() => navigate('/theend')}>
+        <Button onClick={() => navigate('/formgeneral')}>
           SUBMIT
         </Button>
       )}

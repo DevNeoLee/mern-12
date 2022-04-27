@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { HeartFill } from 'react-bootstrap-icons';
 import { Form, Button, ProgressBar, Table } from "react-bootstrap";
@@ -20,6 +20,8 @@ export default function Pete3({ normanHealth, petePower, ericaHealth, round, pet
         }
     });
 
+    const navigate = useNavigate();
+
     return (
         <>
             <div className="gameUpperForm">
@@ -31,7 +33,6 @@ export default function Pete3({ normanHealth, petePower, ericaHealth, round, pet
             <div className="resultContainer">
                 {transition2((style, item) =>
                     <animated.div style={style} className="resultLeft">
-                        <h3>Your Round {round} Result</h3>
                         <div style={style} className="personContainer">
                             <img src="/pete.png" alt="role_person_image" />
                         </div>
@@ -47,7 +48,7 @@ export default function Pete3({ normanHealth, petePower, ericaHealth, round, pet
                 )}
                 {transition2((style, item) =>
                     <animated.div style={style} className="resultRight">
-                        <h3>Whole Player Summary</h3>
+                        <h3>Players Summary</h3>
                         <Table striped bordered hover size="lg" responsive>
                             <thead>
                                 <tr>
@@ -90,6 +91,7 @@ export default function Pete3({ normanHealth, petePower, ericaHealth, round, pet
                                 </tr>
                             </tbody>
                         </Table>
+                        <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={() => navigate('/gameend')}>Next</Button></div>
                     </animated.div>
                 )}
             </div>

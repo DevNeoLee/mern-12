@@ -4,6 +4,7 @@ import Game3 from "./pages/Game";
 import Game4 from "./pages/Game";
 import Result from "./pages/Result";
 import TheEnd from "./components/TheEnd";
+import GameEnd from "./components/GameEnd";
 import Welcome from "./components/Welcome";
 import FormGeneral from "./pages/FormGeneral/FormGeneral";
 import InstructionFormPreGame from "./pages/FormPreGame/InstructionFormPreGame";
@@ -48,6 +49,7 @@ export default function App({ ...props }) {
 
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/result" element={<Result />} />
+        <Route path="/gameend" element={<GameEnd />} />  
         <Route path="/theend" element={<TheEnd />} />                
       </Routes>
     </Router>

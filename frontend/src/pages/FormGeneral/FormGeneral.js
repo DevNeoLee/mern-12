@@ -60,7 +60,7 @@ export default function FormGeneral({step}) {
                            ))}
                         </Form.Group>
 
-                      <Link to="/instructionformpregame">
+                      <Link to="/theend">
                           <Button >Submit</Button>
                           </Link>
 

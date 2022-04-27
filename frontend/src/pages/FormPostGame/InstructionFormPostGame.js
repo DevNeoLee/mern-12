@@ -36,7 +36,7 @@ export default function InstructionFormPostGame() {
                 </div>
                 {transition2((style, item) =>
                     <animated.div style={style} className="preParagraph">
-                        <p>Thank you for playing. Lastly, we would like you to answer a short set of questions regarding
+                        <p>Thank you for playing. Now, we would like you to answer a short set of questions regarding
                             how you had done and learned about flood risk</p>
                     </animated.div>
                 )}

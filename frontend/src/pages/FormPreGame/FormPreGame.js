@@ -57,8 +57,8 @@ export default function FormPreGame() {
         </Button>
       )}
       {step === pageQuantity && (
-        // <Link to="/grandgame">
-          <Button onClick={() => navigate('/grandgame')}>
+        // <Link to="/welcome">
+          <Button onClick={() => navigate('/welcome')}>
             SUBMIT
           </Button>
         // </Link>

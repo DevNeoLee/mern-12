@@ -1,5 +1,5 @@
 const data = {
-    "title": "Pre Game Questionnaire",
+    "title": "Pre Exercise Questionnaire",
     "questions": [
         {
             "id": "1",

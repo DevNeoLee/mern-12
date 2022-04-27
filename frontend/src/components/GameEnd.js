@@ -1,16 +1,12 @@
 
-import { useState } from "react"
-
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import '../App.css'
 
-import { ArrowLeftCircle } from 'react-bootstrap-icons';
-
-import { useTransition, useSpring, animated } from "react-spring";
+import { useTransition, animated } from "react-spring";
 
 import { Form, Button } from "react-bootstrap";
 
-export default function Welcome() {
+export default function GameEnd() {
 
     const transition = useTransition(true, {
         from: { x: 300, y: 0, opacity: 0 },
@@ -25,8 +21,6 @@ export default function Welcome() {
         }
     });
 
-    const navigate = useNavigate();
-
     return (
         <div className="container">
             <Form className="form welcome">
@@ -36,20 +30,18 @@ export default function Welcome() {
                         <img src="/logo_4.png" />
                     </div>
                     {transition((style, item) =>
-                        <animated.h2 style={style}>Welcome to the Exercise</animated.h2>
+                        <animated.h2 style={style} className="thankyou">Thank you </animated.h2>
                     )}
                 </div>
                 {transition2((style, item) =>
                     <animated.div style={style} className="welcomeParagraph">
-                        <h3>The Roll Playing Exercise</h3>
-                        <p>We will conduct a decision-making exercise today.</p>
+                        <h3>The End of Rollplaying Exercise</h3>
+                        <p>You have completed the exercise</p>
                         <p>
-                            These exercises are about decisions that stakeholders make during
-                            times of flood risk.</p>
-                        <p>You will play in a group together with four other REAL people. </p>
+                            We hope this exercise brought a chance to learn more about flood risk.</p>
+                        <Link to="/instructionformpostgame"><Button size="lg" style={{ marginTop: "1rem" }}>Exit</Button></Link>
                     </animated.div>
                 )}
-                <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={() => navigate('/grandgame')}>Enter</Button></div>
             </Form>
         </div>
     );

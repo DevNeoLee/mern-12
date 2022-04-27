@@ -1541,7 +1541,7 @@ h2 {
 }
 
 .resultLeft {
-  padding: 1rem 4rem 3rem 4rem;
+  padding: 0rem 4rem 3rem 4rem;
   /* margin: 2rem 1rem; */
   /* box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px; */
   border-radius: 1rem;
@@ -1555,7 +1555,7 @@ h2 {
 }
 
 .resultRight {
-  padding: 1rem 2rem 2rem 2rem;
+  padding: 0rem 2rem 2rem 2rem;
   /* margin: 2rem 1rem; */
   /* box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px; */
   border-radius: 1rem;
@@ -1564,9 +1564,9 @@ h2 {
   width: 590px;
   /* margin: 0 auto; */
   /* margin-top: 30px; */
-  height: 700px;
+  height: 800px;
   font-size: 1.2rem;
-  line-height: 3;
+  line-height: 2;
   margin-bottom: 2rem;
 }
 
