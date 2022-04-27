@@ -39,7 +39,7 @@ export default function Pete0() {
                     <div style={style} className="personContainer">
                         <img src="/pete.png" alt="role_person_image" />
                         <ProgressBar now={100} animated variant="primary" />
-                        <div className="heartRole"><HeartFill size={24} color="red" /></div>
+                        {/* <div className="heartRole"><HeartFill size={24} color="red" /></div> */}
                     </div>
                     <p>You are randomly assigned as Pete, a
                         power utility manager. </p>

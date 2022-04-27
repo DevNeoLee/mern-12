@@ -40,7 +40,7 @@ export default function Erica0({role, setRole}) {
                   <div style={style} className="personContainer">
                       <img src="/erica.png" alt="role_person_image" />
                       <ProgressBar now={100} animated variant="primary" />
-                      <div className="heartRole"><HeartFill size={24} color="red" /></div>
+                      {/* <div className="heartRole"><HeartFill size={24} color="red" /></div> */}
                   </div>
               <p>You are randomly assigned as Erica. the city’s manager
                   for emergency response.</p> 

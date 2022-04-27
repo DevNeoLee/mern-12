@@ -38,7 +38,7 @@ export default function Norman0() {
                     <div style={style} className="personContainer">
                         <img src="/norman.png" alt="role_person_image" />
                         <ProgressBar now={100} animated variant="primary" />
-                        <div className="heartRole"><HeartFill size={24} color="red" /></div>
+                        {/* <div className="heartRole"><HeartFill size={24} color="red" /></div> */}
                     </div>
                     <p>You are randomly assigned as
                         Norman, a local resident and
