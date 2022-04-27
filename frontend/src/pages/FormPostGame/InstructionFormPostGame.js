@@ -31,7 +31,7 @@ export default function InstructionFormPostGame() {
                         <img src="/logo_4.png" />
                     </div>
                     {transition((style, item) =>
-                        <animated.h2 style={style}>Post Game Questionnaire </animated.h2>
+                        <animated.h2 style={style}>Questionnaire </animated.h2>
                     )}
                 </div>
                 {transition2((style, item) =>

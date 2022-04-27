@@ -43,9 +43,7 @@ export default function Erica0({role, setRole}) {
                       <div className="heartRole"><HeartFill size={24} color="red" /></div>
                   </div>
               <p>You are randomly assigned as Erica. the city’s manager
-                  for emergency response.</p>
-              <p>
-                  Your task is to</p>
+                  for emergency response. Your task is to</p>
               <p> 1) engage in risk communication and</p>
               <p>2) provide guidance on the recommended actions</p>
           </animated.div>

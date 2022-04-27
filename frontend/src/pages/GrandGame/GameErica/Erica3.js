@@ -33,15 +33,15 @@ export default function Erica3({ petePower, round, ericaHealth, peteHealth, norm
             <div className="resultContainer">
                 {transition2((style, item) =>
                     <animated.div style={style} className="resultLeft">
-                        <div style={style} className="personContainer">
+                        <div style={{ marginBottom: "1rem"}} className="personContainer">
                             <img src="/erica.png" alt="role_person_image" />
                         </div>
-                        <p>Your Message to Citizen: {messagesStorageErica[`round${round}`].toNorman }</p>
-                        <p>Your Message to Pete: {messagesStorageErica[`round${round}`].toPete}</p>
-                        <p>Your Levl of Warning: {messagesStorageErica[`round${round}`].levelOfWarning}</p>
+                        <p>Your Message to Citizen: <span>{messagesStorageErica[`round${round}`].toNorman}</span> </p>
+                        <p>Your Message to Pete: <span>{messagesStorageErica[`round${round}`].toPete}</span> </p>
+                        <p>Your Levl of Warning: <span>{messagesStorageErica[`round${round}`].levelOfWarning}</span> </p>
                         <p>Your Score: Your score as a city emergency manager is calcuated based on the whole citizen and Pete's performance on the last round.</p>
  
-                        <p>Your Score: {ericaHealth}</p>
+                        <p>Your Score: <span>{ericaHealth}</span></p>
                         <div className="gameProgressBlock">
                             <ProgressBar now={ericaHealth} style={{ fontSize: "1.1rem", height: "27px", backgroundColor: 'black'  }} variant="primary" label={ericaHealth} />
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>

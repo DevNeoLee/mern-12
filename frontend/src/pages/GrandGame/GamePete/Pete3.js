@@ -33,13 +33,13 @@ export default function Pete3({ normanHealth, petePower, ericaHealth, round, pet
             <div className="resultContainer">
                 {transition2((style, item) =>
                     <animated.div style={style} className="resultLeft">
-                        <div style={style} className="personContainer">
+                        <div style={{ marginBottom: "1rem" }} className="personContainer">
                             <img src="/pete.png" alt="role_person_image" />
                         </div>
                         <h4>Your Decision: {petePower === "poweron" ? <span>You maintained the power in the city.</span> : <span>You turned off the power and went out to {whichRoutePete}</span>}</h4>
-                        <p>Water depth reached {waterDepthEndupPete}cm in this round.</p>
+                        <p>Water depth reached <span>{waterDepthEndupPete}cm</span></p>
                         {/* <p>There is no damage to the substation</p> */}
-                        <p>Your performance is {peteHealth}...(customers suffered) </p>
+                        <p>Your performance is <span>{peteHealth}</span> </p>
                         <div className="gameProgressBlock">
                             <ProgressBar now={peteHealth} style={{ fontSize: "1.1rem", height: "27px", backgroundColor: 'black' }} variant="primary" label={peteHealth} />
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>

@@ -91,7 +91,7 @@ export default function FormPreGame() {
 
                 {data && data.questions.map(question => 
                 <>
-                      <h2 style={{ padding: "2rem"}}>{data.title}</h2>
+                      {/* <h2 style={{ padding: "2rem"}}>{data.title}</h2> */}
                     <div key={question.id} className="welcomeParagraph">
                       <ProgressBar now={100*(step + 1)/9} label={`${(step + 1)} of 9` } style={{ transition: "width 1s ease"}}/>
                       <h4>Question {step + 1} </h4>

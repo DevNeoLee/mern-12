@@ -240,7 +240,7 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                 <div className="rightContainer">
                     <div className="gameBlock">
                         <div className="gameRound">
-                            <h1>Game | Round {round}</h1>
+                            <h2>Round {round}</h2>
                         </div>
                         <div className="normanMapContainer">
                             <div className="normanmapimg"><img src="/roundmap.png" /></div>

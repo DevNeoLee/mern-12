@@ -40,19 +40,19 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
             <div className="resultContainer">
                 {transition2((style, item) =>
                     <animated.div style={style} className="resultLeft">
-                        <div style={style} className="personContainer">
+                        <div style={{ marginBottom: "1rem" }} className="personContainer">
                             <img src="/norman.png" alt="role_person_image" />
                         </div>
                         <h4>Your Decision: {normanStay === "stayon" ? <span>You stayed in your house</span> : <span>You went to {whichRoute}</span>}</h4>
-                        <p>Water depth is reached to {waterDepthEndupNorman} cm. </p>
+                        <p>Water depth is reached to <span>{waterDepthEndupNorman} cm</span>. </p>
                         {/* if stayed home*/}
                         {electricity === 'poweroff' && (
-                            <p>There is power outage in your location you end up.</p>
+                            <p>There is <span>power outage </span>in your location.</p>
                         )}
                         {/* if left home*/}
                         {/* <p>There is congestion on Route A</p> */}
-                        <p>Your wellbeing is {normanHealth} now.</p>
-                        { normanHealth !== 100  && <p>( decreased with the damages you suffered)</p>}
+                        <p>Your wellbeing is <span>{normanHealth} </span>.</p>
+                        { normanHealth !== 100  && <p></p>}
                         <div className="gameProgressBlock">
                             <ProgressBar now={normanHealth} style={{ fontSize: "1.1rem", height: "27px", backgroundColor: "black"}} variant="primary" label={normanHealth}/>
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>

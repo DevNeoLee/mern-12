@@ -182,7 +182,7 @@ export default function Erica2({ data, waitPopupErica, setWaitPopupErica, player
                     <div className="rightContainerErica">
                         <div className="gameBlock">
                             <div className="gameRound">
-                                <h1>Game | Round {round}</h1>
+                                <h2>Round {round}</h2>
                             </div>
                             <div className="normanMapContainer">
                                 <div className="normanmapimg"><img src="/roundmap.png" /></div>

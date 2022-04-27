@@ -91,7 +91,7 @@ export default function FormPostGame() {
 
                 {data && data.questions.map(question =>
                   <>
-                    <h2>{data.title}</h2>
+                    {/* <h2>{data.title}</h2> */}
                     <div key={question.id} className="welcomeParagraph">
                       <ProgressBar now={(step + 1) * 100 / 6} label={`${(step + 1)} of 6`} />
                       <h4>Question {step + 1} </h4>

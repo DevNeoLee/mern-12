@@ -166,7 +166,7 @@ export default function Pete2({ data, handleChangeWhichRoutePete, whichRoutePete
                                 margin={{
                                     top: 5,
                                     right: 30,
-                                    left: 10,
+                                    left: 20,
                                     bottom: 0,
                                 }}
                             >
@@ -174,10 +174,11 @@ export default function Pete2({ data, handleChangeWhichRoutePete, whichRoutePete
                                 <XAxis dataKey="name" tick={false} />
                                 <YAxis
                                     label={{ value: "Water Depth", angle: -90, position: 'insideLeft' }}
-                                    tick={{ fontSize: 10 }}
+                                    tick={{ fontSize: 7 }}
                                     // width={100}   
                                     unit="cm"
-                                    domain={[0, 40]} />
+                                    domain={[0, 40]} 
+                                   />
                                 {/* <Tooltip /> */}
                                 <Legend />
                                 <Bar dataKey="Current Water Depth" fill="#8884d8" />
@@ -247,7 +248,7 @@ export default function Pete2({ data, handleChangeWhichRoutePete, whichRoutePete
                 <div className="rightContainer">
                     <div className="gameBlock">
                         <div className="gameRound">
-                            <h1>Game | Round {round}</h1>
+                            <h1>Round {round}</h1>
                         </div>
                         <div className="normanMapContainer">
                             <div className="normanmapimg"><img src="/roundmap.png" /></div>

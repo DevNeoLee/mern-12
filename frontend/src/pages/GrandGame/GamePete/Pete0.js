@@ -42,8 +42,7 @@ export default function Pete0() {
                         <div className="heartRole"><HeartFill size={24} color="red" /></div>
                     </div>
                     <p>You are randomly assigned as Pete, a power utility
-                        manager.</p>
-                    <p>Your task is to decide</p>
+                        manager. Your task is to decide</p>
                     <p>1) whether or not shut down a power substation with
                         a large service area serving thousands of homes.</p>
                 </animated.div>

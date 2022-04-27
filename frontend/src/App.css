@@ -1,8 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@500&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@500&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   /* background-color: lightcoral; */
+  font-family: 'Hind Madurai', sans-serif;
+    /* color: #333; */
+    font-size: 16px;
 }
 
 body {
@@ -14,6 +21,13 @@ body {
 html {
   margin: 0;
   padding: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Work Sans', sans-serif;
+  color: rgb(56, 56, 56);
 }
 
 :root {
@@ -104,6 +118,10 @@ h2 {
   justify-content: center;
   min-height: 100vh;
   transition: 250ms ease-in-out;
+}
+
+.container p {
+  font-size: 1.4rem;
 }
 
 .container2 {
@@ -302,6 +320,11 @@ h2 {
       rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px; */
   transition: 250ms ease-in-out;
   background-color: rgb(241, 240, 240);
+
+}
+
+.formGeneral p {
+    font-size: 1.5rem;
 }
 
 .formFrame {
@@ -384,7 +407,6 @@ h2 {
   /* height: 500px; */
   margin: 0 auto;
   text-align: center;
-
 }
 
 .ristInfoText {
@@ -420,7 +442,7 @@ h2 {
 
 .welcomeParagraph p {
   line-height: 1.8;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .select {
@@ -440,7 +462,7 @@ h2 {
 }
 
 .inputFrame label {
-  font-size: 1.1rem;
+  font-size: 1.4rem;
 }
 
 .preParagraph {
@@ -483,6 +505,10 @@ h2 {
   display: flex;
   max-width: 610px;
   margin: 0 auto;
+}
+
+.buttons button{
+  font-size: 1.3rem;
 }
 
 .buttonsPreGame {
@@ -545,7 +571,7 @@ h2 {
 }
 
 .roleframe {
-    padding: 3rem 2rem 1rem 2rem;
+    padding: 2rem 2rem 1rem 2rem;
     /* margin: 2rem 1rem; */
     box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px;
     border-radius: 1rem;
@@ -553,6 +579,13 @@ h2 {
     width: 590px;
     margin: 0 auto;
     /* margin-top: 30px; */
+}
+
+.roleframe p {
+  font-size: 1.4rem;
+  line-height: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .weatherMargin {
@@ -1099,11 +1132,21 @@ h2 {
 .gameQuestion {
   /* background-color: lightsalmon; */
   padding: 1rem;
+
 }
 
-.gameQuestion2 {
-  padding: 2rem;
+.gameQuestion p,
+.gameQuestion label {
+  font-size: 1.3rem;
 }
+
+.gameQuestion2{
+  padding-left: 3rem;
+}
+
+.gameQuestion2 p,
+.gameQuestion2 label {
+  font-size: 1.3rem;}
 
 .normanMapContainer {
   position: relative;
@@ -1552,7 +1595,22 @@ h2 {
   /* margin-top: 30px; */
   height: 700px;
   margin-bottom: 2rem;
+
 }
+
+.resultLeft p {
+    font-size: 1.4rem;
+}
+
+.resultLeft span {
+  font-size: 1.4rem;
+  color: red;
+}
+
+.gameUpperForm h2 {
+  font-size: 2.2rem;
+}
+
 
 .resultRight {
   padding: 0rem 2rem 2rem 2rem;
@@ -1568,6 +1626,22 @@ h2 {
   font-size: 1.2rem;
   line-height: 2;
   margin-bottom: 2rem;
+}
+
+.resultRight h3 {
+  font-size: 2rem;
+}
+
+.resultRight th {
+  font-size: 1.3rem;
+}
+
+.resultRight td {
+  font-size: 1.2rem;
+}
+
+.resultRight button {
+  font-size: 1.4rem;
 }
 
 .finalResult {
