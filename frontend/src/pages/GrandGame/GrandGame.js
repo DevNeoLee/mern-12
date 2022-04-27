@@ -709,7 +709,7 @@ export default function GrandGame() {
     
     const Buttons = () => (
         <section className='buttons' >
-            {step > 0 && (
+            {/* {step > 0 && (
                 <Button
                 type="button"
                 onClick={() => {
@@ -720,7 +720,7 @@ export default function GrandGame() {
                 >
                 BACK
                 </Button>
-            )}
+            )} */}
             {step === pageQuantity && (
                 <Link to="/instructionformpostgame">
                     <Button onClick={handleClick}

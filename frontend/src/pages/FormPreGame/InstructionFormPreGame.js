@@ -38,11 +38,13 @@ export default function InstructionFormPreGame() {
                 </div>
                 {transition2((style, item) => 
                 <animated.div style={style} className="preParagraph">
-                        <p>Before starting, we would like you to answer a short set of questions regarding
-                            how you would perceive things and make decisions in times of flood risk</p>
+                        <p>Before starting, we would like you to 
+answer a short set of questions about 
+how you perceive flood risks and 
+related risk information.</p>
                 </animated.div>
                 )}
-                <div className="" style={{ margin: "0px 35px" }}><Button onClick={() => navigate('/formpregame')}>Begin</Button></div>
+                <div className="pregameBegin" style={{ margin: "0px 35px" }}><Button onClick={() => navigate('/formpregame')} >Start Survey</Button></div>
             </Form>
         </div>
     )

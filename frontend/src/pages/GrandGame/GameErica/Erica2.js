@@ -34,7 +34,7 @@ export default function Erica2({ data, waitPopupErica, setWaitPopupErica, player
     //               {
     //             name: 'normanHouse1',
     //             "Current Water Depth": 5,
-    //             "Depth Estimate within an Hour": 8,
+    //             "Depth Estimate in 3 Hours": 8,
     //             Electricity: true
     //         },
     //     ])
@@ -44,7 +44,7 @@ export default function Erica2({ data, waitPopupErica, setWaitPopupErica, player
 
         let houseChartdata = data[`round${round}`][3];
 
-        houseChartdata["Depth Estimate within an Hour"] = houseChartdata["Depth Estimate within an Hour"] - houseChartdata["Current Water Depth"]
+        houseChartdata["Depth Estimate in 3 Hours"] = houseChartdata["Depth Estimate in 3 Hours"] - houseChartdata["Current Water Depth"]
         return houseChartdata;
     }
 
@@ -102,7 +102,7 @@ export default function Erica2({ data, waitPopupErica, setWaitPopupErica, player
                 // {
                 //     name: 'Route1',
                 //     "Current Water Depth": 8,
-                //     "Depth Estimate within an Hour": 11,
+                //     "Depth Estimate in 3 Hours": 11,
                 //     congestion: false
                 // }
             ]
@@ -130,7 +130,7 @@ export default function Erica2({ data, waitPopupErica, setWaitPopupErica, player
 
         const houseChartdata = data[`round${round}`][3];
 
-        return houseChartdata["Depth Estimate within an Hour"] = houseChartdata["Depth Estimate within an Hour"] - houseChartdata["Current Water Depth"]
+        return houseChartdata["Depth Estimate in 3 Hours"] = houseChartdata["Depth Estimate in 3 Hours"] - houseChartdata["Current Water Depth"]
     }
 
     return (
@@ -174,7 +174,7 @@ export default function Erica2({ data, waitPopupErica, setWaitPopupErica, player
                                     {/* <Tooltip /> */}
                                     <Legend />
                                     <Bar dataKey="Current Water Depth" fill="#8884d8" />
-                                    <Bar dataKey="Depth Estimate within an Hour" fill="#82ca9d" />
+                                    <Bar dataKey="Depth Estimate in 3 Hours" fill="#82ca9d" />
                                 </BarChart>
                             </div>
                         </div>
@@ -200,45 +200,45 @@ export default function Erica2({ data, waitPopupErica, setWaitPopupErica, player
                                 <div className="route1_tooltip">
                                     <h3>Route 1</h3>
                                     <p>Current Water Depth: <span>{data.round1[3]["Current Water Depth"]} cm</span></p>
-                                    <p>Depth Estimate within an Hour: <span>{data.round1[3]["Depth Estimate within an Hour"]} cm</span></p>
+                                    <p>Depth Estimate in 3 Hours: <span>{data.round1[3]["Depth Estimate in 3 Hours"]} cm</span></p>
                                     <p> congestion: <span>No</span>{ }</p>
                                 </div>
                                 <div className="route2_tooltip">
                                     <h3>Route 2</h3>
                                     <p>Current Water Depth: <span>{data.round1[4]["Current Water Depth"]} cm</span></p>
-                                    <p>Depth Estimate within an Hour: <span>{data.round1[4]["Depth Estimate within an Hour"]} cm</span></p>
+                                    <p>Depth Estimate in 3 Hours: <span>{data.round1[4]["Depth Estimate in 3 Hours"]} cm</span></p>
                                     <p> congestion: <span>No</span>{ }</p>
                                 </div>
                                 <div className="route3_tooltip">
                                     <h3>Route 3</h3>
                                     <p>Current Water Depth: <span>{data.round1[5]["Current Water Depth"]} cm</span></p>
-                                    <p>Depth Estimate within an Hour: <span>{data.round1[5]["Depth Estimate within an Hour"]} cm</span></p>
+                                    <p>Depth Estimate in 3 Hours: <span>{data.round1[5]["Depth Estimate in 3 Hours"]} cm</span></p>
                                     <p> congestion: <span>No</span>{ }</p>
                                 </div>
 
                                 <div className="normanHouse_tooltipA">
                                     <h3>Norman A House</h3>
                                     <p>Current Water Depth: <span>{data.round1[0]["Current Water Depth"]} cm</span></p>
-                                    <p>Depth Estimate within an Hour: <span>{data.round1[0]["Depth Estimate within an Hour"]} cm</span></p>
+                                    <p>Depth Estimate in 3 Hours: <span>{data.round1[0]["Depth Estimate in 3 Hours"]} cm</span></p>
                                     <p>Electricity: <span>ON</span>{ }</p>
                                 </div>
                                 <div className="normanHouse_tooltipB">
                                     <h3>Norman B House</h3>
                                     <p>Current Water Depth: <span>{data.round1[1]["Current Water Depth"]} cm</span></p>
-                                    <p>Depth Estimate within an Hour: <span>{data.round1[1]["Depth Estimate within an Hour"]} cm</span></p>
+                                    <p>Depth Estimate in 3 Hours: <span>{data.round1[1]["Depth Estimate in 3 Hours"]} cm</span></p>
                                     <p>Electricity: <span>ON</span>{ }</p>
                                 </div>
                                 <div className="normanHouse_tooltipC">
                                     <h3>Norman C House</h3>
                                     <p>Current Water Depth: <span>{data.round1[2]["Current Water Depth"]} cm</span></p>
-                                    <p>Depth Estimate within an Hour: <span>{data.round1[2]["Depth Estimate within an Hour"]} cm</span></p>
+                                    <p>Depth Estimate in 3 Hours: <span>{data.round1[2]["Depth Estimate in 3 Hours"]} cm</span></p>
                                     <p>Electricity: <span>ON</span>{ }</p>
                                 </div>
 
                                 <div className="peteHouse_tooltip">
                                     <h3>Pete Power House</h3>
                                     <p>Current Water Depth: <span>{data.round1[6]["Current Water Depth"]} cm</span></p>
-                                    <p>Depth Estimate within an Hour: <span>{data.round1[6]["Depth Estimate within an Hour"]} cm</span></p>
+                                    <p>Depth Estimate in 3 Hours: <span>{data.round1[6]["Depth Estimate in 3 Hours"]} cm</span></p>
                                     <p>Electricity: <span>ON</span>{ }</p>
                                 </div>
                             </div>
@@ -276,9 +276,9 @@ export default function Erica2({ data, waitPopupErica, setWaitPopupErica, player
                             <Form className="ericaFormInsideWrapper" onSubmit={handleSubmitErica}>
                                 <div className="ericaFormInsideSection">
                                     <Form.Group className="mb-3" controlId="exampleTextAreaErica" id="erica_form_section1">
-                                        <Form.Label>Level of Flood Warning</Form.Label>
+                                        <Form.Label>Level of Flood Warning Issued</Form.Label>
                                         <Form.Control required as="select" name="source" onChange={handleChangeWarning} value={levelOfWarning}>
-                                                <option value="">Level of Flood Warning</option>
+                                            <option value="">Level of flood warning issued</option>
                                                 <option value="Safe">Safe</option>
                                                 <option value="Caution">Caution</option>
                                                 <option value="Evacuation recommended">Evacuation recommended</option>
@@ -287,15 +287,15 @@ export default function Erica2({ data, waitPopupErica, setWaitPopupErica, player
                                     </Form.Group>
 
                                     <Form.Group className="mb-3" controlId="exampleTextAreaErica" id="erica_form_section2">
-                                        <Form.Label>Message to Power Factory</Form.Label>
+                                        <Form.Label>Message to the Utility Manager</Form.Label>
                                         <Form.Control required as="textarea" rows={3} onChange={handleChangeMessageToPete} value={messageToPete}/>
                                     </Form.Group>
                                 </div>
 
                                 <Form.Group className="mb-3" controlId="exampleTextAreaErica" id="erica_form_section3">
-                                    <Form.Label>Message to Citizen</Form.Label>
+                                    <Form.Label>Message to All Residents</Form.Label>
                                     <Form.Control required as="textarea" rows={3} onChange={handleChangeMessageToNorman} value={messageToNorman} className="mb-3"/>
-                                    <Button type="submit">Send Message to the City</Button>
+                                    <Button type="submit">Send</Button>
                                 </Form.Group>
                             </Form>
                         </div>

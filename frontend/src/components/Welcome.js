@@ -41,7 +41,7 @@ export default function Welcome() {
                 </div>
                 {transition2((style, item) =>
                     <animated.div style={style} className="welcomeParagraph">
-                        <h3>The Roll Playing Exercise</h3>
+                        <h3>The Role Playing Exercise</h3>
                         <p>We will conduct a decision-making exercise today.</p>
                         <p>
                             These exercises are about decisions that stakeholders make during

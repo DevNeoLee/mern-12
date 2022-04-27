@@ -339,11 +339,16 @@ h2 {
 }
 
 .personContainer {
-  width: 200px;
+  width: 150px;
   /* background-color: lightblue; */
   margin: 0rem auto;
   position: relative;
 }
+
+.personContainer img {
+  border-radius: 3px;
+}
+
 
 .personIntro {
   position: relative;
@@ -579,6 +584,8 @@ h2 {
     width: 590px;
     margin: 0 auto;
     /* margin-top: 30px; */
+    text-align: left;
+
 }
 
 .roleframe p {
@@ -586,6 +593,7 @@ h2 {
   line-height: 0;
   padding: 0;
   margin: 0;
+  text-align: left;
 }
 
 .weatherMargin {
@@ -1978,4 +1986,8 @@ h2 {
     /* background-color: red; */
     width: 550px;
   }
+}
+
+.pregameBegin button {
+  font-size: 1.3rem;
 }

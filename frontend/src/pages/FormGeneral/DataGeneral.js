@@ -1,14 +1,14 @@
 const data = {
-    "title": "General Info on Participants",
+    "title": "General Survey",
     "questions": [
         {
             "id": "1",
             "question": "Please define your age and gender",
-            "choices": [ "Female, age 20-30", "Female, age 30-40", "Female, age 40-50", "Female, age 50-60",  "Female, age 60+", "male, age 20-30", "male, age 30-40", "male, age 40-50", "male, age 50-60", "male, age 60+"]
+            "choices": ["Female, age 20-30", "Female, age 30-40", "Female, age 40-50", "Female, age 50-60", "Female, age 60+", "Male, age 20-30", "Male, age 30-40", "Male, age 40-50", "Male, age 50-60", "Male, age 60+", "Prefer Not to Answer"]
         },
         {
             "id": "2",
-            "question": "Which of the following economic categories do you consider yourself?",
+            "question": "Indicate your economic status among the following qualitative categories",
             "choices": ["Low income", "Middle income", "High income"]
         },
         {

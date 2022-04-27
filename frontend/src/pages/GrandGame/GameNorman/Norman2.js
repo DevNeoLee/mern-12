@@ -36,7 +36,7 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
     //               {
     //             name: 'normanHouseA',
     //             "Current Water Depth": 5,
-    //             "Depth Estimate within an Hour": 8,
+    //             "Depth Estimate in 3 Hours": 8,
     //             Electricity: true
     //         },
     //     ])
@@ -55,7 +55,7 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
 
         let houseChartdata = data[`round${round}`][3];
 
-        houseChartdata["Depth Estimate within an Hour"] = houseChartdata["Depth Estimate within an Hour"] - houseChartdata["Current Water Depth"]
+        houseChartdata["Depth Estimate in 3 Hours"] = houseChartdata["Depth Estimate in 3 Hours"] - houseChartdata["Current Water Depth"]
         return houseChartdata;
     }
 
@@ -110,7 +110,7 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
             // {
             //     name: 'Route1',
             //     "Current Water Depth": 8,
-            //     "Depth Estimate within an Hour": 11,
+            //     "Depth Estimate in 3 Hours": 11,
             //     congestion: false
             // }
         ]
@@ -138,7 +138,7 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
 
         const houseChartdata = data[`round${round}`][3];
 
-        return houseChartdata["Depth Estimate within an Hour"] = houseChartdata["Depth Estimate within an Hour"] - houseChartdata["Current Water Depth"]
+        return houseChartdata["Depth Estimate in 3 Hours"] = houseChartdata["Depth Estimate in 3 Hours"] - houseChartdata["Current Water Depth"]
     }
 
     return (
@@ -183,7 +183,7 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                                 {/* <Tooltip /> */}
                                 <Legend />
                                 <Bar dataKey="Current Water Depth" fill="#8884d8" />
-                                <Bar dataKey="Depth Estimate within an Hour" fill="#82ca9d" />
+                                <Bar dataKey="Depth Estimate in 3 Hours" fill="#82ca9d" />
                             </BarChart>
                         </div>
                     </div>
@@ -209,7 +209,7 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                                     dy={-6} />
                                 {/* <Tooltip /> */}
                                 <Area type="monotone" dataKey="Current Water Depth" stackId="1" stroke="#8884d8" fill="#8884d8" />
-                                <Area type="monotone" dataKey="Depth Estimate within an Hour" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
+                                <Area type="monotone" dataKey="Depth Estimate in 3 Hours" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
                             </AreaChart>
                         </div>
                         <div className="houseStatus" >
@@ -259,38 +259,38 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                             <div className="route1_tooltip">
                                 <h3>Route 1</h3>
                                 <p>Current Water Depth: <span>{data.round1[3]["Current Water Depth"] } cm</span></p>
-                                <p>Depth Estimate within an Hour: <span>{data.round1[3]["Depth Estimate within an Hour"] } cm</span></p>
+                                <p>Depth Estimate in 3 Hours: <span>{data.round1[3]["Depth Estimate in 3 Hours"] } cm</span></p>
                                 <p> congestion: <span>No</span>{ }</p>
                             </div>
                             <div className="route2_tooltip">
                                 <h3>Route 2</h3>
                                 <p>Current Water Depth: <span>{data.round1[4]["Current Water Depth"]} cm</span></p>
-                                <p>Depth Estimate within an Hour: <span>{data.round1[4]["Depth Estimate within an Hour"] } cm</span></p>
+                                <p>Depth Estimate in 3 Hours: <span>{data.round1[4]["Depth Estimate in 3 Hours"] } cm</span></p>
                                 <p> congestion: <span>No</span>{ }</p>
                             </div>
                             <div className="route3_tooltip">
                                 <h3>Route 3</h3>
                                 <p>Current Water Depth: <span>{data.round1[5]["Current Water Depth"] } cm</span></p>
-                                <p>Depth Estimate within an Hour: <span>{data.round1[5]["Depth Estimate within an Hour"] } cm</span></p>
+                                <p>Depth Estimate in 3 Hours: <span>{data.round1[5]["Depth Estimate in 3 Hours"] } cm</span></p>
                                 <p> congestion: <span>No</span>{ }</p>
                             </div>
 
                             <div className="normanHouse_tooltipA">
                                 <h3>Norman A House</h3>
                                 <p>Current Water Depth: <span>{data.round1[0]["Current Water Depth"]} cm</span></p>
-                                <p>Depth Estimate within an Hour: <span>{data.round1[0]["Depth Estimate within an Hour"]} cm</span></p>
+                                <p>Depth Estimate in 3 Hours: <span>{data.round1[0]["Depth Estimate in 3 Hours"]} cm</span></p>
                                 <p>Electricity: <span>ON</span>{ }</p>
                             </div>
                             <div className="normanHouse_tooltipB">
                                 <h3>Norman B House</h3>
                                 <p>Current Water Depth: <span>{data.round1[1]["Current Water Depth"]} cm</span></p>
-                                <p>Depth Estimate within an Hour: <span>{data.round1[1]["Depth Estimate within an Hour"]} cm</span></p>
+                                <p>Depth Estimate in 3 Hours: <span>{data.round1[1]["Depth Estimate in 3 Hours"]} cm</span></p>
                                 <p>Electricity: <span>ON</span>{ }</p>
                             </div>
                             <div className="normanHouse_tooltipC">
                                 <h3>Norman C House</h3>
                                 <p>Current Water Depth: <span>{data.round1[2]["Current Water Depth"]} cm</span></p>
-                                <p>Depth Estimate within an Hour: <span>{data.round1[2]["Depth Estimate within an Hour"]} cm</span></p>
+                                <p>Depth Estimate in 3 Hours: <span>{data.round1[2]["Depth Estimate in 3 Hours"]} cm</span></p>
                                 <p>Electricity: <span>ON</span>{ }</p>
                             </div>
                         </div>

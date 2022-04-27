@@ -33,13 +33,13 @@ export default function Erica3({ petePower, round, ericaHealth, peteHealth, norm
             <div className="resultContainer">
                 {transition2((style, item) =>
                     <animated.div style={style} className="resultLeft">
-                        <div style={{ marginBottom: "1rem"}} className="personContainer">
+                        <div style={{ marginBottom: "1rem" }} className="personContainer">
                             <img src="/erica.png" alt="role_person_image" />
                         </div>
                         <p>Your Message to Citizen: <span>{messagesStorageErica[`round${round}`].toNorman}</span> </p>
                         <p>Your Message to Pete: <span>{messagesStorageErica[`round${round}`].toPete}</span> </p>
                         <p>Your Levl of Warning: <span>{messagesStorageErica[`round${round}`].levelOfWarning}</span> </p>
-                        <p>Your Score: Your score as a city emergency manager is calcuated based on the whole citizen and Pete's performance on the last round.</p>
+                        <p>Your Score: Your score as a city emergency manager is calcuated based on the whole citizen and Pete's performance on the last round</p>
  
                         <p>Your Score: <span>{ericaHealth}</span></p>
                         <div className="gameProgressBlock">
@@ -56,39 +56,39 @@ export default function Erica3({ petePower, round, ericaHealth, peteHealth, norm
                                 <tr>
                                     <th>Player</th>
                                     <th>Decision</th>
-                                    <th># of Players</th>
-                                    <th>Score</th>
+                    
+                                    <th>Current Score</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Erica</td>
                                     <td>{ericaHealth && ericaHealth > 85 ?  <span>Under Control</span> : <span>Risky</span>}</td>
-                                    <td>1</td>
+                             
                                     <td>{ericaHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Pete</td>
                                     <td>{petePower && petePower === 'poweron' ? <span>Keep Power</span> : <span>Power Off</span>}</td>
-                                    <td>1</td>
+                    
                                     <td>{peteHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman A</td>
                                     <td>{normanStay && normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
-                                    <td>1</td>
+                            
                                     <td>{normanHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman B</td>
                                     <td>{normanStay && normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
-                                    <td>1</td>
+                     
                                     <td>{normanHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman C</td>
                                     <td>{normanStay && normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
-                                    <td>1</td>
+                     
                                     <td>{normanHealth}</td>
                                 </tr>
                             </tbody>

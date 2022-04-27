@@ -44,14 +44,14 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
                             <img src="/norman.png" alt="role_person_image" />
                         </div>
                         <h4>Your Decision: {normanStay === "stayon" ? <span>You stayed in your house</span> : <span>You went to {whichRoute}</span>}</h4>
-                        <p>Water depth is reached to <span>{waterDepthEndupNorman} cm</span>. </p>
+                        <p>Water depth is reached to <span>{waterDepthEndupNorman} cm</span> </p>
                         {/* if stayed home*/}
                         {electricity === 'poweroff' && (
                             <p>There is <span>power outage </span>in your location.</p>
                         )}
                         {/* if left home*/}
                         {/* <p>There is congestion on Route A</p> */}
-                        <p>Your wellbeing is <span>{normanHealth} </span>.</p>
+                        <p>Your wellbeing is <span>{normanHealth} </span></p>
                         { normanHealth !== 100  && <p></p>}
                         <div className="gameProgressBlock">
                             <ProgressBar now={normanHealth} style={{ fontSize: "1.1rem", height: "27px", backgroundColor: "black"}} variant="primary" label={normanHealth}/>
@@ -67,39 +67,39 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
                                 <tr>
                                     <th>Player</th>
                                     <th>Decision</th>
-                                    <th># of Players</th>
-                                    <th>Score</th>
+                    
+                                    <th>Current Score</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Erica</td>
                                     <td>{ericaHealth > 85 ? <span>Under Control</span> : <span>Risky</span>}</td>
-                                    <td>1</td>
+      
                                     <td>{ericaHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Pete</td>
                                     <td>{petePower === 'poweron' ? <span>Keep Power</span> : <span>Power Off</span>}</td>
-                                    <td>1</td>
+             
                                     <td>{peteHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman A</td>
                                     <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
-                                    <td>1</td>
+                              
                                     <td>{normanHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman B</td>
                                     <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
-                                    <td>1</td>
+                        
                                     <td>{normanHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman C</td>
                                     <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
-                                    <td>1</td>
+                         
                                     <td>{normanHealth}</td>
                                 </tr>
                             </tbody>

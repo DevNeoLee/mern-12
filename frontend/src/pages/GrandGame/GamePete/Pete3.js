@@ -36,8 +36,8 @@ export default function Pete3({ normanHealth, petePower, ericaHealth, round, pet
                         <div style={{ marginBottom: "1rem" }} className="personContainer">
                             <img src="/pete.png" alt="role_person_image" />
                         </div>
-                        <h4>Your Decision: {petePower === "poweron" ? <span>You maintained the power in the city.</span> : <span>You turned off the power and went out to {whichRoutePete}</span>}</h4>
-                        <p>Water depth reached <span>{waterDepthEndupPete}cm</span></p>
+                        <h4>Your Decision: {petePower === "poweron" ? <span>You maintained the power in the city</span> : <span>You turned off the power and went to {whichRoutePete}</span>}</h4>
+                        <p>Water depth reached <span>{waterDepthEndupPete} cm</span></p>
                         {/* <p>There is no damage to the substation</p> */}
                         <p>Your performance is <span>{peteHealth}</span> </p>
                         <div className="gameProgressBlock">
@@ -54,39 +54,39 @@ export default function Pete3({ normanHealth, petePower, ericaHealth, round, pet
                                 <tr>
                                     <th>Player</th>
                                     <th>Decision</th>
-                                    <th># of Players</th>
-                                    <th>Score</th>
+                    
+                                    <th>Current Score</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Erica</td>
                                     <td>{ericaHealth > 85 ? <span>Under Control</span> : <span>Risky</span>}</td>
-                                    <td>1</td>
+                         
                                     <td>{ericaHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Pete</td>
                                     <td>{petePower === 'poweron' ? <span>Keep Power</span> : <span>Power Off</span>}</td>
-                                    <td>1</td>
+                                
                                     <td>{peteHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman A</td>
                                     <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
-                                    <td>1</td>
+                           
                                     <td>{normanHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman B</td>
                                     <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
-                                    <td>1</td>
+                      
                                     <td>{normanHealth}</td>
                                 </tr>
                                 <tr>
                                     <td>Norman C</td>
                                     <td>{normanStay === 'stayon' ? <span>Stayed</span> : <span>Went Out Road</span>}</td>
-                                    <td>1</td>
+                       
                                     <td>{normanHealth}</td>
                                 </tr>
                             </tbody>

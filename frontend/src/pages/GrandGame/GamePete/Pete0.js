@@ -41,10 +41,12 @@ export default function Pete0() {
                         <ProgressBar now={100} animated variant="primary" />
                         <div className="heartRole"><HeartFill size={24} color="red" /></div>
                     </div>
-                    <p>You are randomly assigned as Pete, a power utility
-                        manager. Your task is to decide</p>
-                    <p>1) whether or not shut down a power substation with
-                        a large service area serving thousands of homes.</p>
+                    <p>You are randomly assigned as Pete, a
+                        power utility manager. </p>
+        
+                    <p>Your task is to decide whether or not
+                        shut down a power substation serving
+                        many residents</p>
                 </animated.div>
             )}
         </div>

@@ -40,11 +40,14 @@ export default function Norman0() {
                         <ProgressBar now={100} animated variant="primary" />
                         <div className="heartRole"><HeartFill size={24} color="red" /></div>
                     </div>
-                    <p>You are randomly assigned as Norman, a local
-                        resident and homeowner. </p>
-                    <p>Your task is to decide
-                        1) when to evacuate and
-                        2) which route to use for evacuation.</p>
+                    <p>You are randomly assigned as
+                        Norman, a local resident and
+                        homeowner. </p>
+                    <p>Your task is to</p>
+                    <p>decide whether or not
+                        evacuate and if evacuating, which
+                        route to use.</p>
+            
                 </animated.div>
             )}
         </div>

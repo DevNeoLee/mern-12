@@ -31,7 +31,10 @@ export default function WaitModalPete({ handleWaitModal }) {
             {transition2((style, item) =>
                 <animated.div style={style} className="roleframe">
                     <p>
-                        We would wait for Erica's Message First, meantime, please hover over the your house and road to see if the evacuation would be the right choice and if it is, which way would be best for you based on the information you researched.</p>
+                        Your task is to make power substation ON/OFF
+                        decision upon receiving messages from the
+                        emergency manager (Erica) and identifying
+                        flood risk information yoursel</p>
 
                     <div className="spinner">
                         <div className="spinnerPerson">
@@ -44,7 +47,7 @@ export default function WaitModalPete({ handleWaitModal }) {
                             <img src="/pete.png" width="100px" />
                         </div>
                     </div>
-                    <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={handleWaitModal}>Got it! Let's do it.</Button></div>
+                    <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={handleWaitModal}>Got it</Button></div>
                 </animated.div>
             )}
         </div>
