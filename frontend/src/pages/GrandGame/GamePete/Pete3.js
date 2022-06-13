@@ -6,7 +6,7 @@ import { Form, Button, ProgressBar, Table } from "react-bootstrap";
 import { useTransition, useSpring, animated } from "react-spring";
 
 
-export default function Pete3({ normanHealth, petePower, ericaHealth, round, peteHealth, whichRoutePete, electricity, normanStay, waterDepthEndupPete }) {
+export default function Pete3({ handleSetStep, step, normanHealth, petePower, ericaHealth, round, peteHealth, whichRoutePete, electricity, normanStay, waterDepthEndupPete }) {
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -21,6 +21,15 @@ export default function Pete3({ normanHealth, petePower, ericaHealth, round, pet
     });
 
     const navigate = useNavigate();
+
+    const handleNextRound = () => {
+        console.log('handleNextRound clicked')
+        console.log('round: ', round)
+        handleSetStep('step: ', step)
+        console.log('step: ', step)
+        // setStep(prev => prev + 1)
+        // navigate('/grandgame')
+    }
 
     return (
         <>
@@ -44,6 +53,8 @@ export default function Pete3({ normanHealth, petePower, ericaHealth, round, pet
                             <ProgressBar now={peteHealth} style={{ fontSize: "1.1rem", height: "27px", backgroundColor: 'black' }} variant="primary" label={peteHealth} />
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>
                         </div>
+                        <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={() => handleSetStep()}>Next</Button></div>
+
                     </animated.div>
                 )}
                 {transition2((style, item) =>

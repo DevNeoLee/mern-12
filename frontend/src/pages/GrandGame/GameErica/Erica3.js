@@ -6,7 +6,7 @@ import { Form, Button, ProgressBar, Table } from "react-bootstrap";
 import { useTransition, animated } from "react-spring";
 
 
-export default function Erica3({ petePower, round, ericaHealth, peteHealth, normanHealth, normanStay, messagesStorageErica }) {
+export default function Erica3({ handleSetStep, step, petePower, round, ericaHealth, peteHealth, normanHealth, normanStay, messagesStorageErica }) {
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -46,6 +46,8 @@ export default function Erica3({ petePower, round, ericaHealth, peteHealth, norm
                             <ProgressBar now={ericaHealth} style={{ fontSize: "1.1rem", height: "27px", backgroundColor: 'black'  }} variant="primary" label={ericaHealth} />
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>
                         </div>
+                        <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={() => handleSetStep()}>Next</Button></div>
+
                     </animated.div>
                 )}
                 {transition2((style, item) =>

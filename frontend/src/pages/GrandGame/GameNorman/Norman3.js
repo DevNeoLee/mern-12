@@ -1,12 +1,44 @@
 import { Link, useNavigate } from "react-router-dom"
 
+import { useState, useEffect} from 'react'
+
 import { HeartFill } from 'react-bootstrap-icons';
 import { Form, Button, ProgressBar, Table } from "react-bootstrap";
 
 import { useTransition, useSpring, animated } from "react-spring";
 
 
-export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute, normanStay, round, normanHealth, waterDepthEndupNorman, electricity}) {
+
+export default function Norman3({ step, handleSetStep, setStep, setRound, ericaHealth, petePower, peteHealth, whichRoute, normanStay, round, normanHealth, waterDepthEndupNorman, electricity}) {
+
+    const [roundCount, setRoundCount] = useState(1)
+    const [lastRound, setLastRound] =useState(4)
+
+    const navigate = useNavigate();
+
+    // useEffect(()=> {
+    //     setInterval(()=> {
+    //         navigate('/instruction')
+    //     }, 5000)
+    // }, [])
+
+    const handleNextRound = () => {
+        console.log('handleNextRound clicked')
+        console.log('round: ', round)
+        handleSetStep('step: ', step)
+        console.log('step: ', step)
+        // setStep(prev => prev + 1)
+        // navigate('/grandgame')
+    }
+
+    // const handleNextRound2 = () => {
+    //     console.log('handleNextRound clicked')
+    //     handleSetRound()
+    //     setStep(prev => prev + 1)
+    //     setRound(prev => prev + 1)
+    //     navigate('/grandgame')
+    // }
+
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -20,14 +52,13 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
         }
     });
 
-    const navigate = useNavigate();
 
-    console.log("round: ", round)
-    console.log("normanStay: ", normanStay)
-    console.log("whichRoute: ", whichRoute)
-    console.log("normanHealth: ", normanHealth)
-    console.log("waterDepthEndupNorman: ", waterDepthEndupNorman)
-    console.log("electricity: ", electricity)
+    // console.log("round: ", round)
+    // console.log("normanStay: ", normanStay)
+    // console.log("whichRoute: ", whichRoute)
+    // console.log("normanHealth: ", normanHealth)
+    // console.log("waterDepthEndupNorman: ", waterDepthEndupNorman)
+    // console.log("electricity: ", electricity)
 
     return (
         <>
@@ -57,6 +88,8 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
                             <ProgressBar now={normanHealth} style={{ fontSize: "1.1rem", height: "27px", backgroundColor: "black"}} variant="primary" label={normanHealth}/>
                             <div className="heartNorman"><HeartFill size={23} color="red" /></div>
                         </div>
+                        <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={() => handleSetStep()}>Next</Button></div>
+                        {/* <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={() => handleNextRound2()}>Next</Button></div> */}
                     </animated.div>
                 )}
                 {transition2((style, item) =>
@@ -104,7 +137,6 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
                                 </tr>
                             </tbody>
                         </Table>
-                        <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={() => navigate('/gameend')}>Next</Button></div>
                     </animated.div>
                 )}
             </div>

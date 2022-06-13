@@ -116,7 +116,7 @@ export default function GrandGame() {
     //if decidedArea's water depth above 30cm
     const [critical, setCritical] = useState(false)
 
-    const [gameResult, setGameResult] = useState([])
+    const [gameResult, setGameResult] = useState(false)
 
     
 
@@ -156,6 +156,19 @@ export default function GrandGame() {
         console.log("City Power now on: ", electricity )
     }, [electricity])
    
+
+    const handleSetStep = () => {
+        // setRole('NormanA')
+        setStep(step => step - 1)
+        setRound(round => round + 1);
+        setResultReady(false)
+        console.log("another round begins")
+        console.log("Step: ", step)
+        console.log("Round: ", round)
+        console.log("ResultReady: ", resultReady)
+
+    }
+
     const connectToSocket = () => {
         //////Socket///////////////////////////////////////////////////////////////////
         const socket = io()
@@ -186,16 +199,18 @@ export default function GrandGame() {
         socket.on("norman_message", (data => {
             console.log('Norman data from Norman received: ', data)
             console.log('current normanDecisions: ', normanDecisions)
-            setNormanDecisions(prev => (
-                prev.map((ele, idx) => {
+            setNormanDecisions(prev => {
+                console.log(prev)
+                return prev.map((ele, idx) => {
+                
                     if (idx === (round - 1)) {
+                        console.log("round inside socket on: ", round)
                         return { stay: data.stay, whichRoute: data.whichRoute, role: data.role }
                     } else {
                         return ele
                     }
                 })
-         
-            ))
+        })
             console.log('norman data added to your states!')
 
         }))
@@ -212,15 +227,17 @@ export default function GrandGame() {
             }
         
 
-            setPeteDecisions(prev => (
-                prev.map((ele, idx) => {
+            setPeteDecisions(prev => {
+                console.log(prev)
+                return prev.map((ele, idx) => {
+                    console.log("round inside socket on: ", round)
                     if (idx === (round - 1)) {
                         return { stay: data.stay, whichRoute: data.whichRoute, role: data.role}
                     } else {
                         return ele
                     }
                 })
-            ))
+            })
 
            
 
@@ -687,7 +704,7 @@ export default function GrandGame() {
         <Erica0 step={step} role setRole />,
         <Erica1 step={step}/>,
         <Erica2 data={data} setWaitPopupErica={setWaitPopupErica} waitPopupErica={waitPopupErica} handleSubmitErica={handleSubmitErica} round={round} handleChangeWarning={handleChangeWarning} handleChangeMessageToNorman={handleChangeMessageToNorman} handleChangeMessageToPete={handleChangeMessageToPete} levelOfWarning={levelOfWarning} messageToPete={messageToPete} messageToNorman={messageToNorman} ericaHealth={ericaHealth} players={players}/>,
-        <Erica3 step={step} petePower={petePower} normanHealth={normanHealth} peteHealth={peteHealth} round={round} ericaHealth={ericaHealth} messagesStorageErica={messagesStorageErica} normanStay={normanStay} />,
+        <Erica3 step={step} handleSetStep={handleSetStep}  setRound={setRound} setStep={setStep} petePower={petePower} normanHealth={normanHealth} peteHealth={peteHealth} round={round} ericaHealth={ericaHealth} messagesStorageErica={messagesStorageErica} normanStay={normanStay} />,
         <Erica4 step={step} ericaHealth={ericaHealth}/>
     ];
     
@@ -695,7 +712,7 @@ export default function GrandGame() {
         <Norman0 step={step} />,
         <Norman1 step={step} />,
         <Norman2 step={step} data={data} handleChangeWhichRoute={handleChangeWhichRoute} normanStay={normanStay} handleSubmitNorman={handleSubmitNorman} handleChangeNormanStay={handleChangeNormanStay} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} normanHealth={normanHealth} messageToNorman={messageToNorman} role={role} messageFromErica = { messageFromErica}/>,
-        <Norman3 step={step} round={round} peteHealth={peteHealth} ericaHealth={ericaHealth} whichRoute={whichRoute} normanStay={normanStay} electricity={electricity} normanHealth={normanHealth} waterDepthEndupNorman={waterDepthEndupNorman} petePower={petePower}/>,
+        <Norman3 step={step} handleSetStep={handleSetStep} round={round} peteHealth={peteHealth} ericaHealth={ericaHealth} whichRoute={whichRoute} normanStay={normanStay} electricity={electricity} normanHealth={normanHealth} waterDepthEndupNorman={waterDepthEndupNorman} petePower={petePower}/>,
         <Norman4 step={step} />,
         <Norman5 step={step} />
     ];
@@ -704,7 +721,7 @@ export default function GrandGame() {
         <Pete0 step={step} />,
         <Pete1 step={step} />,
         <Pete2 step={step} data={data} handleChangePetePower={handleChangePetePower} handleSubmitPete={handleSubmitPete} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} peteHealth={peteHealth} petePower={petePower} whichRoutePete={whichRoutePete} normanStay={normanStay} handleChangeWhichRoutePete={handleChangeWhichRoutePete} messageToPete={messageToPete} messageFromErica={messageFromErica}/>,
-        <Pete3 step={step} round={round} normanHealth={normanHealth} ericaHealth={ericaHealth} peteHealth={peteHealth} whichRoutePete={whichRoutePete} electricity={electricity} petePower={petePower} waterDepthEndupPete={waterDepthEndupPete}/>
+        <Pete3 step={step} handleSetStep={handleSetStep} round={round} normanHealth={normanHealth} ericaHealth={ericaHealth} peteHealth={peteHealth} whichRoutePete={whichRoutePete} electricity={electricity} petePower={petePower} waterDepthEndupPete={waterDepthEndupPete}/>
     ];
     
     const Buttons = () => (
@@ -748,7 +765,7 @@ export default function GrandGame() {
     return (
         <div className="main">
             <div className="gameframe">
-                {/* {ericas[3]} */}
+                {/* { resultReady && normans[3]} */}
             { role ?
                 <>
                     { 
