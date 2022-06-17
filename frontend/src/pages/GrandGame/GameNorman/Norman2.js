@@ -15,8 +15,11 @@ import { AreaChart, Area, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tool
 
 import { Link } from "react-router-dom"
 
+import { AiFillWechat } from 'react-icons/ai';
+import { Socket } from 'socket.io-client';
 
-export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorman, handleChangeNormanStay, normanStay, popForm, setPopForm, messageFromErica, round, role, electricity, messageToNorman, step, normanQuestion, normanHealth }) {
+
+export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorman, handleChangeNormanStay, normanStay, popForm, setPopForm, messageFromErica, round, role, electricity, messageToNorman, step, normanQuestion, normanHealth, socket, setChatData, chatData }) {
 
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);
@@ -30,6 +33,7 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
     const [waitEricaTime, setWaitEricaTime] = useState(true);
     const [waitPopup, setWaitPopup] = useState(true)
 
+    const [chat, setChat] = useState("")
 
     // const handleMouseEnter1 = () => {
     //     setGraphData([
@@ -58,8 +62,6 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
         houseChartdata["Depth Estimate in 3 Hours"] = houseChartdata["Depth Estimate in 3 Hours"] - houseChartdata["Current Water Depth"]
         return houseChartdata;
     }
-
-    console.log('getHouse: ', JSON.stringify(getHouseChartData))
 
     const handleMouseEnter1 = () => {
         setGraphData([
@@ -141,6 +143,23 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
         return houseChartdata["Depth Estimate in 3 Hours"] = houseChartdata["Depth Estimate in 3 Hours"] - houseChartdata["Current Water Depth"]
     }
 
+    const sendChat =(message) => {
+        console.log("Chat sent: ", message)
+        socket.emit("norman_chat", {message: message, role: role})
+        
+    }
+
+    const handleChatSubmit = (e) => {
+        e.preventDefault();
+        setChatData(prev => [...prev, { role: 'You', message: chat}])
+        sendChat(chat)
+        setChat("")
+    }
+
+    const handleChatChange = (e) => {
+        console.log("Chat typed: ", e.target.value)
+        setChat(e.target.value)
+    }
     return (
         <>
             <div className={popup ? `normanPopup` : `normanPopup normanPopClose`}><NormanPopup setPopup={setPopup} /></div>
@@ -239,8 +258,29 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                 </div>  
                 <div className="rightContainer">
                     <div className="gameBlock">
-                        <div className="gameRound">
+                        {/* <div className="gameRound">
                             <h2>Round {round}</h2>
+                        </div> */}
+                        <div className="chattingContainer">
+                            <AiFillWechat size={30} /><span> Chat</span>
+                            <h6>Communicate to other players</h6>
+                            <div className="chatScreen" id="message-container">
+                                {chatData.map((data, i)=> (
+                                <div key={i}>
+                                        {data.role === "You" ? <span style={{ color: 'red', minWidth: "200px", backgroundColor: "darkGray"}}>{data.role}</span> : <span style={{ color: 'green', minWidth: "200px", backgroundColor: "lightpink"}}>{data.role}</span>}
+                                        : {data.message}
+                                </div>
+                                ))}
+                            </div>
+                            <div className="chatInputBox">
+                                <form onSubmit={handleChatSubmit}>
+                                    <div className="chatInput">
+                                        <input type="text" value={chat} onChange={handleChatChange}/>
+                                        <button type="submit">Send</button>
+                                    </div>
+                                    
+                                </form>
+                            </div>
                         </div>
                         <div className="normanMapContainer">
                             <div className="normanmapimg"><img src="/roundmap.png" /></div>
@@ -326,6 +366,24 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                             <div className="messageBox">
                                 <div className="phonebox"><img src="/phone_side.png" width="520px"/></div>
                                 <div className="comingMessage">
+                                    <AiFillWechat size={30} /><span>Local Emergency Text Message App</span>
+                                    {/* <h6>Communicate to other players</h6> */}
+                                    <div className="chatContent">
+                                        {chatData.map((data, i) => (
+                                            <div key={i}>
+                                                {data.role === "You" ? <span style={{ color: 'red', minWidth: "200px", backgroundColor: "darkGray" }}>{data.role}</span> : <span style={{ color: 'green', minWidth: "200px", backgroundColor: "lightpink" }}>{data.role}</span>}
+                                                : {data.message}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="chatInputContainer">
+                                        <form onSubmit={handleChatSubmit}>
+                                            <div className="inputBox">
+                                                <input type="text" value={chat} onChange={handleChatChange} />
+                                                <button type="submit">Send</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                     <div className="alertMessage">
                                         <p className="">
                                             {messageFromErica.messageToNorman}

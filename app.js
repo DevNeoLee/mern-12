@@ -140,6 +140,13 @@ io.on("connection", socket => {
         // io.sockets.emit('left', () => { console.log('bye bye')})
         // console.log('room2 size: ', io.sockets.adapter.rooms.get('room2').size)
     })
+
+    socket.on("norman_chat", (data) => {
+            let room = io.sockets.adapter.rooms.get('room1')
+            console.log('chat content from Norman: ', data)
+            socket.broadcast.to('room1').emit('norman_chat', data)
+            console.log('backend received an event, norman_chat:', socket.id)
+    })
 })
 
 server.listen(port, () => console.log(`Server is running on the port ${port}, from express server`))

@@ -130,6 +130,14 @@ export default function GrandGame() {
     const [waterDepthEndupNorman, setWaterDepthEndupNorman] = useState(0)
     const [waterDepthEndupPete, setWaterDepthEndupPete] = useState(0)
 
+    const [normanChat, setNormanChat] = useState("");
+    const [peteChat, setPeteChat] = useState("");
+    const [ericaChat, setEricaChat] = useState("");
+
+    const [chatReceived, setChatReceived] = useState({message: "", user_name: ""});
+
+    const [chatData, setChatData] = useState([]);
+
 
   
 
@@ -221,11 +229,18 @@ export default function GrandGame() {
                     }
                 })
             ))
-
            
 
             console.log('pete data added to your states!')
         }))
+
+        socket.on("norman_chat", (data) => {
+            console.log('Norman is chatting on frontend received: ', data.message);
+            setChatReceived(prev => ({...prev, message: data.message}));
+            console.log("hmm, role: ", data.role)
+            setChatData(prev => [...prev, { role: data.role, message: data.message }], console.log("chatData1: ", JSON.stringify(chatData)) );
+            console.log("chatData2: ", JSON.stringify(chatData))
+        })
     }
 
     useEffect(()=>{
@@ -272,7 +287,15 @@ export default function GrandGame() {
     },[normanDecisions, peteDecisions])
 
 
+    useEffect(() => {
+        console.log("chatReceived: ", chatReceived)
+    }, [chatReceived])
 
+
+
+    useEffect(() => {
+        console.log("chatData: ", chatData)
+    }, [chatData])
 
     const calculateScore = (normanDecisions, peteDecisions) => {
 
@@ -694,7 +717,7 @@ export default function GrandGame() {
     const normans = [
         <Norman0 step={step} />,
         <Norman1 step={step} />,
-        <Norman2 step={step} data={data} handleChangeWhichRoute={handleChangeWhichRoute} normanStay={normanStay} handleSubmitNorman={handleSubmitNorman} handleChangeNormanStay={handleChangeNormanStay} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} normanHealth={normanHealth} messageToNorman={messageToNorman} role={role} messageFromErica = { messageFromErica}/>,
+        <Norman2 step={step} data={data} handleChangeWhichRoute={handleChangeWhichRoute} normanStay={normanStay} handleSubmitNorman={handleSubmitNorman} handleChangeNormanStay={handleChangeNormanStay} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} normanHealth={normanHealth} messageToNorman={messageToNorman} role={role} messageFromErica={messageFromErica} socket={socket} setChatData={setChatData} chatData={chatData}/>,
         <Norman3 step={step} round={round} peteHealth={peteHealth} ericaHealth={ericaHealth} whichRoute={whichRoute} normanStay={normanStay} electricity={electricity} normanHealth={normanHealth} waterDepthEndupNorman={waterDepthEndupNorman} petePower={petePower}/>,
         <Norman4 step={step} />,
         <Norman5 step={step} />
