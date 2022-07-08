@@ -71,6 +71,7 @@ export default function FormGeneral({step}) {
             const session = await updateToMongoDB()
             console.log("session:", session);
         }
+        navigate('/theend');
     }
 
     const updateToMongoDB = async () => {

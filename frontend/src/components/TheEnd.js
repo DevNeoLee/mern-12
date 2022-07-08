@@ -43,7 +43,7 @@ export default function TheEnd() {
             <p>
               We hope this exercise brought a chance to learn more about flood risk.</p>
             <p> </p>
-            <Link to="/"><Button size="lg" style={{ marginTop: "1rem", fontSize: "1.4rem" }}>Exit</Button></Link>
+            <a href="https://www.google.com"><Button size="lg" style={{ marginTop: "1rem", fontSize: "1.4rem" }}>Exit</Button></a>
           </animated.div>
         )}
       </Form>
