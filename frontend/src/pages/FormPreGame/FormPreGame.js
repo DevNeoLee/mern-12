@@ -7,7 +7,7 @@ import Select from "../../components/Select"
 
 import { useTransition, useSpring, animated } from "react-spring";
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { useNavigate } from "react-router-dom";
 import "../../App.css"
@@ -15,17 +15,78 @@ import data from "./DataPreGame"
 
 import { Link } from "react-router-dom"
 
+import HOST from "../../utils/routes";
+import axios from 'axios';
+
 export default function FormPreGame() {
 
   const [questions, setQuestions] = useState(
     data
   )
 
-  const [pageQuantity, setPageQuantity] = useState(8)
+  const questionQuantity = data.questions.length;
+
+  const [answer, setAnswer] = useState('')
+  const [answers, setAnswers] = useState({})
+  // const [question, setQuestion] = useState('')
+
+  const [pageQuantity, setPageQuantity] = useState(questionQuantity)
 
   const [step, setStep] = useState(0) 
-
+  
   const navigate = useNavigate();
+
+  const sessionData = sessionStorage.getItem('ufoknSession');
+  const sessionDataObject = JSON.parse(sessionData);
+
+  const handleChange = (e) => {
+    setAnswer(e.target.value)
+    setAnswers({...answers, [e.target.name]: e.target.value})
+  }
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('hello world!');
+
+    //update sessionStorage
+    if (sessionDataObject) {
+      sessionDataObject.preGameSurvey = answers;
+      await sessionStorage.setItem('ufoknSession', JSON.stringify(sessionDataObject));
+      console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
+
+      //update sessionData in MongoDB
+      const session = await updateToMongoDB()
+      console.log("session:", session);
+    }
+  }
+
+  const updateToMongoDB = async () => {
+    console.log('session data: ', sessionDataObject);
+  
+    const dataUpdate = async () => { 
+      await axios.put(HOST + '/api/session', sessionDataObject)
+      .then(data => {
+        console.log('data from mongo: ', data)
+        // return data
+      })
+      .catch(err => console.log(err))
+    }
+
+    await dataUpdate();
+    navigate('/welcome');
+  }
+
+
+  useEffect(()=>{
+    console.log('answer: ', answer)}, 
+  [answer])
+
+  useEffect(() => {
+    console.log('answers: ', answers)
+  },
+    [answers])
+
 
   const transition = useTransition(true, {
     from: { x: 300, y: 0, opacity: 0 },
@@ -56,20 +117,19 @@ export default function FormPreGame() {
           BACK
         </Button>
       )}
-      {step === pageQuantity && (
-        // <Link to="/welcome">
-          <Button onClick={() => navigate('/welcome')}>
+      {step === pageQuantity - 1 && (
+        <Button onClick={handleSubmit} disabled={answers[step + 1] ? false : true}>
             SUBMIT
           </Button>
-        // </Link>
       )}
 
-      {step < pageQuantity && (
+      {step < pageQuantity - 1 && (
         <Button
           type="button"
           onClick={() => {
             setStep(step + 1);
           }}
+          disabled={answers[step + 1] ? false : true}
         >
           NEXT
         </Button>
@@ -81,7 +141,7 @@ export default function FormPreGame() {
     <>
       <div className="container">
         <div className="formGeneral">
-          <Form> 
+          <Form onSubmit={handleSubmit}> 
             <fieldset>
               <Form.Group>
                 {/* <div className="logo">
@@ -89,11 +149,11 @@ export default function FormPreGame() {
                   <img src="/logo_4.png" />
                 </div> */}
 
-                {data && data.questions.map(question => 
+                {data && data.questions.map((question, idx) => 
                 <>
                       {/* <h2 style={{ padding: "2rem"}}>{data.title}</h2> */}
                     <div key={question.id} className="welcomeParagraph">
-                      <ProgressBar now={100*(step + 1)/9} label={`${(step + 1)} of 9` } style={{ transition: "width 1s ease"}}/>
+                      <ProgressBar now={100 * (step + 1) / questionQuantity} label={`${(step + 1)} of ${questionQuantity}` } style={{ transition: "width 1s ease"}}/>
                       <h4>Question {step + 1} </h4>
                       {question.choices.length < 5
                         ?
@@ -102,7 +162,7 @@ export default function FormPreGame() {
                           <animated.div style={style} key={question.id} className="inputFrame">
                             <Form.Label htmlFor={`radio`}>{question.question}</Form.Label>
                             {question.choices.map((choice, i) => (
-                              <Radio label={choice} key={choice + i} name={question.question} />
+                              <Radio label={choice} key={i + choice} value={i + 1} answer={answer} name={idx + 1} handleChange={handleChange} required={"required"} />
                             ))}
                           </animated.div>
                         )}
@@ -110,7 +170,7 @@ export default function FormPreGame() {
                         </>
                         :
                         <>
-                          <Select question={question.question} choices={question.choices} />
+                          <Select question={question.question} choices={question.choices} onChange={handleChange}/>
                           <Buttons />
                         </>
                       }

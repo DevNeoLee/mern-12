@@ -50,15 +50,15 @@ export default function Pete2({ data, handleChangeWhichRoutePete, whichRoutePete
         setWaitPopup(false)
     }
 
-    const getHouseChartData = () => {
+    // const getHouseChartData = () => {
 
-        let houseChartdata = data[`round${round}`][3];
+    //     let houseChartdata = data[`round${round}`][3];
 
-        houseChartdata["Depth Estimate in 3 Hours"] = houseChartdata["Depth Estimate in 3 Hours"] - houseChartdata["Current Water Depth"]
-        return houseChartdata;
-    }
+    //     houseChartdata["Depth Estimate in 3 Hours"] = houseChartdata["Depth Estimate in 3 Hours"] - houseChartdata["Current Water Depth"]
+    //     return houseChartdata;
+    // }
 
-    console.log('getHouse: ', JSON.stringify(getHouseChartData))
+    // console.log('getHouse: ', JSON.stringify(getHouseChartData))
 
     const handleMouseEnter1 = () => {
         setGraphData([

@@ -1,16 +1,12 @@
-
 import Erica0 from './GameErica/Erica0'
 import Erica1 from './GameErica/Erica1'
 import Erica2 from './GameErica/Erica2'
 import Erica3 from './GameErica/Erica3'
-import Erica4 from './GameErica/Erica4'
 
 import Norman0 from './GameNorman/Norman0'
 import Norman1 from './GameNorman/Norman1'
 import Norman2 from './GameNorman/Norman2'
 import Norman3 from './GameNorman/Norman3'
-import Norman4 from './GameNorman/Norman4'
-import Norman5 from './GameNorman/Norman5'
 
 import Pete0 from './GamePete/Pete0'
 import Pete1 from './GamePete/Pete1'
@@ -43,11 +39,13 @@ export default function GrandGame() {
     const [round, setRound] = useState(1)
     const [user, setUser] = useState({
         role: '',
-        ide: '',
+        id: '',
         scores: [],
         round_completed: 0,
         final_score: 100,
     })
+
+    const [gameData, setGameData] = useState(null);
     
     const [messagesStorageErica, setMessagesStorageErica] = useState({
         round1: {
@@ -77,15 +75,9 @@ export default function GrandGame() {
 
     const [peteDecisions, setPeteDecisions] = useState([
         {stay: "", whichRoute: "", role: ""},
-        { stay: "", whichRoute: "", role: ""},
-        { stay: "", whichRoute: "", role: ""},
-        { stay: "", whichRoute: "", role: ""}
     ])
     const [normanDecisions, setNormanDecisions] = useState([
         { stay: "", whichRoute: "", role: ""},
-        { stay: "", whichRoute: "", role: ""},
-        { stay: "", whichRoute: "", role: ""},
-        { stay: "", whichRoute: "", role: ""}
     ])
 
     const [levelOfWarning, setLevelOfWarning] = useState('')
@@ -119,8 +111,6 @@ export default function GrandGame() {
     const [gameResult, setGameResult] = useState([])
 
     
-
-
     const [electricity, setElectricity] = useState('poweron')
 
     const [ players, setPlayers ] = useState([])
@@ -307,8 +297,8 @@ export default function GrandGame() {
         console.log('stayed home pete? : ', stayedHomePete)
 
 
-        console.log('노만의 결정은 ? : ', normanDecisions[round - 1].stay)
-        console.log('pete의 결정은 ? : ', peteDecisions[round - 1].stay)
+        // console.log('노만의 결정은 ? : ', normanDecisions[round - 1].stay)
+        // console.log('pete의 결정은 ? : ', peteDecisions[round - 1].stay)
 
         let travelRisk;
         let travelRiskPete;
@@ -711,7 +701,6 @@ export default function GrandGame() {
         <Erica1 step={step}/>,
         <Erica2 data={data} setWaitPopupErica={setWaitPopupErica} waitPopupErica={waitPopupErica} handleSubmitErica={handleSubmitErica} round={round} handleChangeWarning={handleChangeWarning} handleChangeMessageToNorman={handleChangeMessageToNorman} handleChangeMessageToPete={handleChangeMessageToPete} levelOfWarning={levelOfWarning} messageToPete={messageToPete} messageToNorman={messageToNorman} ericaHealth={ericaHealth} players={players}/>,
         <Erica3 step={step} petePower={petePower} normanHealth={normanHealth} peteHealth={peteHealth} round={round} ericaHealth={ericaHealth} messagesStorageErica={messagesStorageErica} normanStay={normanStay} />,
-        <Erica4 step={step} ericaHealth={ericaHealth}/>
     ];
     
     const normans = [
@@ -719,8 +708,6 @@ export default function GrandGame() {
         <Norman1 step={step} />,
         <Norman2 step={step} data={data} handleChangeWhichRoute={handleChangeWhichRoute} normanStay={normanStay} handleSubmitNorman={handleSubmitNorman} handleChangeNormanStay={handleChangeNormanStay} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} normanHealth={normanHealth} messageToNorman={messageToNorman} role={role} messageFromErica={messageFromErica} socket={socket} setChatData={setChatData} chatData={chatData}/>,
         <Norman3 step={step} round={round} peteHealth={peteHealth} ericaHealth={ericaHealth} whichRoute={whichRoute} normanStay={normanStay} electricity={electricity} normanHealth={normanHealth} waterDepthEndupNorman={waterDepthEndupNorman} petePower={petePower}/>,
-        <Norman4 step={step} />,
-        <Norman5 step={step} />
     ];
     
     const petes = [

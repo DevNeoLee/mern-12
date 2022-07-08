@@ -1,17 +1,81 @@
 
-
-import { Form, Button } from "react-bootstrap"
-import { useState } from 'react'
-import "../App.css"
+import { useState } from "react"
 
 import { Link } from "react-router-dom"
+import '../App.css'
 
-export default function Result({ step }) {
+import { ArrowLeftCircle } from 'react-bootstrap-icons';
+
+import { useTransition, useSpring, animated } from "react-spring";
+
+import { Form, Button } from "react-bootstrap";
+
+// import { userRouter } from '../../routes/api/users'
+
+export default function Signup() {
+    const [forgot, setForgot] = useState(false);
+    const [firstTime, setFirstTime] = useState(false);
+
+    const handleClickForgot = () => {
+        setForgot((forgot) => !forgot);
+    };
+
+    const handleClickFirstTime = () => {
+        setFirstTime((firstTime) => !firstTime);
+    };
+
+    const handleSubmit = (e) => {
+
+        e.preventDefault();
+
+        let user = {
+            email: e.target[0].value,
+            password: e.target[1].valuee
+        }
+
+        fetch('http://localhost:3000/users', { 
+            method: 'POST',
+
+            crossDomain: true,
+           
+            headers: {
+                'Content-Type': 'application/json',
+                ' Access-Control-Allow-Origin': 'http://localhost:3000/users',
+                'Authorization:': 'Bearer etc...' ,
+            },
+            redirect: 'follow', 
+            // referrerPolicy: '*same-origin', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(user)
+})
+        .then(data => console.log('data: ', data))
+        .catch(err => console.log('error: ', err))
+    }
+
+    const transition = useTransition(forgot, {
+        from: { x: 10, y: 0, opacity: 0 },
+        enter: { x: 0, y: 0, opacity: 1 },
+    });
+
+    const transition2 = useTransition(forgot, {
+        from: { x: 50, y: 0, opacity: 0 },
+        enter: { x: 0, y: 0, opacity: 1 },
+    });
+
+    const transition3 = useTransition(forgot, {
+        from: { x: 700, y: 0, opacity: 0 },
+        enter: { x: 0, y: 0, opacity: 1 },
+        leave: { x: -300, y: 0, opacity: 0 },
+    });
+
+    const transition4 = useTransition(firstTime, {
+        from: { x: 700, y: 0, opacity: 0 },
+        enter: { x: 0, y: 0, opacity: 1 },
+        leave: { x: -300, y: 0, opacity: 0 },
+    });
 
     return (
-        <>
-            <div className="container">
-                <Form className="form">
+        <div className="container">
+                <Form className="form" onSubmit={handleSubmit}>
                     <div className="upperForm">
                         <a to="/">
                             <div className="logo">
@@ -19,18 +83,84 @@ export default function Result({ step }) {
                                 <img src="/logo_4.png" />
                             </div>
                         </a>
+                        <h2>Sign up</h2>
                     </div>
-                    <h1>Result</h1>
-                    <h2>...</h2>
-                    <p>Lorem ipsum dolor sit amet,
-                        consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                        ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat. Duis aute irure dolor in reprehenderit </p>
-                    <Link to="/formpostgame"><Button>Next</Button></Link>
-                </Form>
-            </div>
-        </>
-    )
-}
+                    <p>Please enter your infomation to sign up.</p>
+                {transition3((style, item) =>
+                    item ? (
+                        ""
+                    ) : (
+                        <animated.div style={style}>
+                    <Form.Group className="mb-12" controlId="formBasicEmail">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control type="email" placeholder="Enter address" />
+                        <Form.Text className="text-muted"></Form.Text>
+                    </Form.Group>
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control type="password" placeholder="Password" />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Confirm Password</Form.Label>
+                                <Form.Control type="password" placeholder="Confirm Password" />
+                            </Form.Group>
+                        </animated.div>
+                    )
+                )}
+                    <Link to="/">
+                        <span>Log in</span>
+                    </Link>
+                    <Button variant="primary" type="submit">
+                        <div>Continue</div>
+                    </Button>
+                    <div className="or">or </div>
+                    <Button
+                        type="submit"
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            textAlign: "center",
+                            backgroundColor: "white",
+                            border: "1px solid #002c71",
+                            color: "#002c71",
+                        }}
 
+                    >
+                        <div className="buttonLogo">
+                            Continue with
+                            <img
+                                src='/google_logo.png'
+                                alt="Google Logo"
+                                width="42px"
+                            />
+                        </div>
+                    </Button>
+                    <Button
+                        type="submit"
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            textAlign: "center",
+                            backgroundColor: "white",
+                            border: "1px solid #002c71",
+                            color: "#002c71",
+                        }}
+                    >
+                        <div className="buttonLogo2">
+                            Continue with
+                            <img
+                                src='/facebook_logo.png'
+                                alt="Facebook Logo"
+                                width="27px"
+                                style={{ marginLeft: "5px" }}
+                            />
+                        </div>
+                    </Button>
+                    <Link to="/instructionformpregame"><Button><div>Demo</div></Button></Link>
+
+                </Form>
+        </div>
+    );
+}

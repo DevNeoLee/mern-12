@@ -2,7 +2,7 @@
 
 import { Form, Button } from "react-bootstrap"
 import "../../App.css"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { useTransition, animated } from "react-spring";
 
@@ -22,6 +22,19 @@ export default function InstructionFormPostGame() {
         }
     });
 
+    const navigate = useNavigate();
+    const sessionData = sessionStorage.getItem('ufoknSession');
+    const sessionDataObject = JSON.parse(sessionData);
+
+    const handleBegin = async () => {
+        if (sessionDataObject) {
+            sessionDataObject.postGameSurvey = []
+            await sessionStorage.setItem('ufoknSession', JSON.stringify(sessionDataObject));
+            console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
+        }
+        navigate('/formpostgame');
+    }
+
     return (
         <div className="container">
             <Form className="form welcome">
@@ -40,7 +53,7 @@ export default function InstructionFormPostGame() {
                             how you had done and learned about flood risk</p>
                     </animated.div>
                 )}
-                <Link to="/formpostgame"><Button size="lg" style={{ fontSize: "1.3rem" }}>Begin</Button></Link>
+                <Link to="/formpostgame"><Button size="lg" style={{ fontSize: "1.3rem" }} onClick={handleBegin}>Begin</Button></Link>
             </Form>
         </div>
     )

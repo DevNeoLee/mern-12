@@ -5,24 +5,19 @@ const http = require('http');
 const server = http.createServer(app)
 
 const cors = require('cors');
-
-const instrument = require('@socket.io/admin-ui')
+const mongoDB = require('./utils/dbConnect')
 
 app.use(cors());
+app.use(express.json());
 
+mongoDB();
+
+const sessionRouter = require('./router/sessionRouter');
+const grandGameRouter = require('./router/grandgameRouter')
 
 const io = require('socket.io')(server, 
     { serveClient: false }
     )
-
-const db = require('./config/keys')
-
-const mongoose = require('mongoose')
-
-mongoose
-    .connect(db, { useNewUrlParser: true })
-    .then(() => console.log("Connected to MongoDB successfully"))
-    .catch(err => console.log("mongo connection error: ", err.message));
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('frontend/build'));
@@ -31,21 +26,22 @@ if (process.env.NODE_ENV === 'production') {
     })
 } else {
     app.get('/', (req, res) => { 
-        // return res.send("hello world from express")}
-          res.sendFile(__dirname + '/index.html');
+        console.log('----------------------******* hello from backend', req.ip)
+        return res.send("hello world from express")
+        // res.sendFile(__dirname + '/index.html');
     })
 }
 
-// const bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 // const game = require("./routes/api/game");
 
-// app.use(bodyParser.urlencoded({extended: false}))
-// app.use(bodyParser.json())
-
-// app.use("/api/game", game);
-
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
 
 const port = process.env.PORT || 5000
+
+app.use('/api/session', sessionRouter);
+app.use('/api/grandgame', grandGameRouter);
 
 //helping functions for WS events
 // function removeArrayItem(arr, item) {
@@ -54,11 +50,22 @@ const port = process.env.PORT || 5000
 //     }
 // }
 
-
+let browserTapCount = 0;
 
 io.on("connection", socket => {
-    console.log('you are connected on the backend to: ', socket.id)
-    console.log('방들: ', socket.rooms)
+    let unique_clients_number = Object.keys(socket.nsp.sockets);
+    
+    browserTapCount += 1;
+
+
+    socket.on('loginpage_connection', (socket) => {
+        console.log('A new user connected')
+        console.log('Open Brower Tap count: ', browserTapCount)
+        io.emit('browserTapCount', browserTapCount);
+
+    })
+
+    console.log('A user connected: ', socket.id)
 
     socket.onAny(event => {
         console.log('socket event: ', event)
@@ -123,7 +130,16 @@ io.on("connection", socket => {
         console.log('msg: ', msg)
     })
 
+    socket.on("initial_connection", (socket) => {
+        // let roomInitial = io.sockets.adapter.rooms.get('roomInitial')
+        // socket.join('roomInitial')
+        // socket.to('roomInitial').emit('join', 3)
+    //    console.log("users connected: ", socket.client.conn.server.clientsCount)
+
+    })
+
     socket.on("disconnecting", () => {
+
         socket.to('room2').emit('leaving')
         console.log("someone leaving the room", socket.id)
  
@@ -134,9 +150,10 @@ io.on("connection", socket => {
     })
 
     socket.on("disconnect", () => {
+        browserTapCount -= 1;
         socket.to('room2').emit('left')
         console.log("someone left the room", socket.id)
-
+        io.emit('browserTapCount', browserTapCount);
         // io.sockets.emit('left', () => { console.log('bye bye')})
         // console.log('room2 size: ', io.sockets.adapter.rooms.get('room2').size)
     })

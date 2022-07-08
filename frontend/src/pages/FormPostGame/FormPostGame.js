@@ -7,12 +7,15 @@ import Select from "../../components/Select"
 
 import { useTransition, useSpring, animated } from "react-spring";
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import "../../App.css"
 import data from "./DataPostGame"
 
 import { Link } from "react-router-dom"
+
+import HOST from "../../utils/routes";
+import axios from 'axios';
 
 export default function FormPostGame() {
 
@@ -20,11 +23,68 @@ export default function FormPostGame() {
     data
   )
 
-  const [pageQuantity, setPageQuantity] = useState(5)
+  const questionQuantity = data.questions.length;
+
+  const [answer, setAnswer] = useState('')
+  const [answers, setAnswers] = useState({})
+
+  const [pageQuantity, setPageQuantity] = useState(questionQuantity)
 
   const [step, setStep] = useState(0)
 
   const navigate = useNavigate();
+
+  const sessionData = sessionStorage.getItem('ufoknSession');
+  const sessionDataObject = JSON.parse(sessionData);
+
+  const handleChange = (e) => {
+    setAnswer(e.target.value)
+    setAnswers({ ...answers, [e.target.name]: e.target.value })
+  }
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('hello world!');
+
+    //update sessionStorage
+    if (sessionDataObject) {
+      sessionDataObject.postGameSurvey = answers;
+      await sessionStorage.setItem('ufoknSession', JSON.stringify(sessionDataObject));
+      console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
+
+      //update sessionData in MongoDB
+      const session = await updateToMongoDB()
+      console.log("session:", session);
+    }
+  }
+
+  const updateToMongoDB = async () => {
+    console.log('session data: ', sessionDataObject);
+
+    const dataUpdate = async () => {
+      await axios.put(HOST + '/api/session', sessionDataObject)
+        .then(data => {
+          console.log('data from mongo: ', data)
+          // return data
+        })
+        .catch(err => console.log(err))
+    }
+
+    await dataUpdate();
+    navigate('/formgeneral');
+  }
+
+  useEffect(() => {
+    console.log('answer: ', answer)
+  },
+    [answer])
+
+  useEffect(() => {
+    console.log('answers: ', answers)
+  },
+    [answers])
+
 
   const transition = useTransition(true, {
     from: { x: 300, y: 0, opacity: 0 },
@@ -56,19 +116,20 @@ export default function FormPostGame() {
           BACK
         </Button>
       )}
-      {step === pageQuantity && (
-        <Button onClick={() => navigate('/formgeneral')}>
+      {step === pageQuantity - 1&& (
+        <Button onClick={handleSubmit} disabled={answers[step + 1] ? false : true}>
           SUBMIT
         </Button>
       )}
 
-      {step < pageQuantity && (
+      {step < pageQuantity - 1&& (
         <Button
           type="button"
           onClick={() => {
             setStep(step + 1);
             console.log("Current Game Page: ", step + 1)
           }}
+          disabled={answers[step + 1] ? false : true}
         >
           NEXT
         </Button>
@@ -89,11 +150,11 @@ export default function FormPostGame() {
                   <img src="/logo_4.png" />
                 </div> */}
 
-                {data && data.questions.map(question =>
+                {data && data.questions.map((question, idx) =>
                   <>
                     {/* <h2>{data.title}</h2> */}
                     <div key={question.id} className="welcomeParagraph">
-                      <ProgressBar now={(step + 1) * 100 / 6} label={`${(step + 1)} of 6`} />
+                      <ProgressBar now={(step + 1) * 100 / questionQuantity} label={`${(step + 1)} of ${questionQuantity}`} style={{ transition: "width 1s ease" }} />
                       <h4>Question {step + 1} </h4>
                       {question.choices.length < 5
                         ?
@@ -102,7 +163,7 @@ export default function FormPostGame() {
                             <animated.div style={style} key={question.id} className="inputFrame">
                               <Form.Label htmlFor={`radio`}>{question.question}</Form.Label>
                               {question.choices.map((choice, i) => (
-                                <Radio label={choice} key={choice + i} name={question.question} />
+                                <Radio label={choice} key={i + choice} value={i + 1} answer={answer} name={idx + 1} handleChange={handleChange} required={"required"} />
                               ))}
                             </animated.div>
                           )}

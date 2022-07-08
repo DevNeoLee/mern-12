@@ -10,6 +10,17 @@ import { useTransition, animated } from "react-spring";
 export default function InstructionFormPreGame() {
 
     const navigate = useNavigate();
+    const sessionData = sessionStorage.getItem('ufoknSession');
+    const sessionDataObject = JSON.parse(sessionData);
+
+    const handleOnclick = async () => {
+       if (sessionDataObject)  {
+            sessionDataObject.preGameSurvey = [] 
+            await sessionStorage.setItem('ufoknSession', JSON.stringify(sessionDataObject));
+            console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
+        }
+        navigate('/formpregame');
+    }
 
     const transition = useTransition(true, {
         from: { x: 300, y: 0, opacity: 0 },
@@ -44,7 +55,7 @@ how you perceive flood risks and
 related risk information.</p>
                 </animated.div>
                 )}
-                <div className="pregameBegin" style={{ margin: "0px 35px" }}><Button onClick={() => navigate('/formpregame')} >Start Survey</Button></div>
+                <div className="pregameBegin" style={{ margin: "0px 35px" }}><Button onClick={handleOnclick} >Start Survey</Button></div>
             </Form>
         </div>
     )

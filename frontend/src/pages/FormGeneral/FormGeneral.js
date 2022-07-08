@@ -4,7 +4,8 @@ import Input from "../../components/Input"
 import Radio from "../../components/Radio"
 import Select from "../../components/Select"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import "../../App.css"
 import data from "./DataGeneral"
 
@@ -12,11 +13,41 @@ import { useTransition, useSpring, animated } from "react-spring";
 
 import { Link } from "react-router-dom"
 
+import HOST from "../../utils/routes";
+import axios from 'axios';
+
 export default function FormGeneral({step}) {
 
     const [questions, setQuestions] = useState(
         data
     )
+
+    const questionQuantity = data.questions.length;
+
+    const [answer, setAnswer] = useState('')
+    const [answers, setAnswers] = useState({})
+
+    const navigate = useNavigate();
+
+    const sessionData = sessionStorage.getItem('ufoknSession');
+    const sessionDataObject = JSON.parse(sessionData);
+
+    useEffect(() => {
+        console.log('answer: ', answer)
+    },
+        [answer])
+
+    useEffect(() => {
+        console.log('answers: ', answers)
+    },
+        [answers])
+
+    const handleChange = (e) => {
+        setAnswer(e.target.value)
+        setAnswers({ ...answers, [e.target.name]: e.target.value })
+        console.log('questions: ', questions.questions.length)
+        console.log('answers: ', Object.keys(answers).length)
+    }
 
     const transition2 = useTransition(true, {
         from: { x: 400, y: 0, opacity: 0 },
@@ -25,6 +56,39 @@ export default function FormGeneral({step}) {
             duration: 400 // duration for the whole animation form start to end
         }
     });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log('hello world!');
+
+        //update sessionStorage
+        if (sessionDataObject) {
+            sessionDataObject.generalSurvey = answers;
+            await sessionStorage.setItem('ufoknSession', JSON.stringify(sessionDataObject));
+            console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
+
+            //update sessionData in MongoDB
+            const session = await updateToMongoDB()
+            console.log("session:", session);
+        }
+    }
+
+    const updateToMongoDB = async () => {
+        console.log('session data: ', sessionDataObject);
+
+        const dataUpdate = async () => {
+            await axios.put(HOST + '/api/session', sessionDataObject)
+                .then(data => {
+                    console.log('data from mongo: ', data.data)
+                    // return data
+                })
+                .catch(err => console.log(err))
+        }
+
+        await dataUpdate();
+        navigate('/theend');
+    }
+
 
   return (
     <>  
@@ -43,26 +107,32 @@ export default function FormGeneral({step}) {
                    
                             <h2 style={style}>{data.title}</h2>
          
-                           {data && data.questions.map(question =>(
+                           {data && data.questions.map((question, idx) =>(
                             <div key={question.question}>
                                 {question.choices.length < 5 
                                 ? 
                                 <div key={question.id} className="inputFrame">
                                     <Form.Label htmlFor={`radio`}>{question.question}</Form.Label>
-                                    {question.choices.map((choice, idx) => (
-                                        <Radio label={choice} key={choice + idx} name={question.question}/>
+                                    {question.choices.map((choice, i) => (
+                                        <Radio label={choice} key={i + choice} value={i + 1} answer={answer} name={idx + 1} handleChange={handleChange} required={"required"} />
                                     ))}
                                 </div>
                                 : 
-                                <Select question={question.question} choices={question.choices}/>
+                                       <Select question={question.question} answer={answer} name={idx + 1} value={answer} handleChange={handleChange} choices={question.choices}/>
                                 } 
                             </div>
                            ))}
                         </Form.Group>
 
-                      <Link to="/theend">
-                          <Button >Submit</Button>
-                          </Link>
+                            <Button 
+                            onClick={handleSubmit} 
+                            disabled={Object.keys(answers).length >  2
+                                        ? 
+                                        false 
+                                        : 
+                                        true
+                                    }>Submit
+                            </Button>
 
                           </Form>
                     </animated.div>

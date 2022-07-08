@@ -2,18 +2,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const GameSchema = new Schema({
-    users: {
-        type: Schema.Types.ObjectId,
-        ref: 'users'
+    time_begin: {
+        type: Date
     },
-    text: {
-        type: String,
-        required: true
+    time_end: {
+        type: Date
     },
-    date: {
-        type: Date,
-        default: Date.now
-    }
+    players: [],
+    chatting: {},
+    play_history: {}
 });
 
 module.exports = Game = mongoose.model('Game', GameSchema);

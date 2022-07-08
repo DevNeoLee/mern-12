@@ -55,13 +55,13 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
         setWaitPopup(false)
     }
 
-    const getHouseChartData = () => {
+    // const getHouseChartData = () => {
 
-        let houseChartdata = data[`round${round}`][3];
+    //     let houseChartdata = data[`round${round}`][3];
 
-        houseChartdata["Depth Estimate in 3 Hours"] = houseChartdata["Depth Estimate in 3 Hours"] - houseChartdata["Current Water Depth"]
-        return houseChartdata;
-    }
+    //     houseChartdata["Depth Estimate in 3 Hours"] = houseChartdata["Depth Estimate in 3 Hours"] - houseChartdata["Current Water Depth"]
+    //     return houseChartdata;
+    // }
 
     const handleMouseEnter1 = () => {
         setGraphData([
@@ -384,14 +384,14 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                                             </div>
                                         </form>
                                     </div>
-                                    <div className="alertMessage">
+                                    {/* <div className="alertMessage">
                                         <p className="">
                                             {messageFromErica.messageToNorman}
                                         </p>
                                         {messageFromErica && <p className="">
                                             Current Level of Warning: {messageFromErica.levelOfWarning}
                                         </p>}
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>

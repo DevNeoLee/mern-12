@@ -945,6 +945,11 @@ h2 {
   position: absolute;
   left: 30.5rem;
   border-radius: 4px;
+  overflow-y: scroll;
+    scroll-behavior: smooth;
+    /* position: absolute; */
+    max-height: 28rem;
+    bottom: 0;
 }
 
 .chattingContainer h6 {
@@ -962,7 +967,10 @@ h2 {
   left: 0.8rem;
   border-radius: 4px;
   overflow-y: scroll;
-  /* scroll-behaviour: smooth; */
+  scroll-behavior: smooth;
+  /* position: absolute; */
+  max-height: 20rem;
+    bottom: 0;
 }
 .chatInputBox {
   position: absolute;
@@ -1001,6 +1009,7 @@ h2 {
   position: relative;
   height: 245px;
   border-radius: 0 0 15px 0;
+  z-index: 4;
 }
 
 .gameBlock4 h2 {
@@ -1029,6 +1038,10 @@ h2 {
   left: 60px;
   width: 450px;
   height: 200px;
+      bottom: 0;
+        scroll-behavior: smooth;
+          overflow-y: scroll;
+          max-height: 200px;
 }
 
 .comingMessage p {
@@ -1040,9 +1053,15 @@ h2 {
 }
 
 .chatContent {
+  position: absolute;
+  bottom: 0;
   background-color: lightcoral;
   width: 27.7rem;
   height: 7rem;
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  max-height: 7rem;
+  
 }
 
 .chatInputContainer {
@@ -1095,6 +1114,7 @@ h2 {
   justify-content: center;
   align-items: center;
   border-radius: 0 0 0 15px;
+
 }
 
 .titleCoverupNorman {
