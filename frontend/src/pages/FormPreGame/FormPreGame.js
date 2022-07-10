@@ -56,8 +56,7 @@ export default function FormPreGame() {
       console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
 
       //update sessionData in MongoDB
-      const session = await updateToMongoDB()
-      console.log("session:", session);
+      await updateToMongoDB()
     }
   }
 
@@ -67,7 +66,7 @@ export default function FormPreGame() {
     const dataUpdate = async () => { 
       await axios.put(HOST + '/api/session', sessionDataObject)
       .then(data => {
-        console.log('data from mongo: ', data)
+        console.log('data from mongo saved: ', data)
         // return data
       })
       .catch(err => console.log(err))

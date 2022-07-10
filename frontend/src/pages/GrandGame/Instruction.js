@@ -10,7 +10,7 @@ import { useTransition, useSpring, animated } from "react-spring";
 
 import { Form, Button, ProgressBar } from "react-bootstrap";
 
-export default function Instruction({giveRoleRandomly, setRole, normans}) {
+export default function Instruction({ setGameStart, id, setId, handleRoleChange, setCanStartGame, canStartGame ,game, setGame, socket, session, setSession, MAX_CLIENTS, MIN_CLIENTS, giveRoleRandomly, setRole, normans, userQuantity, games, setGames}) {
 
   const transition = useTransition(true, {
     from: { x: 300, y: 0, opacity: 0 },
@@ -25,6 +25,23 @@ export default function Instruction({giveRoleRandomly, setRole, normans}) {
     }
   });
 
+
+  const [joined, setJoined] = useState(false);
+
+  const handleStart = (e) => { 
+    e.preventDefault()
+    console.log('handleStart clicked')
+    setGameStart(true)
+    socket.emit('game_start')
+    // handleRoleChange()
+  }
+
+  const handleWait = (e) => { 
+    e.preventDefault()
+    console.log('handleWait clicked')
+    setCanStartGame(false)
+  }
+
   // const [ barLevel, setBarLevel] = useState(0)
 
   // useEffect(
@@ -36,12 +53,32 @@ export default function Instruction({giveRoleRandomly, setRole, normans}) {
   //     setBarLevel(barLevel + 1)
   // }
   const handleClick = (role) => {
-    console.log("role picked: ", role)
-    giveRoleRandomly()
-    setRole(role)
+    // console.log("role picked: ", role)
+    // giveRoleRandomly()
+    // setRole(role)
   }
 
-  
+  const handleJoin = () => {
+    console.log('join clicked i: ')
+    console.log('session: ', session)
+    console.log('session', session)
+    if (!joined && session && game.players.length < 7) {
+      setGame({...game, players: [...game.players, {session_id: session._id, role: game.roles[game.players.length]}], room_name: 1});
+      console.log('************************')
+      setRole(game.roles[game.players.length])
+      console.log('-----------------------------')
+      setJoined(true);
+      setId({ session_id: session._id, role: game.roles[game.players.length] })
+      console.log('???????????')
+    } else {
+      console.log("You already joined a room, can't not join twice")
+      return;
+    }
+    console.log("game changed: ", { ...game, players: [...game.players, { session_id: session._id, role: game.roles[game.players.length] }], room_name: 1})
+    socket.emit('join_room', 1, { ...game, players: [...game.players, { session_id: session._id, role: game.roles[game.players.length] }], room_name: 1 }, session._id)////////////////
+
+  }
+
   return (
       <>
         <div className="gameUpperForm">
@@ -55,6 +92,43 @@ export default function Instruction({giveRoleRandomly, setRole, normans}) {
             <animated.h2 style={style}>Instructions on How to Play </animated.h2>
           )}
         </div>
+        {canStartGame && 
+          transition2((style, item) =>
+              <animated.div style={style} className="canStartPopup">
+                <h3>Start a game?</h3>
+              <Form className="form">
+                  <Button variant="primary" type="submit" onClick={handleStart}>
+                    <div>Start Game</div>
+                  </Button>
+                    <Button variant="primary" type="submit" onClick={handleWait}>
+                      <div>Wait for others to join</div>
+                    </Button> 
+              </Form>
+              </animated.div>
+          )} 
+      {transition2((style, item) =>
+        <animated.div style={style} className="welcomeParagraph">
+          <h1>Join the Game Room</h1>
+          <h2>Click below to join the game</h2>
+          <div className="gameRoomsFrame">
+              <div className="gameRoomIcon" key={"gameRoomIcon"} onClick={() => handleJoin(session)}>
+                  <h5>Game 1 Room </h5>
+                  <h6>{game.players.length < MAX_CLIENTS ? 'Available' : 'Full'}</h6>
+                  <h5>{game.players.length}/{MAX_CLIENTS}</h5>
+              </div>
+            <div className="gameRoomIcon" >
+              <h5>Game 2 Room </h5>
+              <h6>{game.players.length < MAX_CLIENTS ? 'Available' : 'Full'}</h6>
+              <h5>{0}/{8}</h5>
+            </div>
+            <div className="gameRoomIcon">
+              <h5>Game 3 Room </h5>
+              <h6>{game.players.length < MAX_CLIENTS ? 'Available' : 'Full'}</h6>
+              <h5>{0}/{8}</h5>
+            </div>
+          </div>
+        </animated.div>
+      )}
         {transition2((style, item) =>
           <animated.div style={style} className="welcomeParagraph">
             <p>Please follow the instructions read out by the moderator now. </p>

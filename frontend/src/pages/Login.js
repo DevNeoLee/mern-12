@@ -23,7 +23,7 @@ export default function LogIn() {
     const [firstTime, setFirstTime] = useState(false);
 
     const [socket, setSocket] = useState(null);
-    const [browserTapCount, setBrowserTapCount] = useState(0);
+    const [clientCount, setClientCount] = useState(0);
 
     useEffect(() => {
 
@@ -31,6 +31,8 @@ export default function LogIn() {
 
         return () => {
             setSocket(null);
+            // socket.disconnect();
+            // socket.close()
             console.log("socket closed: ");
         }
     }, [])
@@ -40,12 +42,11 @@ export default function LogIn() {
         const socket = io()
         setSocket(socket)
 
-        socket.emit('loginpage_connection')
-
-        socket.on('browserTapCount', (count) => {
-            setBrowserTapCount(count)
-            console.log('browser tap count: ', count)
+        socket.on("client_count", (arg1, arg2) => {
+            setClientCount(arg2)
+            console.log(arg1, arg2)
         })
+
         socket.on("leaving", () => {
             console.log("someone leaving the room")
         })
@@ -56,6 +57,14 @@ export default function LogIn() {
 
         socket.on('join', (count) => {
             console.log('inital connected, # of people connected: ', count)
+        })
+
+        socket.on("hello_world", arg => {
+            console.log("hello sokcet: ", arg)
+        })
+
+        socket.onAny((event, ...args) => {
+            console.log('socket event: ', event, args)
         })
 
     }
@@ -79,6 +88,7 @@ export default function LogIn() {
         } else {
             console.log('There is an session: ', session)
         }
+        socket.disconnect();
     }
 
     const createSession = async() => {
@@ -147,7 +157,7 @@ export default function LogIn() {
                     )}
 
                     {transition2((style, item) =>
-                        item ? "" : <animated.h2 style={style}>Log in <span>Current Users On the Page: {browserTapCount}</span></animated.h2>
+                        item ? "" : <animated.h2 style={style}>Log in <span>Current Clients On the Socket: {clientCount}</span></animated.h2>
                     )}
                 </div>
 

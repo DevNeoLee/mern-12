@@ -33,42 +33,114 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const bodyParser = require('body-parser')
-// const game = require("./routes/api/game");
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 const port = process.env.PORT || 5000
 
+//데이터베이스콜은 api를 통해서 
 app.use('/api/session', sessionRouter);
 app.use('/api/grandgame', grandGameRouter);
 
-//helping functions for WS events
-// function removeArrayItem(arr, item) {
-//     for (var i = arr.length; i--;) {
-//         if (arr[i] === item) arr.splice(i, 1);
-//     }
-// }
+let rooms = [];
 
-let browserTapCount = 0;
+let room = null;
+let gameState = {};
 
+const MAX_CLIENTS = 7;
+const MIN_CLIENTS = 5;
+
+//게임 웹소켓 로직
 io.on("connection", socket => {
-    let unique_clients_number = Object.keys(socket.nsp.sockets);
-    
-    browserTapCount += 1;
+  
+    console.log('io.engine.clientsCount!: ', io.engine.clientsCount) // 현재 몇명 접속
 
+    //현재 몇명 접속 정보 이벤트
+    socket.emit("client_count", "New client connected, we have total users: ", io.engine.clientsCount)
 
-    socket.on('loginpage_connection', (socket) => {
-        console.log('A new user connected')
-        console.log('Open Brower Tap count: ', browserTapCount)
-        io.emit('browserTapCount', browserTapCount);
+    //create a room 
+    socket.on("create_room", () => {
 
     })
 
-    console.log('A user connected: ', socket.id)
+    //join room event
+    socket.on("join_room", (room_name, game, session_id) => {
+    
+        let room_size = 1;
+        let room = io.sockets.adapter.rooms.get(room_name);
 
-    socket.onAny(event => {
-        console.log('socket event: ', event)
+    
+
+        console.log('game received when a player joined: ', game);
+        console.log('socket.id: ', socket.id);
+        console.log("room: ", room);
+  
+        // if (room === undefined ) {
+            socket.join(room_name)
+            console.log(`room ${room_name} joined`)
+            let player_id = socket.id
+            console.log('joined player: ', player_id)
+            console.log('joined player in String: ', player_id)
+
+
+            let newPlayers = game.players.map(p => {
+                if (p.session_id === session_id) {
+                    return {...p, player_id: player_id}
+                } else {
+                    return p
+                }
+            })
+            console.log("newPlayer added: ", newPlayers)
+            game.players = newPlayers;
+
+            // console.log('room size: ', room.size)
+        if (room) room_size = io.sockets.adapter.rooms.get(room_name).size;
+
+        console.log('room size: ', room_size)
+
+            io.emit("join_room", room_name, player_id, game, room_size)
+        // }
+    }) 
+
+    socket.on("game_start", () => {
+        io.emit("game_start");
+    })
+
+    //메세지와 동시에 펑션을 'done'을 받아서 실행할수 있음.
+    socket.on("enter_room", (msg, done) => {
+        let room = io.sockets.adapter.rooms.get('room1')
+
+        if (room === undefined || room.size < 5) {
+            socket.join('room1')
+            socket.to('room1').emit('welcome')
+            room && console.log("몇: ", room.size)
+            console.log("방들: ", socket.rooms)
+            room && console.log("몇: ", room.size)
+            console.log("사람들: ", io.sockets.adapter.rooms.get('room1').size)
+            console.log('who joined: ', socket.id)
+
+        } else {
+            socket.join('room2')
+            socket.to('room2').emit('welcome')
+            console.log("사람들: ", io.sockets.adapter.rooms.get('room1').size)
+            console.log('room2 size: ', io.sockets.adapter.rooms.get('room2').size)
+            console.log('who joined: ', socket.id)
+
+        }
+        console.log("사람들: ", io.sockets.adapter.rooms.get('room1').size)
+        console.log('msg: ', msg)
+    })
+
+    //
+    socket.on('share_game', (game_data) => {
+        console.log("game_data share call: ", game_data);
+        io.emit('share_game', game_data);
+    })
+
+    socket.onAny((event, ...args) => {
+        console.log('socket event: ', event, args)
+        console.log('io.engine.clientsCount!: ', io.engine.clientsCount)
     })
 
 
@@ -105,33 +177,8 @@ io.on("connection", socket => {
         socket.broadcast.to('room1').emit('pete_message', data)
     })
 
-    //메세지와 동시에 펑션을 'done'을 받아서 실행할수 있음.
-    socket.on("enter_room", (msg, done) => {
-        let room = io.sockets.adapter.rooms.get('room1')
-        
-        if (room === undefined || room.size < 5) {
-            socket.join('room1')
-            socket.to('room1').emit('welcome')
-            room && console.log("몇: ", room.size)
-            console.log("방들: ", socket.rooms)
-            room &&  console.log("몇: ", room.size)
-            console.log("사람들: ", io.sockets.adapter.rooms.get('room1').size)
-            console.log('who joined: ', socket.id)
-
-        } else {
-            socket.join('room2')
-            socket.to('room2').emit('welcome')
-            console.log("사람들: ", io.sockets.adapter.rooms.get('room1').size)
-            console.log('room2 size: ', io.sockets.adapter.rooms.get('room2').size)
-            console.log('who joined: ', socket.id)
-
-        }
-        console.log("사람들: ", io.sockets.adapter.rooms.get('room1').size)
-        console.log('msg: ', msg)
-    })
-
     socket.on("initial_connection", (socket) => {
-        // let roomInitial = io.sockets.adapter.rooms.get('roomInitial')
+        let roomInitial = io.sockets.adapter.rooms.get('roomInitial')
         // socket.join('roomInitial')
         // socket.to('roomInitial').emit('join', 3)
     //    console.log("users connected: ", socket.client.conn.server.clientsCount)
@@ -150,10 +197,8 @@ io.on("connection", socket => {
     })
 
     socket.on("disconnect", () => {
-        browserTapCount -= 1;
         socket.to('room2').emit('left')
         console.log("someone left the room", socket.id)
-        io.emit('browserTapCount', browserTapCount);
         // io.sockets.emit('left', () => { console.log('bye bye')})
         // console.log('room2 size: ', io.sockets.adapter.rooms.get('room2').size)
     })

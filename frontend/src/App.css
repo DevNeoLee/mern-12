@@ -525,7 +525,48 @@ h2 {
 .buttonsPreGame button {
   margin: 0 1rem 0 1rem;
 }
+/*** GrandGame, Instruction ********/
+.gameRoomsFrame {
+  display: flex;
+  margin: 0.3rem;
+  background-color: lightcoral;
+  display: flex;
+  justify-content: space-around;
+}
 
+.gameRoomIcon {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 5px;
+  border: 1px solid gray;
+  margin: 0.4rem;
+    background-color: lightblue;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.5s all;
+}
+
+
+.gameRoomIcon:hover {
+  background-color: rgb(137, 249, 130);
+    transition: 0.5s all;
+}
+
+.canStartPopup {
+    display: grid;
+      position: absolute;
+      margin: 0 auto;
+      top: 50%;
+      left: 25%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      z-index: 1;
+      background-color: rgb(237, 246, 246);
+}
 
 
 /********************** game pages, Norman2/Erica2/Pete2 **********/
