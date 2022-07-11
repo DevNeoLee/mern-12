@@ -164,9 +164,9 @@ export default function GrandGame() {
 
     //all the games array, three rooms to start
     const [games, setGames] = useState(() => [
-        { room_name: 1, players: [], chatting: [], play_history: [] }, 
-        { room_name: 2, players: [], chatting: [], play_history: [] },
-        { room_name: 3, players: [], chatting: [], play_history: [] }
+        { room_name: "1", players: [], chatting: [], play_history: [] }, 
+        { room_name: "2", players: [], chatting: [], play_history: [] },
+        { room_name: "3", players: [], chatting: [], play_history: [] }
     ])
 
     //create a session

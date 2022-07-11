@@ -108,8 +108,8 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
       console.log("You already joined a room, can't not join twice")
       return;
     }
-    console.log("game changed: ", { ...game, players: [...game.players, { session_id: session._id, role: game.roles[game.players.length] }], room_name: 1})
-    socket.emit('join_room', 1, { ...game, players: [...game.players, { session_id: session._id, role: game.roles[game.players.length] }], room_name: 1 }, session._id)////////////////
+    console.log("game changed: ", { ...game, players: [...game.players, { session_id: session._id, role: game.roles[game.players.length] }], room_name: "1"})
+    socket.emit('join_room', "1", { ...game, players: [...game.players, { session_id: session._id, role: game.roles[game.players.length] }], room_name: "1" }, session._id)////////////////
 
   }
 
@@ -145,7 +145,7 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
           <h1>Join the Game Room</h1>
           <h2>Click below to join the game</h2>
           <div className="gameRoomsFrame">
-            { clients > MIN_CLIENTS && 
+            { clients >= MIN_CLIENTS && 
               <div className="gameRoomIcon" key={"gameRoomIcon"} onClick={() => handleJoin(session)}>
                   <h5>Game 1 Room </h5>
                   <h6>{game.players.length < MAX_CLIENTS ? 'Available' : 'Full'}</h6>
