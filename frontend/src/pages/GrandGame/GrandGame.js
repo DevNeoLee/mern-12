@@ -52,6 +52,8 @@ export default function GrandGame() {
         final_score: 100,
     })
 
+    const [clients, setClients ] = useState(0)
+
     const [messagesStorageErica, setMessagesStorageErica] = useState({
         round1: {
             toNorman: [],
@@ -142,6 +144,9 @@ export default function GrandGame() {
     const MAX_CLIENTS = 8;
     const MIN_CLIENTS = 3;
 
+    const sessionData = sessionStorage.getItem('ufoknSession');
+    const sessionDataObject = JSON.parse(sessionData);
+
     ///////////////////////////main data///////////////////////////////////////////////////////////////////////// 
     const [session, setSession] = useState(null);
 
@@ -205,10 +210,26 @@ export default function GrandGame() {
 
     }
 
+    const updateToMongoDBSession = async (payload) => {
+        console.log('session data: ', sessionDataObject);
 
-    useEffect( async () => {
-        console.log('grandGame page begins!')
-        let s = sessionStorage.getItem('ufoknSession')
+        const dataUpdate = async () => {
+            await axios.put(HOST + '/api/session', {...sessionDataObject, payload})
+                .then(data => {
+                    console.log('data from mongo saved: ', data)
+                    // return data
+                })
+                .catch(err => console.log(err))
+        }
+
+        await dataUpdate();
+        // navigate('/welcome');
+    }
+
+    useEffect(() => {
+        const getItem = async () => {
+            console.log('grandGame page begins!')
+        let s = await sessionStorage.getItem('ufoknSession')
         console.log("s??: ", s)
         if (!s ) {
             console.log('세션이 없네')
@@ -218,36 +239,40 @@ export default function GrandGame() {
         } else {
             setSession(JSON.parse(s))
         }
+    }
+        getItem()
     }, [])
-
-    useEffect(async () => {
-        console.log('session updated!')
-        sessionStorage.setItem('ufoknSession', JSON.stringify(session))
-        console.log('Your session data; ', session)
-        }
-    , [session])
-
-    useEffect(async () => {
-        console.log('game updated!')
-        sessionStorage.setItem('ufoknGame', JSON.stringify(game))
-        console.log('Your game data updated: ', game)
-
-        let newGames = games.map(g => {
-            if (g.room_name === game.room_name) {
-                return game
-            } else {
-                return g
-            }
-        })
-
-        console.log("what newGames: ?", newGames)
-        setGames(newGames)
-        // socket.emit("join_room", game.room_name, game, session._id) ////////////////////////////////
-    }, [game])
 
     useEffect(() => {
-        console.log("games: ", games)
-    }, [])
+        const setItem = async () => {
+            console.log('session updated!')
+            await sessionStorage.setItem('ufoknSession', JSON.stringify(session))
+            console.log('Your session data; ', session)
+        }
+            
+        setItem()
+    }, [session])
+
+    useEffect(() => {
+        const updateGames = async () => {
+            console.log('game updated!')
+            await sessionStorage.setItem('ufoknGame', JSON.stringify(game))
+            console.log('Your game data updated: ', game)
+    
+            let newGames = games.map(g => {
+                if (g.room_name === game.room_name) {
+                    return game
+                } else {
+                    return g
+                }
+            })
+    
+            console.log("what newGames: ?", newGames)
+            setGames(newGames)
+        }
+        updateGames();
+        // socket.emit("join_room", game.room_name, game, session._id) ////////////////////////////////
+    }, [game])
 
 
     useEffect(() => {
@@ -256,7 +281,7 @@ export default function GrandGame() {
 
     }, [messageToNorman, messageToPete])
 
-    useEffect(()=> {
+    useEffect(() => {
         const average = (peteHealth + normanHealth * 3) / 4;
         setEricaHealth(average.toFixed())
         // console.log('erica health updated; ', ericaHealth )
@@ -278,8 +303,9 @@ export default function GrandGame() {
         //     createGame()
         // }
 
-        socket.on("client_count", (...arg) => {
-            console.log(...arg)
+        socket.on("client_count", (arg1, arg2) => {
+            console.log('Client Count:', arg2)
+            setClients(arg2);
         })
 
         socket.on("join_room", (room_name, player_name, game, room_size) => {
@@ -293,8 +319,13 @@ export default function GrandGame() {
         })
 
         socket.on("game_start", () => {
-            console.log("Game Start Go!")
-            setGameStart(true)
+            const gameOn = async () => {
+                //update sessionData in MongoDB
+                setGameStart(true)
+                await updateToMongoDBSession({role: role})
+                console.log("Game Start Go!")
+            }
+            gameOn();
         })
 
         socket.on("share_game", game_data => {
@@ -744,8 +775,8 @@ export default function GrandGame() {
 
     //erica communicating through SOCKET  + to do: save to MongoDB
     const handleSubmitErica = (e) => {
-        console.log('erica just submitted her messages:')
         e.preventDefault()
+        console.log('erica just submitted her messages:')
 
         const messages = {
             messageToNorman, messageToPete, levelOfWarning
@@ -935,7 +966,7 @@ export default function GrandGame() {
                     { step !== 2 && <Buttons/> }
                 </>
                     : 
-                    <Instruction setGameStart={setGameStart} id={id} setId={setId} handleRoleChange={handleRoleChange} canStartGame={canStartGame} setCanStartGame={setCanStartGame} game={game} setGame={setGame} socket={socket} giveRoleRandomly={giveRoleRandomly} session={session} setRole={setRole} normans={normanRoles} userQuantity={userQuantity} games={games} MAX_CLIENTS={MAX_CLIENTS} MIN_CLIENTS={MIN_CLIENTS} />
+                    <Instruction clients={clients} axios={axios} HOST={HOST} sessionDataObject={sessionDataObject} setGameStart={setGameStart} id={id} setId={setId} handleRoleChange={handleRoleChange} canStartGame={canStartGame} setCanStartGame={setCanStartGame} game={game} setGame={setGame} socket={socket} giveRoleRandomly={giveRoleRandomly} session={session} setRole={setRole} role={role} normans={normanRoles} userQuantity={userQuantity} games={games} MAX_CLIENTS={MAX_CLIENTS} MIN_CLIENTS={MIN_CLIENTS} />
                 } 
             </div>
         </div>

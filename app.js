@@ -57,7 +57,7 @@ io.on("connection", socket => {
     console.log('io.engine.clientsCount!: ', io.engine.clientsCount) // 현재 몇명 접속
 
     //현재 몇명 접속 정보 이벤트
-    socket.emit("client_count", "New client connected, we have total users: ", io.engine.clientsCount)
+    io.emit("client_count", "New client connected, we have total users: ", io.engine.clientsCount)
 
     //create a room 
     socket.on("create_room", () => {

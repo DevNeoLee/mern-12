@@ -10,7 +10,7 @@ import { useTransition, useSpring, animated } from "react-spring";
 
 import { Form, Button, ProgressBar } from "react-bootstrap";
 
-export default function Instruction({ setGameStart, id, setId, handleRoleChange, setCanStartGame, canStartGame ,game, setGame, socket, session, setSession, MAX_CLIENTS, MIN_CLIENTS, giveRoleRandomly, setRole, normans, userQuantity, games, setGames}) {
+export default function Instruction({ clients, axios, HOST, sessionDataObject, setGameStart, id, setId, handleRoleChange, setCanStartGame, canStartGame ,game, setGame, socket, session, setSession, MAX_CLIENTS, MIN_CLIENTS, giveRoleRandomly, setRole, role, normans, userQuantity, games, setGames}) {
 
   const transition = useTransition(true, {
     from: { x: 300, y: 0, opacity: 0 },
@@ -32,14 +32,35 @@ export default function Instruction({ setGameStart, id, setId, handleRoleChange,
     e.preventDefault()
     console.log('handleStart clicked')
     setGameStart(true)
+
+    //update sessionData in MongoDB
+    // await updateToMongoDB()
+
     socket.emit('game_start')
     // handleRoleChange()
+
   }
 
   const handleWait = (e) => { 
     e.preventDefault()
     console.log('handleWait clicked')
     setCanStartGame(false)
+  }
+
+  const updateToMongoDB = async () => {
+    console.log('session data: ', sessionDataObject);
+
+    const dataUpdate = async () => {
+      await axios.put(HOST + '/api/session', sessionDataObject)
+        .then(data => {
+          console.log('data from mongo saved: ', data)
+          // return data
+        })
+        .catch(err => console.log(err))
+    }
+
+    await dataUpdate();
+    // navigate('/welcome');
   }
 
   // const [ barLevel, setBarLevel] = useState(0)
@@ -58,18 +79,31 @@ export default function Instruction({ setGameStart, id, setId, handleRoleChange,
     // setRole(role)
   }
 
-  const handleJoin = () => {
+  const handleJoin = async () => {
     console.log('join clicked i: ')
     console.log('session: ', session)
     console.log('session', session)
-    if (!joined && session && game.players.length < 7) {
+    if (!joined && session && game.players.length < MAX_CLIENTS) {
       setGame({...game, players: [...game.players, {session_id: session._id, role: game.roles[game.players.length]}], room_name: 1});
       console.log('************************')
+      if (sessionDataObject) {
+        sessionDataObject.role = game.roles[game.players.length];
+      }
       setRole(game.roles[game.players.length])
       console.log('-----------------------------')
       setJoined(true);
       setId({ session_id: session._id, role: game.roles[game.players.length] })
       console.log('???????????')
+
+      //update sessionStorage
+      if (sessionDataObject) {
+        // sessionDataObject.role = game.roles[game.players.length];
+        sessionDataObject.role = role;
+        await sessionStorage.setItem('ufoknSession', JSON.stringify(sessionDataObject));
+        console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
+
+      }
+
     } else {
       console.log("You already joined a room, can't not join twice")
       return;
@@ -111,21 +145,23 @@ export default function Instruction({ setGameStart, id, setId, handleRoleChange,
           <h1>Join the Game Room</h1>
           <h2>Click below to join the game</h2>
           <div className="gameRoomsFrame">
+            { clients > MIN_CLIENTS && 
               <div className="gameRoomIcon" key={"gameRoomIcon"} onClick={() => handleJoin(session)}>
                   <h5>Game 1 Room </h5>
                   <h6>{game.players.length < MAX_CLIENTS ? 'Available' : 'Full'}</h6>
                   <h5>{game.players.length}/{MAX_CLIENTS}</h5>
               </div>
-            <div className="gameRoomIcon" >
+            }
+            {/* <div className="gameRoomIcon" >
               <h5>Game 2 Room </h5>
-              <h6>{game.players.length < MAX_CLIENTS ? 'Available' : 'Full'}</h6>
+              <h6>{game.players.length < MAX_CLIENTS ? 'Unavailable' : 'Full'}</h6>
               <h5>{0}/{8}</h5>
             </div>
             <div className="gameRoomIcon">
               <h5>Game 3 Room </h5>
-              <h6>{game.players.length < MAX_CLIENTS ? 'Available' : 'Full'}</h6>
+              <h6>{game.players.length < MAX_CLIENTS ? 'Unavailable' : 'Full'}</h6>
               <h5>{0}/{8}</h5>
-            </div>
+            </div> */}
           </div>
         </animated.div>
       )}

@@ -13,7 +13,8 @@ router.post('/', (req, res) => {
 
     const newData = new Session({
         ipAddress: req.ip,
-        date: new Date()
+        date: new Date(),
+        role: ""
     })
 
    newData.save();
