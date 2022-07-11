@@ -2,11 +2,12 @@ import { Link, useNavigate } from "react-router-dom"
 
 import { HeartFill } from 'react-bootstrap-icons';
 import { Form, Button, ProgressBar, Table } from "react-bootstrap";
+import { useEffect } from "react";
 
 import { useTransition, useSpring, animated } from "react-spring";
 
 
-export default function Pete3({ normanHealth, petePower, ericaHealth, round, peteHealth, whichRoutePete, electricity, normanStay, waterDepthEndupPete }) {
+export default function Pete3({ setRound, setStep, setResultReady, normanHealth, petePower, ericaHealth, round, peteHealth, whichRoutePete, electricity, normanStay, waterDepthEndupPete }) {
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -21,6 +22,19 @@ export default function Pete3({ normanHealth, petePower, ericaHealth, round, pet
     });
 
     const navigate = useNavigate();
+
+    const handleNextRound = () => {
+        console.log('Next Round Clicked! :', round)
+    }
+
+    useEffect(() => {
+        setRound(prevround => prevround + 1)
+        const interval = setInterval(() => {
+            setStep(1);
+            setResultReady(false);
+        }, 2000);
+        return () => clearInterval(interval)
+    }, [])
 
     return (
         <>
@@ -91,7 +105,7 @@ export default function Pete3({ normanHealth, petePower, ericaHealth, round, pet
                                 </tr>
                             </tbody>
                         </Table>
-                        <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={() => navigate('/gameend')}>Next</Button></div>
+                        <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={handleNextRound}>Next</Button></div>
                     </animated.div>
                 )}
             </div>

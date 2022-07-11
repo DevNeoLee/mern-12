@@ -2,11 +2,12 @@ import { Link, useNavigate } from "react-router-dom"
 
 import { HeartFill } from 'react-bootstrap-icons';
 import { Form, Button, ProgressBar, Table } from "react-bootstrap";
+import { useEffect } from "react";
 
 import { useTransition, useSpring, animated } from "react-spring";
 
 
-export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute, normanStay, round, normanHealth, waterDepthEndupNorman, electricity}) {
+export default function Norman3({ setRound, setStep, setResultReady, ericaHealth, petePower, peteHealth, whichRoute, normanStay, round, normanHealth, waterDepthEndupNorman, electricity}) {
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -28,6 +29,19 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
     console.log("normanHealth: ", normanHealth)
     console.log("waterDepthEndupNorman: ", waterDepthEndupNorman)
     console.log("electricity: ", electricity)
+
+    const handleNextRound = () => {
+        console.log('Next Round Clicked! :', round)
+    }
+
+    useEffect(() => {
+        setRound(prevround => prevround + 1)
+        const interval = setInterval(() => {
+            setStep(1);
+            setResultReady(false);
+        }, 2000);
+        return () => clearInterval(interval)
+    }, [])
 
     return (
         <>
@@ -104,7 +118,7 @@ export default function Norman3({ ericaHealth, petePower, peteHealth, whichRoute
                                 </tr>
                             </tbody>
                         </Table>
-                        <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={() => navigate('/gameend')}>Next</Button></div>
+                        <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={handleNextRound }>Next</Button></div>
                     </animated.div>
                 )}
             </div>

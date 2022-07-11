@@ -9,7 +9,7 @@ import { Form, Button, ProgressBar } from "react-bootstrap";
 
 import { useTransition, useSpring, animated } from "react-spring";
 
-export default function Erica1() {
+export default function Erica1({ round }) {
 
     const transition = useTransition(true, {
         from: { x: 300, y: 0, opacity: 0 },
@@ -36,7 +36,11 @@ export default function Erica1() {
             {/* {transition((style, item) =>
                 <animated.h2 style={style}>Weather News</animated.h2>
             )} */}
-
+            <div className="gameUpperForm">
+                {transition((style, item) =>
+                    <animated.h2 style={style}>Round {round} </animated.h2>
+                )}
+            </div>
             {transition2((style, item) =>
                 <animated.div style={style} className="roleframe weatherMargin">
                     <div className="riskInfo">

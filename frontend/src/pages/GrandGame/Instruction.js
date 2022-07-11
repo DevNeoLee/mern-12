@@ -28,13 +28,13 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
 
   const [joined, setJoined] = useState(false);
 
-  const handleStart = (e) => { 
+  const handleStart = async (e) => { 
     e.preventDefault()
     console.log('handleStart clicked')
     setGameStart(true)
 
     //update sessionData in MongoDB
-    // await updateToMongoDB()
+    await updateToMongoDB()
 
     socket.emit('game_start')
     // handleRoleChange()

@@ -4,9 +4,10 @@ import { HeartFill } from 'react-bootstrap-icons';
 import { Form, Button, ProgressBar, Table } from "react-bootstrap";
 
 import { useTransition, animated } from "react-spring";
+import { useEffect } from "react";
 
 
-export default function Erica3({ petePower, round, ericaHealth, peteHealth, normanHealth, normanStay, messagesStorageErica }) {
+export default function Erica3({ setRound, setStep, setResultReady, petePower, round, ericaHealth, peteHealth, normanHealth, normanStay, messagesStorageErica }) {
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -22,6 +23,18 @@ export default function Erica3({ petePower, round, ericaHealth, peteHealth, norm
 
     const navigate = useNavigate();
 
+    const handleNextRound = () => {
+        console.log('Next Round Clicked! :', round)
+    }
+
+    useEffect(() => {
+        setRound(prevround => prevround + 1)
+        const interval = setInterval(() => {
+            setStep(1);
+            setResultReady(false);
+        }, 2000);
+        return () => clearInterval(interval)
+    }, [])
     return (
         <>
             <div className="gameUpperForm">
@@ -93,7 +106,7 @@ export default function Erica3({ petePower, round, ericaHealth, peteHealth, norm
                                 </tr>
                             </tbody>
                         </Table>
-                        <Link to="/gameend"><Button size="lg" style={{ fontSize: "1.3rem" }}>Next</Button></Link>
+                        <Button size="lg" style={{ fontSize: "1.3rem" }} onClick={handleNextRound}>Next</Button>
 
                         {/* <div className="buttons" style={{ margin: "15px 80px" }}><Button size="lg" onClick={() => navigate('/gameend')}>Next</Button></div> */}
                     </animated.div>
