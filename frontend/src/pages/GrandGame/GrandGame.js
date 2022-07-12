@@ -44,6 +44,7 @@ export default function GrandGame() {
     const [socket, setSocket] = useState(null)
 
     const [round, setRound] = useState(1)
+
     const [user, setUser] = useState({
         role: '',
         id: '',
@@ -78,7 +79,7 @@ export default function GrandGame() {
     })
     
     const [roundFinished, setRoundFinished] = useState(false)
-    const [resultReady, setResultReady] = useState(false)
+    const [resultReady, setResultReady] = useState(false)//////////true <-> false 로 step값과 함께 페이지 이동 결정함
 
     const [peteDecisions, setPeteDecisions] = useState([
         {stay: "", whichRoute: "", role: ""},
@@ -122,7 +123,7 @@ export default function GrandGame() {
 
     const [ players, setPlayers ] = useState([])
 
-    const normanRoles = ['NormanA', 'NormanB', 'NormanC'];
+    const normanRoles = ['NormanA', 'NormanB', 'NormanC', 'NormanD', 'NormanE', 'NormanF'];
 
     const [waterDepthEndupNorman, setWaterDepthEndupNorman] = useState(0)
     const [waterDepthEndupPete, setWaterDepthEndupPete] = useState(0)
@@ -148,7 +149,7 @@ export default function GrandGame() {
     const sessionDataObject = JSON.parse(sessionData);
 
     ///////////////////////////main data///////////////////////////////////////////////////////////////////////// 
-    const [session, setSession] = useState(null);
+    const [session, setSession] = useState({});
 
     //individual game
     const [game, setGame] = useState({

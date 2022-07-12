@@ -12,6 +12,7 @@ import WaitModalPete from '../../../components/WaitModalPete';
 
 import React, { PureComponent } from 'react';
 import { AreaChart, Area, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { AiFillWechat } from 'react-icons/ai';
 
 import { Link } from "react-router-dom"
 
@@ -325,12 +326,13 @@ export default function Pete2({ data, handleChangeWhichRoutePete, whichRoutePete
                             <div className="messageBox">
                                 <div className="phonebox"><img src="/phone_side.png" width="520px" /></div>
                                 <div className="comingMessage">
+                                    <AiFillWechat size={30} /><span>Local Emergency App</span>
                                     <div className="alertMessagePete">
-                                        <p className="">
-                                            {messageFromErica.messageToPete}
-                                        </p>
+                                        <div className="incomingEricaMessage">
+                                            <div className="message_erica"><h5>Message from Erica </h5> <h6> Emergency Manager</h6> </div>{messageFromErica.messageToPete}
+                                        </div>
                                         {messageFromErica && <p className="">
-                                            Current Level of Warning: {messageFromErica.levelOfWarning}
+                                            <div style={{ color: "blue", marginTop: "0.6rem", marginRight: "0.5rem", display: "flex"}}>Current Level of Warning: <p style={{ color: "red", marginLeft: "0.5rem"}}>{messageFromErica.levelOfWarning} </p></div> 
                                         </p>}
                                     </div>
                                 </div>

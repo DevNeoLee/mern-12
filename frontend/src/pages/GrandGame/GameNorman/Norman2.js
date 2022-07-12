@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import "../../../App.css"
 
 import { HeartFill, HouseFill } from 'react-bootstrap-icons';
@@ -55,6 +55,19 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
         setWaitPopup(false)
     }
 
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+
+        if (containerRef && containerRef.current) {
+            const element = containerRef.current;
+            element.scroll({
+                top: element.scrollHeight,
+                left: 0,
+                behavior: "smooth"
+            })
+        }
+    }, [containerRef, chatData])
     // const getHouseChartData = () => {
 
     //     let houseChartdata = data[`round${round}`][3];
@@ -151,13 +164,19 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
 
     const handleChatSubmit = (e) => {
         e.preventDefault();
+       
         setChatData(prev => [...prev, { role: 'You', message: chat}])
         sendChat(chat)
         setChat("")
     }
 
     const handleChatChange = (e) => {
+        
         console.log("Chat typed: ", e.target.value)
+        if (e.currentTarget.value==""){
+            return;
+            console.log("hhh")
+        }
         setChat(e.target.value)
     }
     return (
@@ -262,12 +281,12 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                             <h2>Round {round}</h2>
                         </div> */}
                         <div className="chattingContainer">
-                            <AiFillWechat size={30} /><span> Chat</span>
-                            <h6>Communicate to other players</h6>
-                            <div className="chatScreen" id="message-container">
+                            <AiFillWechat size={30} color="white" /><span style={{ color: "white" }}> Neibourhood Chat App</span>
+                            <h6>Discuss with other Normans (Neibours)</h6>
+                            <div className="chatScreen" id="message-container" ref={containerRef}>
                                 {chatData.map((data, i)=> (
                                 <div key={i}>
-                                        {data.role === "You" ? <span style={{ color: 'red', minWidth: "200px", backgroundColor: "darkGray"}}>{data.role}</span> : <span style={{ color: 'green', minWidth: "200px", backgroundColor: "lightpink"}}>{data.role}</span>}
+                                        {data.role === "You" ? <span style={{ color: 'red', minWidth: "200px", backgroundColor: "white"}}>{data.role}</span> : <span style={{ color: 'green', minWidth: "200px", backgroundColor: "white"}}>{data.role}</span>}
                                         : {data.message}
                                 </div>
                                 ))}
@@ -275,7 +294,7 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                             <div className="chatInputBox">
                                 <form onSubmit={handleChatSubmit}>
                                     <div className="chatInput">
-                                        <input type="text" value={chat} onChange={handleChatChange}/>
+                                        <input autoFocus type="text" value={chat} onChange={handleChatChange}/>
                                         <button type="submit">Send</button>
                                     </div>
                                     
@@ -366,9 +385,11 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                             <div className="messageBox">
                                 <div className="phonebox"><img src="/phone_side.png" width="520px"/></div>
                                 <div className="comingMessage">
-                                    <AiFillWechat size={30} /><span>Local Emergency Text Message App</span>
-                                    {/* <h6>Communicate to other players</h6> */}
-                                    <div className="chatContent">
+                                    <AiFillWechat size={30} /><span>Local Emergency App</span>
+                                    <div className="incomingEricaMessage">
+                                        <div className="message_erica"><h5>Message from Erica </h5> <h6> Emergency Manager</h6> </div>
+                                    </div>
+                                    {/* <div className="chatContent">
                                         {chatData.map((data, i) => (
                                             <div key={i}>
                                                 {data.role === "You" ? <span style={{ color: 'red', minWidth: "200px", backgroundColor: "darkGray" }}>{data.role}</span> : <span style={{ color: 'green', minWidth: "200px", backgroundColor: "lightpink" }}>{data.role}</span>}
@@ -383,15 +404,15 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                                                 <button type="submit">Send</button>
                                             </div>
                                         </form>
-                                    </div>
-                                    {/* <div className="alertMessage">
+                                    </div> */}
+                                    <div className="alertMessage">
                                         <p className="">
                                             {messageFromErica.messageToNorman}
                                         </p>
-                                        {messageFromErica && <p className="">
-                                            Current Level of Warning: {messageFromErica.levelOfWarning}
+                                        {messageFromErica && <p style={{ display: "flex"}}>
+                                            <div style={{ color: "blue", marginRight: "0.5rem"}}>Current Level of Warning:  </div> {messageFromErica.levelOfWarning}
                                         </p>}
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
                         </div>
