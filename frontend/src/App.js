@@ -12,7 +12,6 @@ import FormPreGame from "./pages/FormPreGame/FormPreGame";
 import FormPostGame from "./pages/FormPostGame/FormPostGame";
 
 import GrandGame from "./pages/GrandGame/GrandGame";
-import FinalResult from "./pages/GrandGame/FinalResult"
 
 import Login from './pages/Login'
 
@@ -34,8 +33,6 @@ export default function App({ ...props }) {
         <Route path="/formpostgame" element={<FormPostGame />} />
 
         <Route path="/grandgame" element={<GrandGame />} />
-
-        <Route path="/finalresult" element={<FinalResult />} />
 
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/result" element={<Result />} />
