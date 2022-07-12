@@ -15,7 +15,7 @@ import { AreaChart, Area, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tool
 
 import { Link } from "react-router-dom"
 
-export default function Erica2({ data, waitPopupErica, setWaitPopupErica, players, handleSubmitErica, round, handleChangeWarning, handleChangeMessageToNorman, handleChangeMessageToPete, levelOfWarning, messageToNorman, messageToPete, ericaHealth, electricity, step, normanQuestion, normanHealth }) {
+export default function Erica2({ globalSession, setGlobalSession, data, waitPopupErica, setWaitPopupErica, players, handleSubmitErica, round, handleChangeWarning, handleChangeMessageToNorman, handleChangeMessageToPete, levelOfWarning, messageToNorman, messageToPete, ericaHealth, electricity, step, normanQuestion, normanHealth }) {
 
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);

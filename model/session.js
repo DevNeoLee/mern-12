@@ -6,7 +6,10 @@ const SessionSchema = new Schema({
     ipAddress: {
         type: String,
     },
-    date: {
+    session_begin: {
+        type: Date,
+    },
+    session_end: {
         type: Date,
     },
     preGameSurvey: {
@@ -16,7 +19,7 @@ const SessionSchema = new Schema({
     generalSurvey: {
     },
     role: "",
-    game: { }
+    your_decisions: [],
 })
 
 module.exports = Session = mongoose.model('session', SessionSchema);

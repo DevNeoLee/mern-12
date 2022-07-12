@@ -13,11 +13,10 @@ router.post('/', (req, res) => {
 
     const newData = new Game({
         ipAddress_creator: req.ip,
-        time_begin: new Date(),
-        time_end: null,
+        game_begin: new Date(),
+        game_end: null,
         players: [],
         chatting: [],
-        play_history: []
     })
 
     newData.save();

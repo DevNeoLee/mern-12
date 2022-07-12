@@ -19,7 +19,7 @@ import { AiFillWechat } from 'react-icons/ai';
 import { Socket } from 'socket.io-client';
 
 
-export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorman, handleChangeNormanStay, normanStay, popForm, setPopForm, messageFromErica, round, role, electricity, messageToNorman, step, normanQuestion, normanHealth, socket, setChatData, chatData }) {
+export default function Norman2({ setGlobalSession, globalSession, data, handleChangeWhichRoute, handleSubmitNorman, handleChangeNormanStay, normanStay, popForm, setPopForm, messageFromErica, round, role, electricity, messageToNorman, step, normanQuestion, normanHealth, socket, setChatData, chatData }) {
 
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);
@@ -48,6 +48,10 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
     //         },
     //     ])
     // }
+
+    useEffect(() => {
+        console.log(JSON.stringify(globalSession))
+    }, [])
 
     const handleNormanForm = () => {
 

@@ -10,7 +10,15 @@ import { useTransition, useSpring, animated } from "react-spring";
 
 import { Form, Button, ProgressBar } from "react-bootstrap";
 
+import { useRecoilState } from 'recoil';
+import { sessionState } from '../../recoil/globalState';
+
 export default function Instruction({ clients, axios, HOST, sessionDataObject, setGameStart, id, setId, handleRoleChange, setCanStartGame, canStartGame ,game, setGame, socket, session, setSession, MAX_CLIENTS, MIN_CLIENTS, giveRoleRandomly, setRole, role, normans, userQuantity, games, setGames}) {
+
+  //main data
+  const [globalSession, setGlobalSession] = useRecoilState(sessionState);
+
+  const roles = ['Erica', 'Pete', 'NormanA', 'NormanB', 'NormanC', 'NormanD', 'NormanE', 'NormanF'];
 
   const transition = useTransition(true, {
     from: { x: 300, y: 0, opacity: 0 },
@@ -84,20 +92,21 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
     console.log('session: ', session)
     console.log('session', session)
     if (!joined && session && game.players.length < MAX_CLIENTS) {
-      setGame({...game, players: [...game.players, {session_id: session._id, role: game.roles[game.players.length]}], room_name: 1});
+      setGame({...game, players: [...game.players, {session_id: session._id, role: roles[game.players.length]}], room_name: 1});
       console.log('************************')
       if (sessionDataObject) {
-        sessionDataObject.role = game.roles[game.players.length];
+        sessionDataObject.role = roles[game.players.length];
+        setGlobalSession({...sessionDataObject})
       }
-      setRole(game.roles[game.players.length])
+      setRole(roles[game.players.length])
       console.log('-----------------------------')
       setJoined(true);
-      setId({ session_id: session._id, role: game.roles[game.players.length] })
+      setId({ session_id: session._id, role: roles[game.players.length] })
       console.log('???????????')
 
       //update sessionStorage
       if (sessionDataObject) {
-        // sessionDataObject.role = game.roles[game.players.length];
+        // sessionDataObject.role = roles[game.players.length];
         sessionDataObject.role = role;
         await sessionStorage.setItem('ufoknSession', JSON.stringify(sessionDataObject));
         console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
@@ -108,8 +117,8 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
       console.log("You already joined a room, can't not join twice")
       return;
     }
-    console.log("game changed: ", { ...game, players: [...game.players, { session_id: session._id, role: game.roles[game.players.length] }], room_name: "1"})
-    socket.emit('join_room', "1", { ...game, players: [...game.players, { session_id: session._id, role: game.roles[game.players.length] }], room_name: "1" }, session._id)////////////////
+    console.log("game changed: ", { ...game, players: [...game.players, { session_id: session._id, role: roles[game.players.length] }], room_name: "1"})
+    socket.emit('join_room', "1", { ...game, players: [...game.players, { session_id: session._id, role: roles[game.players.length] }], room_name: "1" }, session._id)////////////////
 
   }
 

@@ -13,7 +13,7 @@ router.post('/', (req, res) => {
 
     const newData = new Session({
         ipAddress: req.ip,
-        date: new Date(),
+        session_begin: new Date(),
         role: ""
     })
 
