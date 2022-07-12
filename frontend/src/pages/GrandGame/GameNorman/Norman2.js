@@ -35,6 +35,9 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
 
     const [chat, setChat] = useState("")
 
+    //main decisions storage for all that happenings and result, health
+    const [myDecisions, setMyDecisions] = useState([]);
+
     // const handleMouseEnter1 = () => {
     //     setGraphData([
     //               {
@@ -55,6 +58,7 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
         setWaitPopup(false)
     }
 
+    // chatting auto scroll on the screen when the chat contents are more than screen size
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -173,10 +177,7 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
     const handleChatChange = (e) => {
         
         console.log("Chat typed: ", e.target.value)
-        if (e.currentTarget.value==""){
-            return;
-            console.log("hhh")
-        }
+
         setChat(e.target.value)
     }
     return (
