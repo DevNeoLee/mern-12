@@ -56,11 +56,11 @@ export default function FormPreGame() {
       console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
 
       //update sessionData in MongoDB
-      await updateToMongoDB()
+      await updateSessionToMongoDB()
     }
   }
 
-  const updateToMongoDB = async () => {
+  const updateSessionToMongoDB = async () => {
     console.log('session data: ', sessionDataObject);
   
     const dataUpdate = async () => { 
@@ -140,7 +140,7 @@ export default function FormPreGame() {
     <>
       <div className="container">
         <div className="formGeneral">
-          <Form onSubmit={handleSubmit}> 
+          <Form > 
             <fieldset>
               <Form.Group>
                 {/* <div className="logo">

@@ -181,6 +181,7 @@ export default function GrandGame() {
             .then(data => {
                 
                 sessionStorage.setItem('ufoknSession', JSON.stringify(data));
+                console.log('New Session created, saved in SessionStorage on GrandGame page:', data)
                 return data
             })
             .catch(err => console.log(err))
@@ -192,6 +193,8 @@ export default function GrandGame() {
             .then(res => res.json())
             .then(data => {
                 sessionStorage.setItem('ufoknGame', JSON.stringify(data));
+                console.log('New Game created, saved in SessionStorage on GrandGame page:', data)
+
                 return data
             })
             .catch(err => console.log(err))
@@ -221,7 +224,7 @@ export default function GrandGame() {
         const dataUpdate = async () => {
             await axios.put(HOST + '/api/session', {...sessionDataObject, payload})
                 .then(data => {
-                    console.log('data from mongo saved: ', data)
+                    console.log('Session to MongoDB updated: ', data)
                     // return data
                 })
                 .catch(err => console.log(err))
@@ -233,13 +236,12 @@ export default function GrandGame() {
 
     useEffect(() => {
         const getItem = async () => {
-            console.log('grandGame page begins!')
+            console.log('GrandGame page begins!')
         let s = await sessionStorage.getItem('ufoknSession')
         console.log("s??: ", s)
         if (!s ) {
             console.log('세션이 없네')
             s = await createSession()
-            console.log("Your Session Newly create/Saved in Mongo: ", s)
 
             setSession(s)
             setGlobalSession(s)
@@ -255,9 +257,8 @@ export default function GrandGame() {
 
     useEffect(() => {
         const setItem = async () => {
-            console.log('session updated!')
             await sessionStorage.setItem('ufoknSession', JSON.stringify(session))
-            console.log('Your session data; ', session)
+            console.log('Your session data in userEffect[session]; ', session)
         }
             
         setItem()
@@ -267,7 +268,7 @@ export default function GrandGame() {
         const updateGames = async () => {
             console.log('game updated!')
             await sessionStorage.setItem('ufoknGame', JSON.stringify(game))
-            console.log('Your game data updated: ', game)
+            console.log('Your Game data in userEffect[game];', game)
     
             let newGames = games.map(g => {
                 if (g.room_name === game.room_name) {
@@ -276,13 +277,12 @@ export default function GrandGame() {
                     return g
                 }
             })
-    
-            console.log("what newGames: ?", newGames)
             setGames(newGames)
+            console.log('Your Global Session on useEffect[game]', globalSession)
         }
         updateGames();
         // socket.emit("join_room", game.room_name, game, session._id) ////////////////////////////////
-    }, [game])
+    }, [game], () => { console.log("New Games updated in useEffect[game]: ", games)})
 
 
     useEffect(() => {
@@ -298,7 +298,7 @@ export default function GrandGame() {
     }, [peteHealth, normanHealth], () => { console.log('erica health updated; ', ericaHealth) })
 
     useEffect(() => {
-        console.log("City Power now on: ", electricity )
+        // console.log("City Power now on: ", electricity )
     }, [electricity])
    
     //먼저 소켓 접속
@@ -306,7 +306,7 @@ export default function GrandGame() {
         //////Socket///////////////////////////////////////////////////////////////////
         const socket = io()
         setSocket(socket)
-        console.log("socket connected: ", socket)
+        // console.log("socket connected: ", socket)
 
         //먼저 무조건 게임을 최소 하나 있어야 함으로 게임 하나 만듬
         // if (!isGame) {
@@ -314,7 +314,7 @@ export default function GrandGame() {
         // }
 
         socket.on("client_count", (arg1, arg2) => {
-            console.log('Client Count:', arg2)
+            // console.log('Client Count:', arg2)
             setClients(arg2);
         })
 
@@ -323,7 +323,7 @@ export default function GrandGame() {
             setGame(game)
             setGames([...games, game])
             console.log('game: ', game)
-            console.log('games: ', games)
+            // console.log('games: ', games)
             console.log('room_size: ', room_size)
             checkGameStart(room_size)
         })
@@ -345,15 +345,15 @@ export default function GrandGame() {
         })
 
         socket.onAny((event, ...args) => {
-            console.log('socket event: ', event, args)
+            // console.log('socket event: ', event, args)
         })
 
         socket.on("leaving", () => {
-            console.log("someone leaving the room")
+            // console.log("someone leaving the room")
         })
 
         socket.on("left", () => {
-            console.log("someone left the room")
+            // console.log("someone left the room")
         })
 
         socket.on("erica_message", (msg) => {
@@ -382,14 +382,12 @@ export default function GrandGame() {
                 })
          
             ))
-            console.log('norman data added to your states!')
-
         }))
 
         socket.on("pete_message", (data => {
             console.log('Pete data from Pete received: ', data)
-            console.log('current peteDecisions: ', peteDecisions)
-            console.log('data.stay: poweroff?', data.stay)
+            // console.log('current peteDecisions: ', peteDecisions)
+            // console.log('data.stay: poweroff?', data.stay)
 
             if (data.stay === 'poweroff')  {
                 setElectricity('poweroff')
@@ -415,7 +413,7 @@ export default function GrandGame() {
         socket.on("norman_chat", (data) => {
             console.log('Norman is chatting on frontend received: ', data.message);
             setChatReceived(prev => ({...prev, message: data.message}));
-            console.log("hmm, role: ", data.role)
+            // console.log("hmm, role: ", data.role)
             setChatData(prev => [...prev, { role: data.role, message: data.message }], console.log("chatData1: ", JSON.stringify(chatData)) );
             console.log("chatData2: ", JSON.stringify(chatData))
         })
@@ -429,21 +427,21 @@ export default function GrandGame() {
             // socket.close()
             // socket.disconnect();
             setSocket(null);
-            console.log("socket closed: ")
+            // console.log("socket closed: ")
         }
     }, [])
 // },[setSocket])
 
     useEffect(() => {
-        console.log("messages storage Erica: ", JSON.stringify(messagesStorageErica))
+        // console.log("messages storage Erica: ", JSON.stringify(messagesStorageErica))
     }, [messagesStorageErica])
 
     
 
     /////////////////////round complete dececion logic////////////////////
     useEffect(()=> {
-        console.log('NormanDecisions: ',normanDecisions)
-        console.log('PeteDecisions: ', peteDecisions)
+        // console.log('NormanDecisions: ',normanDecisions)
+        // console.log('PeteDecisions: ', peteDecisions)
 
         //만약 노만과 피터가 자료를 서로 보내줘서 두명의 자료가 모두 압데이트 되어 모두 null이 아니라면
         if ((normanDecisions[round - 1].stay) && (peteDecisions[round - 1].stay)) {
@@ -471,7 +469,7 @@ export default function GrandGame() {
 
 
     useEffect(() => {
-        console.log("chatData: ", chatData)
+        // console.log("chatData: ", chatData)
     }, [chatData])
 
     const calculateScore = (normanDecisions, peteDecisions) => {
@@ -480,8 +478,8 @@ export default function GrandGame() {
         const stayedHome = normanDecisions[round - 1].stay === 'stayon' 
         const stayedHomePete = peteDecisions[round - 1].stay === 'poweron'
 
-        console.log('stayed home ? : ', stayedHome)
-        console.log('stayed home pete? : ', stayedHomePete)
+        // console.log('stayed home ? : ', stayedHome)
+        // console.log('stayed home pete? : ', stayedHomePete)
 
 
         // console.log('노만의 결정은 ? : ', normanDecisions[round - 1].stay)
@@ -503,10 +501,10 @@ export default function GrandGame() {
 
             decidedAreaNorman = normanDecisions[round - 1].role
 
-            console.log('normanDecisions[round - 1]: ', normanDecisions[round - 1])
-            console.log('normanDecisions[round - 1].role: ', normanDecisions[round - 1].role)
+            // console.log('normanDecisions[round - 1]: ', normanDecisions[round - 1])
+            // console.log('normanDecisions[round - 1].role: ', normanDecisions[round - 1].role)
 
-            console.log("decidedAreaNorman: ", decidedAreaNorman)
+            // console.log("decidedAreaNorman: ", decidedAreaNorman)
 
             if (electricity === 'poweron') {
                 powerOutrageRisk = 0;
@@ -531,11 +529,11 @@ export default function GrandGame() {
             }
             
 
-            console.log('travelRisk: ', travelRisk)
-            console.log('powerOutrageRisk: ', powerOutrageRisk)
-            console.log('criticalRisk: ', criticalRisk)
-            console.log('decidedAreaNorman: ', decidedAreaNorman)
-            console.log('waterDepthEndupNorman: ', waterDepthEndupNorman)
+            // console.log('travelRisk: ', travelRisk)
+            // console.log('powerOutrageRisk: ', powerOutrageRisk)
+            // console.log('criticalRisk: ', criticalRisk)
+            // console.log('decidedAreaNorman: ', decidedAreaNorman)
+            // console.log('waterDepthEndupNorman: ', waterDepthEndupNorman)
 
 
         ///now in case of 'left home'
@@ -563,13 +561,13 @@ export default function GrandGame() {
             }
 
 
-            console.log('======== went out norman =========')
+            // console.log('======== went out norman =========')
 
-            console.log('travelRisk: ', travelRisk)
-            console.log('powerOutrageRisk: ', powerOutrageRisk)
-            console.log('criticalRisk: ', criticalRisk)
-            console.log('decidedAreaNorman: ', decidedAreaNorman)
-            console.log('waterDepthEndupNorman: ', waterDepthEndupNorman)
+            // console.log('travelRisk: ', travelRisk)
+            // console.log('powerOutrageRisk: ', powerOutrageRisk)
+            // console.log('criticalRisk: ', criticalRisk)
+            // console.log('decidedAreaNorman: ', decidedAreaNorman)
+            // console.log('waterDepthEndupNorman: ', waterDepthEndupNorman)
         }
 
         setNormanHealth(prev => 
@@ -583,10 +581,10 @@ export default function GrandGame() {
 
             decidedAreaPete = peteDecisions[round - 1].role
 
-            console.log('peteDecisions[round - 1]: ', peteDecisions[round - 1])
-            console.log('peteDecisions[round - 1].role: ', peteDecisions[round - 1].role)
+            // console.log('peteDecisions[round - 1]: ', peteDecisions[round - 1])
+            // console.log('peteDecisions[round - 1].role: ', peteDecisions[round - 1].role)
 
-            console.log("decidedAreaPete: ", decidedAreaPete)
+            // console.log("decidedAreaPete: ", decidedAreaPete)
 
             if (electricity === 'poweron') {
                 powerOutrageRisk = 0;
@@ -615,11 +613,11 @@ export default function GrandGame() {
             }
 
 
-            console.log('travelRisk: ', travelRiskPete)
-            console.log('powerOutrageRisk: ', powerOutrageRisk)
-            console.log('criticalRisk: ', criticalRiskPete)
-            console.log('decidedAreaPete: ', decidedAreaPete)
-            console.log('waterDepthEndupPete: ', waterDepthEndupPete)
+            // console.log('travelRisk: ', travelRiskPete)
+            // console.log('powerOutrageRisk: ', powerOutrageRisk)
+            // console.log('criticalRisk: ', criticalRiskPete)
+            // console.log('decidedAreaPete: ', decidedAreaPete)
+            // console.log('waterDepthEndupPete: ', waterDepthEndupPete)
 
 
             ///now in case of 'left home'
@@ -648,13 +646,13 @@ export default function GrandGame() {
             }
 
 
-            console.log('======== went out Pete =========')
+            // console.log('======== went out Pete =========')
 
-            console.log('travelRisk: ', travelRiskPete)
-            console.log('powerOutrageRisk: ', powerOutrageRisk)
-            console.log('criticalRisk: ', criticalRiskPete)
-            console.log('decidedAreaPete: ', decidedAreaPete)
-            console.log('waterDepthEndupPete: ', waterDepthEndupPete)
+            // console.log('travelRisk: ', travelRiskPete)
+            // console.log('powerOutrageRisk: ', powerOutrageRisk)
+            // console.log('criticalRisk: ', criticalRiskPete)
+            // console.log('decidedAreaPete: ', decidedAreaPete)
+            // console.log('waterDepthEndupPete: ', waterDepthEndupPete)
         }
 
         console.log("hmm: ", 100 - travelRiskPete - powerOutrageRisk - criticalRiskPete)
@@ -673,7 +671,7 @@ export default function GrandGame() {
         // setRole(role => '')
 
         // socket.emit("role")
-        console.log('someone joined a room', typeof role)
+        // console.log('someone joined a room', typeof role)
         // /socket emit/////
 
 
@@ -747,7 +745,7 @@ export default function GrandGame() {
 
     //Norman handles
     const handleSubmitNorman = (e) => {
-        console.log('Norman just submitted his form:')
+        // console.log('Norman just submitted his form:')
         e.preventDefault()
 
         console.log("norman stay: " + normanStay + "which route: " + whichRoute)
@@ -774,19 +772,19 @@ export default function GrandGame() {
 
     const handleChangeNormanStay = (e) => {
         setNormanStay(e.target.value)
-        console.log('norman select: ', normanStay)
+        // console.log('norman select: ', normanStay)
     }
 
     const handleChangeWhichRoute =(e) => {
         setWhichRoute(e.target.value)
-        console.log('norman which route: ', e.target.value)
+        // console.log('norman which route: ', e.target.value)
     }
 
 
     //erica communicating through SOCKET  + to do: save to MongoDB
     const handleSubmitErica = (e) => {
         e.preventDefault()
-        console.log('erica just submitted her messages:')
+        // console.log('erica just submitted her messages:')
 
         const messages = {
             messageToNorman, messageToPete, levelOfWarning
@@ -795,7 +793,7 @@ export default function GrandGame() {
         // socket interaction
         socket.emit('erica_message', messages)
 
-        console.log("current messages! Pete: " + messageToPete + "Norman: " + messageToNorman + "LevelOfWarning: " + levelOfWarning)
+        // console.log("current messages! Pete: " + messageToPete + "Norman: " + messageToNorman + "LevelOfWarning: " + levelOfWarning)
         switch(round) {
             case 1:
                 setMessagesStorageErica(prevState => ({
@@ -861,7 +859,7 @@ export default function GrandGame() {
 
        
         
-        console.log("erica_messages on frontend: ", JSON.stringify(messagesStorageErica.round1))
+        // console.log("erica_messages on frontend: ", JSON.stringify(messagesStorageErica.round1))
 
     } 
 
@@ -871,17 +869,17 @@ export default function GrandGame() {
 
     const handleChangeWarning = (e) => {
         setLevelOfWarning(e.target.value)
-        console.log("Level of wanrning: ", e.target.value)
+        // console.log("Level of wanrning: ", e.target.value)
     }
 
     const handleChangeMessageToNorman = (e) => {
         setMessageToNorman(e.target.value)
-        console.log("Message To Norman: ", e.target.value)
+        // console.log("Message To Norman: ", e.target.value)
     }
 
     const handleChangeMessageToPete = (e) => {
         setMessageToPete(e.target.value)
-        console.log("Message To Pete: ", e.target.value)
+        // console.log("Message To Pete: ", e.target.value)
     }
 
     const ericas = [

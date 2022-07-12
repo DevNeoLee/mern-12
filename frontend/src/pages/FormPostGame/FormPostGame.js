@@ -54,12 +54,12 @@ export default function FormPostGame() {
       console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
 
       //update sessionData in MongoDB
-      const session = await updateToMongoDB()
+      const session = await updateSessionToMongoDB()
       console.log("session:", session);
     }
   }
 
-  const updateToMongoDB = async () => {
+  const updateSessionToMongoDB = async () => {
     console.log('session data: ', sessionDataObject);
 
     const dataUpdate = async () => {

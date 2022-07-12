@@ -14,9 +14,6 @@ import { useTransition, useSpring, animated } from "react-spring";
 
 import { Form, Button } from "react-bootstrap";
 
-import { useRecoilState } from 'recoil';
-import { sessionState } from '../recoil/globalState';
-
 import HOST from '../utils/routes'
 
 import io from 'socket.io-client';
@@ -28,7 +25,6 @@ export default function LogIn() {
     const [socket, setSocket] = useState(null);
     const [clientCount, setClientCount] = useState(0);
 
-    const [globalSession, setGlobalSession] = useRecoilState(sessionState);
 
     useEffect(() => {
 
@@ -38,7 +34,6 @@ export default function LogIn() {
             setSocket(null);
             // socket.disconnect();
             // socket.close()
-            console.log("socket closed: ");
         }
     }, [])
 
@@ -88,7 +83,6 @@ export default function LogIn() {
         if (!session) {
             console.log('There is no know session yet..')
             const session = await createSession()
-            setGlobalSession(session);
             // console.log('global session from login page: ', globalSession);
             console.log("Session created:", session)
         } else {

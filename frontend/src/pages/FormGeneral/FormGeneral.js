@@ -68,13 +68,13 @@ export default function FormGeneral({step}) {
             console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
 
             //update sessionData in MongoDB
-            const session = await updateToMongoDB()
+            const session = await updateSessionToMongoDB()
             console.log("session:", session);
         }
         navigate('/theend');
     }
 
-    const updateToMongoDB = async () => {
+    const updateSessionToMongoDB = async () => {
         console.log('session data: ', sessionDataObject);
 
         const dataUpdate = async () => {

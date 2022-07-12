@@ -57,7 +57,7 @@ io.on("connection", socket => {
     console.log('io.engine.clientsCount!: ', io.engine.clientsCount) // 현재 몇명 접속
     
     //현재 몇명 접속 정보 이벤트
-    io.emit("client_count", "New client connected, we have total users: ", io.engine.clientsCount)
+    io.emit("client_count", "New user connected, current users: ", io.engine.clientsCount)
     
     //create a room 
     socket.on("create_room", () => {
@@ -177,11 +177,11 @@ io.on("connection", socket => {
 
     socket.on("disconnect", () => {
         socket.to('1').emit('left')
-        
-        //현재 몇명 접속 정보 이벤트
-        io.emit("client_count", "New client connected, we have total users: ", io.engine.clientsCount)
 
-        console.log("someone left the room", socket.id)
+        //현재 몇명 접속 정보 이벤트
+        io.emit("client_count", "A user disconnected this page, current users: ", io.engine.clientsCount)
+
+        console.log("someone left current page", socket.id)
         // io.sockets.emit('left', () => { console.log('bye bye')})
         // console.log('room2 size: ', io.sockets.adapter.rooms.get('room2').size)
     })

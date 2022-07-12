@@ -47,7 +47,7 @@ export default function Pete2({ globalSession, setGlobalSession, data, handleCha
     }
 
     const handleWaitModal = () => {
-        console.log("wait Modal clicked!")
+        // console.log("wait Modal clicked!")
         setWaitPopup(false)
     }
 

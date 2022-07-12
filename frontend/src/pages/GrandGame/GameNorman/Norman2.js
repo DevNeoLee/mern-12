@@ -58,7 +58,7 @@ export default function Norman2({ setGlobalSession, globalSession, data, handleC
     }
 
     const handleWaitModal = () => {
-        console.log("wait Modal clicked!")
+        // console.log("wait Modal clicked!")
         setWaitPopup(false)
     }
 
@@ -165,7 +165,7 @@ export default function Norman2({ setGlobalSession, globalSession, data, handleC
     }
 
     const sendChat =(message) => {
-        console.log("Chat sent: ", message)
+        // console.log("Chat sent: ", message)
         socket.emit("norman_chat", {message: message, role: role})
         
     }
@@ -180,7 +180,7 @@ export default function Norman2({ setGlobalSession, globalSession, data, handleC
 
     const handleChatChange = (e) => {
         
-        console.log("Chat typed: ", e.target.value)
+        // console.log("Chat typed: ", e.target.value)
 
         setChat(e.target.value)
     }
