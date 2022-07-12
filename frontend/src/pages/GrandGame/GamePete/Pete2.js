@@ -331,9 +331,9 @@ export default function Pete2({ data, handleChangeWhichRoutePete, whichRoutePete
                                         <div className="incomingEricaMessage">
                                             <div className="message_erica"><h5>Message from Erica </h5> <h6> Emergency Manager</h6> </div>{messageFromErica.messageToPete}
                                         </div>
-                                        {messageFromErica && <p className="">
+                                        {messageFromErica && <div className="">
                                             <div style={{ color: "blue", marginTop: "0.6rem", marginRight: "0.5rem", display: "flex"}}>Current Level of Warning: <p style={{ color: "red", marginLeft: "0.5rem"}}>{messageFromErica.levelOfWarning} </p></div> 
-                                        </p>}
+                                        </div>}
                                     </div>
                                 </div>
                             </div>

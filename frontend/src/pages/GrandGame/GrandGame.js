@@ -29,6 +29,8 @@ import HOST from '../../utils/routes'
 
 import axios from 'axios';
 
+import { useRecoilState } from 'recoil';
+import { sessionState } from '../../recoil/globalState';
 
 export default function GrandGame() {
 
@@ -151,6 +153,9 @@ export default function GrandGame() {
     ///////////////////////////main data///////////////////////////////////////////////////////////////////////// 
     const [session, setSession] = useState({});
 
+    const [globalSession, setGlobalSession] = useRecoilState(sessionState);
+
+
     //individual game
     const [game, setGame] = useState({
         room_name: "",
@@ -176,7 +181,7 @@ export default function GrandGame() {
             .then(res => res.json())
             .then(data => {
                 
-                // sessionStorage.setItem('ufoknSession', JSON.stringify(data));
+                sessionStorage.setItem('ufoknSession', JSON.stringify(data));
                 return data
             })
             .catch(err => console.log(err))
@@ -187,7 +192,7 @@ export default function GrandGame() {
         const gameData = await fetch(HOST + '/api/grandgame', { "method": "POST" })
             .then(res => res.json())
             .then(data => {
-                // sessionStorage.setItem('ufoknGame', JSON.stringify(data));
+                sessionStorage.setItem('ufoknGame', JSON.stringify(data));
                 return data
             })
             .catch(err => console.log(err))
@@ -236,9 +241,14 @@ export default function GrandGame() {
             console.log('세션이 없네')
             s = await createSession()
             console.log("Your Session Newly create/Saved in Mongo: ", s)
+
             setSession(s)
+            setGlobalSession(s)
+
         } else {
+            console.log("Your Global Session: ", globalSession)
             setSession(JSON.parse(s))
+            setGlobalSession(JSON.parse(s))
         }
     }
         getItem()

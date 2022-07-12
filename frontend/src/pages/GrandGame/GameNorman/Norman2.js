@@ -410,9 +410,9 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                                         <p className="">
                                             {messageFromErica.messageToNorman}
                                         </p>
-                                        {messageFromErica && <p style={{ display: "flex"}}>
+                                        {messageFromErica && <div style={{ display: "flex"}}>
                                             <div style={{ color: "blue", marginRight: "0.5rem"}}>Current Level of Warning:  </div> {messageFromErica.levelOfWarning}
-                                        </p>}
+                                        </div>}
                                     </div>
                                 </div>
                             </div>

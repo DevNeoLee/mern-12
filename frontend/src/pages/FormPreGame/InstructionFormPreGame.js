@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom"
 
 import { useTransition, animated } from "react-spring";
 
-
 export default function InstructionFormPreGame() {
 
     const navigate = useNavigate();

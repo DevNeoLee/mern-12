@@ -177,6 +177,10 @@ io.on("connection", socket => {
 
     socket.on("disconnect", () => {
         socket.to('1').emit('left')
+        
+        //현재 몇명 접속 정보 이벤트
+        io.emit("client_count", "New client connected, we have total users: ", io.engine.clientsCount)
+
         console.log("someone left the room", socket.id)
         // io.sockets.emit('left', () => { console.log('bye bye')})
         // console.log('room2 size: ', io.sockets.adapter.rooms.get('room2').size)
