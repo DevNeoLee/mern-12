@@ -353,7 +353,7 @@ h2 {
 
 .personIntro {
   position: relative;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .personIntro img {
@@ -529,17 +529,23 @@ h2 {
 .gameRoomsFrame {
   display: flex;
   margin: 0.3rem;
-  background-color: lightcoral;
+  background-color: rgb(253, 253, 253);
   display: flex;
   justify-content: space-around;
+  min-height: 20rem;
+}
+
+.instruactionWaitContainer {
+  display: flex;
 }
 
 .gameRoomIcon {
-  width: 7rem;
-  height: 7rem;
+  width: 8rem;
+  height: 8rem;
   border-radius: 5px;
-  border: 1px solid gray;
-  margin: 0.4rem;
+  /* border: 1px solid gray; */
+  margin: 2rem;
+  padding: 1rem;
     background-color: lightblue;
       display: grid;
       justify-content: center;
@@ -549,10 +555,30 @@ h2 {
       transition: 0.5s all;
 }
 
+  .gameRoomNotice {
+    width: 15rem;
+    height: 8rem;
+    border-radius: 5px;
+    border: 1px solid gray;
+    margin: 0.4rem;
+    background-color: lightblue;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.5s all;
+  }
+
 
 .gameRoomIcon:hover {
-  background-color: rgb(137, 249, 130);
-    transition: 0.5s all;
+  background-color: rgb(15, 172, 4);
+  transition: 0.5s all;
+  box-shadow: inset 0px 0px 5px 5px #54b3d6;
+    color: white;
+    font-weight: 700;
+    transform: translate3d(5%, 0, 0);
+
 }
 
 .canStartPopup {
@@ -566,6 +592,14 @@ h2 {
       transform: translateY(-50%);
       z-index: 1;
       background-color: rgb(237, 246, 246);
+}
+
+.canStartPopup h3 {
+  margin: 2rem 10rem 0;
+}
+
+.canStartPopup p {
+    margin: 1rem 5rem 0;
 }
 
 
@@ -636,10 +670,6 @@ h2 {
   padding: 0;
   margin: 0;
   text-align: left;
-}
-
-.weatherMargin {
-  margin-top: 50px;
 }
 
 .gamelogoline {

@@ -130,41 +130,19 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
           transition2((style, item) =>
               <animated.div style={style} className="canStartPopup">
                 <h3>Start a game?</h3>
+                <p>Minimum players condition met</p>
               <Form className="form">
                   <Button variant="primary" type="submit" onClick={handleStart}>
                     <div>Start Game</div>
                   </Button>
-                    <Button variant="primary" type="submit" onClick={handleWait}>
+                  <p style={{ textAlign: "center"}}>You can also wait for more people to join</p>
+                    {/* <Button variant="primary" type="submit" onClick={handleWait}>
                       <div>Wait for others to join</div>
-                    </Button> 
+                    </Button>  */}
               </Form>
               </animated.div>
           )} 
-      {transition2((style, item) =>
-        <animated.div style={style} className="welcomeParagraph">
-          <h1>Join the Game Room</h1>
-          <h2>Click below to join the game</h2>
-          <div className="gameRoomsFrame">
-            { clients >= MIN_CLIENTS && 
-              <div className="gameRoomIcon" key={"gameRoomIcon"} onClick={() => handleJoin(session)}>
-                  <h5>Game 1 Room </h5>
-                  <h6>{game.players.length < MAX_CLIENTS ? 'Available' : 'Full'}</h6>
-                  <h5>{game.players.length}/{MAX_CLIENTS}</h5>
-              </div>
-            }
-            {/* <div className="gameRoomIcon" >
-              <h5>Game 2 Room </h5>
-              <h6>{game.players.length < MAX_CLIENTS ? 'Unavailable' : 'Full'}</h6>
-              <h5>{0}/{8}</h5>
-            </div>
-            <div className="gameRoomIcon">
-              <h5>Game 3 Room </h5>
-              <h6>{game.players.length < MAX_CLIENTS ? 'Unavailable' : 'Full'}</h6>
-              <h5>{0}/{8}</h5>
-            </div> */}
-          </div>
-        </animated.div>
-      )}
+     <div className="instruactionWaitContainer">
         {transition2((style, item) =>
           <animated.div style={style} className="welcomeParagraph">
             <p>Please follow the instructions read out by the moderator now. </p>
@@ -187,9 +165,47 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
                 <div className="heartIntro3"><HeartFill size={27} color="red" /></div>
               </div>
             </div>
-            <Button onClick={giveRoleRandomly}>Continue</Button>
           </animated.div>
         )}
+      {transition2((style, item) =>
+        <animated.div style={style} className="welcomeParagraph">
+          {clients < MIN_CLIENTS && <h1>Waiting Room</h1>}
+          {clients >= MIN_CLIENTS && <h1>Join a Room</h1>}
+          {clients < MIN_CLIENTS && <h2>Click below to join the game when a room appears</h2>}
+          {clients >= MIN_CLIENTS && <h2>Click below to join the game</h2>}
+
+          <div className="gameRoomsFrame">
+            {clients >= MIN_CLIENTS &&
+              <div className="gameRoomIcon" key={"gameRoomIcon"} onClick={() => handleJoin(session)}>
+                <h5>Game 1 Room </h5>
+                <h6>{game.players.length < MAX_CLIENTS ? 'Available' : 'Full'}</h6>
+                <h5>{game.players.length}/{MAX_CLIENTS}</h5>
+              </div>
+            }
+            {clients < MIN_CLIENTS &&
+              <>
+                <div className="gameRoomIcon">
+                  <h5>Please wait for other players to arrive</h5>
+                </div>
+                {/* <div className="gameRoomNotice">
+                <p>You can click when an available game room to join appeares.</p>
+              </div> */}
+              </>
+            }
+            {/* <div className="gameRoomIcon" >
+              <h5>Game 2 Room </h5>
+              <h6>{game.players.length < MAX_CLIENTS ? 'Unavailable' : 'Full'}</h6>
+              <h5>{0}/{8}</h5>
+            </div>
+            <div className="gameRoomIcon">
+              <h5>Game 3 Room </h5>
+              <h6>{game.players.length < MAX_CLIENTS ? 'Unavailable' : 'Full'}</h6>
+              <h5>{0}/{8}</h5>
+            </div> */}
+          </div>
+        </animated.div>
+      )}
+     </div>
     </>
   );
 }

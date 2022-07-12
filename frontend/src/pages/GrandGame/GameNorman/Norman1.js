@@ -40,7 +40,7 @@ export default function Norman1({round}) {
                     )}
                 </div>
                 {transition2((style, item) =>
-                    <animated.div style={style} className="roleframe weatherMargin">
+                    <animated.div style={style} className="roleframe">
                         <div className="riskInfo">
                             <img src="/weathernews.jpg" width="400px" />
                         </div>

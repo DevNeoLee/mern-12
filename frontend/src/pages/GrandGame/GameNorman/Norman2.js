@@ -281,8 +281,8 @@ export default function Norman2({ data, handleChangeWhichRoute, handleSubmitNorm
                             <h2>Round {round}</h2>
                         </div> */}
                         <div className="chattingContainer">
-                            <AiFillWechat size={30} color="white" /><span style={{ color: "white" }}> Neibourhood Chat App</span>
-                            <h6>Discuss with other Normans (Neibours)</h6>
+                            <AiFillWechat size={30} color="white" /><span style={{ color: "white" }}> Neighborhood Chat App</span>
+                            <h6>Discuss with other Normans (Neighbors)</h6>
                             <div className="chatScreen" id="message-container" ref={containerRef}>
                                 {chatData.map((data, i)=> (
                                 <div key={i}>
