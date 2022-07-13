@@ -30,7 +30,7 @@ import HOST from '../../utils/routes'
 import axios from 'axios';
 
 import { useRecoilState } from 'recoil';
-import { sessionState } from '../../recoil/globalState';
+import { sessionState, gameState } from '../../recoil/globalState';
 
 export default function GrandGame() {
 
@@ -154,6 +154,7 @@ export default function GrandGame() {
     const [session, setSession] = useState({});
 
     const [globalSession, setGlobalSession] = useRecoilState(sessionState);
+    const [globalGame, setGlobalGame] = useRecoilState(gameState);
 
     const roles = ['Erica', 'Pete', 'NormanA', 'NormanB', 'NormanC', 'NormanD', 'NormanE', 'NormanF'];
 
@@ -187,27 +188,7 @@ export default function GrandGame() {
             .catch(err => console.log(err))
     }
 
-    //make new game
-    const createGame = async () => {
-        const gameData = await fetch(HOST + '/api/grandgame', { "method": "POST" })
-            .then(res => res.json())
-            .then(data => {
-                sessionStorage.setItem('ufoknGame', JSON.stringify(data));
-                console.log('New Game created, saved in SessionStorage on GrandGame page:', data)
 
-                return data
-            })
-            .catch(err => console.log(err))
-        
-        //if the new game was created in DB, push this game into 'games' 
-        if (gameData) {
-            setGame(gameData)
-            setGames([...games, gameData])
-        }
-
-        //share this game info with all the connected sockets
-        // socket.emit("share_game", gameData )
-    }
 
     //when user joins, check see if game can start
     const checkGameStart = (room_size) => {
@@ -279,10 +260,11 @@ export default function GrandGame() {
             })
             setGames(newGames)
             console.log('Your Global Session on useEffect[game]', globalSession)
+            console.log('Your Global Game on useEffect[game]', globalGame)
         }
         updateGames();
         // socket.emit("join_room", game.room_name, game, session._id) ////////////////////////////////
-    }, [game], () => { console.log("New Games updated in useEffect[game]: ", games)})
+    }, [game])
 
 
     useEffect(() => {
@@ -308,11 +290,6 @@ export default function GrandGame() {
         setSocket(socket)
         // console.log("socket connected: ", socket)
 
-        //먼저 무조건 게임을 최소 하나 있어야 함으로 게임 하나 만듬
-        // if (!isGame) {
-        //     createGame()
-        // }
-
         socket.on("client_count", (arg1, arg2) => {
             // console.log('Client Count:', arg2)
             setClients(arg2);
@@ -320,13 +297,21 @@ export default function GrandGame() {
 
         socket.on("join_room", (room_name, player_name, game, room_size) => {
             console.log(`New player joined a room #${room_name}: `, game, player_name)
+            //위의 스텝은 아마 거의 필요없어 집니다, 글로벌 사용하니까요.
+            setGlobalGame(game);
             setGame(game)
             setGames([...games, game])
             console.log('game: ', game)
             // console.log('games: ', games)
             console.log('room_size: ', room_size)
             checkGameStart(room_size)
+
         })
+
+        // socket.on('share_game', (data) => {
+        //     console.log("received data from socket: ", data)
+        //     setGlobalGame(data);
+        // })
 
         socket.on("game_start", () => {
             const gameOn = async () => {
@@ -340,8 +325,8 @@ export default function GrandGame() {
 
         socket.on("share_game", game_data => {
             console.log('game_data: ', game_data)
-            setGame(game_data)
-            setGames([...games, game_data]);
+            // setGame(game_data)
+            // setGames([...games, game_data]);
         })
 
         socket.onAny((event, ...args) => {

@@ -9,18 +9,27 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
+    console.log('hello world!')
     console.log('req.ip: ', req.ip)
+
+    console.log("req: ", req.body)
+    console.log('hello world2')
 
     const newData = new Game({
         ipAddress_creator: req.ip,
         game_begin: new Date(),
-        game_end: null,
-        players: [],
-        chatting: [],
+        game_end: req.body.game_end,
+        players: req.body.players,
+        chatting: req.body.chatting,
+        room_name: req.body.room_name,
+        erica_messages: req.body.erica_messages,
+        pete_decisions: req.body.pete_decisions,
+        norman_decisions: req.body.norman_decisions
     })
 
     newData.save();
     res.json(newData);
+    console.log('newData: ', newData)
 
     console.log("Created a game to start into MongodDB through API");
 })

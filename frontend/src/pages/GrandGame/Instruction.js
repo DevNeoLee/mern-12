@@ -11,12 +11,13 @@ import { useTransition, useSpring, animated } from "react-spring";
 import { Form, Button, ProgressBar } from "react-bootstrap";
 
 import { useRecoilState } from 'recoil';
-import { sessionState } from '../../recoil/globalState';
+import { sessionState, gameState } from '../../recoil/globalState';
 
 export default function Instruction({ clients, axios, HOST, sessionDataObject, setGameStart, id, setId, handleRoleChange, setCanStartGame, canStartGame ,game, setGame, socket, session, setSession, MAX_CLIENTS, MIN_CLIENTS, giveRoleRandomly, setRole, role, normans, userQuantity, games, setGames}) {
 
   //main data
   const [globalSession, setGlobalSession] = useRecoilState(sessionState);
+  const [globalGame, setGlobalGame] = useRecoilState(gameState);
 
   const roles = ['Erica', 'Pete', 'NormanA', 'NormanB', 'NormanC', 'NormanD', 'NormanE', 'NormanF'];
 
@@ -36,13 +37,47 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
 
   const [joined, setJoined] = useState(false);
 
+  //make new game
+  const createGame = async () => {
+    const gameData = await fetch(HOST + '/api/grandgame', {
+      "method": "POST", 
+      "headers": {
+        'Content-Type': 'application/json'
+      },
+      "body": JSON.stringify(globalGame)})
+      .then(res => res.json())
+      .then(data => {
+        //We sessionStorage Game,
+        sessionStorage.setItem('ufoknGame', JSON.stringify(data));
+        console.log('New Game created, saved in SessionStorage on GrandGame page:', data)
+
+        return data
+      })
+      .catch(err => console.log(err))
+
+    //if the new game was created in DB, push this game into 'games' 
+    if (gameData) {
+      setGame(gameData)
+      // setGames([...games, gameData])
+    }
+    return gameData;
+    //share this game info with all the connected sockets
+    // socket.emit("share_game", gameData )
+  }
+
   const handleStart = async (e) => { 
     e.preventDefault()
     console.log('handleStart clicked')
-    setGameStart(true)
+    // setGameStart(true)
+
+    //We create game here with the global Game object made
+    const gameResponse = await createGame();
+    console.log('gameResponse: ', gameResponse)
+    //We sessionStorage Game, Session
+    sessionStorage.setItem('ufoknSession', JSON.stringify({...globalSession, _id: gameResponse._id }));
 
     //update sessionData in MongoDB
-    await updateToMongoDB()
+    await updateSessionToMongoDB(gameResponse._id)
 
     socket.emit('game_start')
     // handleRoleChange()
@@ -55,13 +90,13 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
     setCanStartGame(false)
   }
 
-  const updateToMongoDB = async () => {
-    console.log('session data: ', sessionDataObject);
+  const updateSessionToMongoDB = async (gameResponseID) => {
+    console.log('session data would be updated: ', { ...globalSession, _id: gameResponseID });
 
     const dataUpdate = async () => {
-      await axios.put(HOST + '/api/session', sessionDataObject)
+      await axios.put(HOST + '/api/session', { ...globalSession, _id: gameResponseID })
         .then(data => {
-          console.log('data from mongo saved: ', data)
+          console.log('session data updated returned from MongoDB: ', data)
           // return data
         })
         .catch(err => console.log(err))
@@ -91,34 +126,42 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
     console.log('join clicked i: ')
     console.log('session: ', session)
     console.log('session', session)
+    let character = roles[game.players.length];
     if (!joined && session && game.players.length < MAX_CLIENTS) {
-      setGame({...game, players: [...game.players, {session_id: session._id, role: roles[game.players.length]}], room_name: 1});
-      console.log('************************')
+      setGame({...game, players: [...game.players, {session_id: session._id, role: character}], room_name: 1});
+      console.log('************************', session)
+
+      //we make globalGame, update globalSession here
       if (sessionDataObject) {
-        sessionDataObject.role = roles[game.players.length];
+        sessionDataObject.role = character;
         setGlobalSession({...sessionDataObject})
+        
+        //여기서 전체에 게임 내용을 쉐어하고 각각 페이지에서 받은 공통 globalGame 내용을 update해주는게 맞겠군.
+        // socket.emit('share_game', { ...game, players: [...game.players, { session_id: session._id, role: character }], room_name: 1 } )
+
+        // setGlobalGame({ ...game, players: [...game.players, { session_id: session._id, role: character }], room_name: 1 });
       }
-      setRole(roles[game.players.length])
-      console.log('-----------------------------')
+      // setRole(character)
+      // console.log('-----------------------------')
       setJoined(true);
-      setId({ session_id: session._id, role: roles[game.players.length] })
-      console.log('???????????')
+      // setId({ session_id: session._id, role: character })
+      // console.log('???????????')
 
       //update sessionStorage
-      if (sessionDataObject) {
-        // sessionDataObject.role = roles[game.players.length];
-        sessionDataObject.role = role;
-        await sessionStorage.setItem('ufoknSession', JSON.stringify(sessionDataObject));
-        console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
+      // if (sessionDataObject) {
+      //   sessionDataObject.role = character;
+      //   sessionDataObject.role = role;
+      //   await sessionStorage.setItem('ufoknSession', JSON.stringify(sessionDataObject));
+      //   console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
 
-      }
+      // }
 
     } else {
       console.log("You already joined a room, can't not join twice")
       return;
     }
-    console.log("game changed: ", { ...game, players: [...game.players, { session_id: session._id, role: roles[game.players.length] }], room_name: "1"})
-    socket.emit('join_room', "1", { ...game, players: [...game.players, { session_id: session._id, role: roles[game.players.length] }], room_name: "1" }, session._id)////////////////
+    console.log("game changed: ", { ...game, players: [...game.players, { session_id: session._id, role: character }], room_name: "1"})
+    socket.emit('join_room', "1", { ...game, players: [...game.players, { session_id: session._id, role: character }], room_name: "1" }, session._id)////////////////
 
   }
 
@@ -140,8 +183,8 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
               <animated.div style={style} className="canStartPopup">
                 <h3>Start a game?</h3>
                 <p>Minimum players condition met</p>
-              <Form className="form">
-                  <Button variant="primary" type="submit" onClick={handleStart}>
+              <Form className="form" onSubmit={handleStart}>
+                  <Button variant="primary" type="submit" >
                     <div>Start Game</div>
                   </Button>
                   <p style={{ textAlign: "center"}}>You can also wait for more people to join</p>

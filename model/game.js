@@ -10,12 +10,11 @@ const GameSchema = new Schema({
     game_end: {
         type: Date
     },
-    role: "",
     players: [],
-    chatting: [],
-    erica_messages: [],
-    pete_decisions: [],
-    norman_decisions: [],
+    chatting: {},
+    erica_messages: {},
+    pete_decisions: {},
+    norman_decisions: {},
 });
 
 module.exports = Game = mongoose.model('Game', GameSchema);

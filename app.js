@@ -101,18 +101,19 @@ io.on("connection", socket => {
 
         console.log('room size: ', room_size)
 
+        // io.in('1').emit('join_room', game)
         io.emit("join_room", room_name, player_id, game, room_size)
     }) 
+
+    // socket.on("share_game", (data) => {
+    //     console.log('game 자료 받았습니다 프론트로 전체 쉐어 보냅니다...백엔드서버 드림', data)
+    //     io.in('1').emit('share_game', data)
+    // })
 
     socket.on("game_start", () => {
         io.emit("game_start");
     })
 
-    //
-    socket.on('share_game', (game_data) => {
-        console.log("game_data share call: ", game_data);
-        io.emit('share_game', game_data);
-    })
 
     socket.onAny((event, ...args) => {
         console.log('socket event: ', event, args)
