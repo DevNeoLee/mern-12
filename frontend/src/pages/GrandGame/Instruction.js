@@ -10,14 +10,14 @@ import { useTransition, useSpring, animated } from "react-spring";
 
 import { Form, Button, ProgressBar } from "react-bootstrap";
 
-import { useRecoilState } from 'recoil';
-import { sessionState, gameState } from '../../recoil/globalState';
+// import { useRecoilState } from 'recoil';
+// import { sessionState, gameState } from '../../recoil/globalState';
 
-export default function Instruction({ clients, axios, HOST, sessionDataObject, setGameStart, id, setId, handleRoleChange, setCanStartGame, canStartGame ,game, setGame, socket, session, setSession, MAX_CLIENTS, MIN_CLIENTS, giveRoleRandomly, setRole, role, normans, userQuantity, games, setGames}) {
+export default function Instruction({ globalGame, setGlobalGame, globalSession, setGlobalSession, clients, axios, HOST, sessionDataObject, setGameStart, id, setId, handleRoleChange, setCanStartGame, canStartGame ,game, setGame, socket, session, setSession, MAX_CLIENTS, MIN_CLIENTS, giveRoleRandomly, setRole, role, normans, userQuantity, games, setGames}) {
 
   //main data
-  const [globalSession, setGlobalSession] = useRecoilState(sessionState);
-  const [globalGame, setGlobalGame] = useRecoilState(gameState);
+  // const [globalSession, setGlobalSession] = useRecoilState(sessionState);
+  // const [globalGame, setGlobalGame] = useRecoilState(gameState);
 
   const roles = ['Erica', 'Pete', 'NormanA', 'NormanB', 'NormanC', 'NormanD', 'NormanE', 'NormanF'];
 
@@ -70,16 +70,37 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
     console.log('handleStart clicked')
     // setGameStart(true)
 
-    //We create game here with the global Game object made
+    //////////////////////////We create game here with the global Game object made
     const gameResponse = await createGame();
     console.log('gameResponse: ', gameResponse)
-    //We sessionStorage Game, Session
-    sessionStorage.setItem('ufoknSession', JSON.stringify({...globalSession, _id: gameResponse._id }));
 
-    //update sessionData in MongoDB
-    await updateSessionToMongoDB(gameResponse._id)
 
-    socket.emit('game_start')
+    ///////We sessionStorage Game with added your Game ID info
+    sessionStorage.setItem('ufoknGame', JSON.stringify(gameResponse));
+
+
+    ///////We sessionStorage Session with added your Game ID info
+    sessionStorage.setItem('ufoknSession', JSON.stringify({...globalSession, game_id: gameResponse._id }));
+
+    ////////your Game ID 정보를 세션에 추가 해서 글로벌세션에 저장
+    setGlobalSession({ ...globalSession, game_id: gameResponse._id })
+
+    ////////////////////////여기서 전체에 게임 내용을 쉐어하고 각각 페이지에서 받은 공통 globalGame 내용을 update해줌
+    await socket.emit('game_update', gameResponse, "1")////////////////
+
+    
+    //다른 players들의 화면도 MongoDB에 그들의 세션또한 세로운 게임 자료와 함께 압데이트 되야 됨으로 
+    await socket.emit('session_mongo_all', "1")
+
+    
+    //update sessionData in MongoDB 게임안에 있는 모든 사용자들의 세션을 압데 합니다.
+    gameResponse.players.map(async (player) => {
+      //각각 플레이어 마다 몽고데이터 세션을 압데 합니다. 
+  
+      await updateToMongoDBSession({...player, game_id: gameResponse._id})
+    })
+    
+    await socket.emit('game_start', "1")
     // handleRoleChange()
 
   }
@@ -90,21 +111,21 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
     setCanStartGame(false)
   }
 
-  const updateSessionToMongoDB = async (gameResponseID) => {
-    console.log('session data would be updated: ', { ...globalSession, _id: gameResponseID });
+  // const updateSessionToMongoDB = async (gameUpdate) => {
+  //   console.log('session data would be updated: ', gameUpdate);
 
-    const dataUpdate = async () => {
-      await axios.put(HOST + '/api/session', { ...globalSession, _id: gameResponseID })
-        .then(data => {
-          console.log('session data updated returned from MongoDB: ', data)
-          // return data
-        })
-        .catch(err => console.log(err))
-    }
+  //   const dataUpdate = async (data) => {
+  //     await axios.put(HOST + '/api/session', data)
+  //       .then(data => {
+  //         console.log('session data updated returned from MongoDB: ', data)
+  //         // return data
+  //       })
+  //       .catch(err => console.log(err))
+  //   }
 
-    await dataUpdate();
-    // navigate('/welcome');
-  }
+  //   await dataUpdate(gameUpdate);
+  //   // navigate('/welcome');
+  // }
 
   // const [ barLevel, setBarLevel] = useState(0)
 
@@ -122,30 +143,43 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
     // setRole(role)
   }
 
+     const updateToMongoDBSession = async (payload) => {
+        console.log('session data: ', sessionDataObject);
+
+        const dataUpdate = async () => {
+            await axios.put(HOST + '/api/session', payload)
+                .then(data => {
+                    console.log('Session to MongoDB updated: ', data)
+                    // return data
+                })
+                .catch(err => console.log(err))
+        }
+
+        await dataUpdate();
+        // navigate('/welcome');
+    }
+
   const handleJoin = async () => {
     console.log('join clicked i: ')
     console.log('session: ', session)
     console.log('session', session)
     let character = roles[game.players.length];
     if (!joined && session && game.players.length < MAX_CLIENTS) {
-      setGame({...game, players: [...game.players, {session_id: session._id, role: character}], room_name: 1});
+      setGame({...game, players: [...game.players, {...session, role: character}], room_name: 1});
       console.log('************************', session)
 
       //we make globalGame, update globalSession here
       if (sessionDataObject) {
         sessionDataObject.role = character;
-        setGlobalSession({...sessionDataObject})
-        
-        //여기서 전체에 게임 내용을 쉐어하고 각각 페이지에서 받은 공통 globalGame 내용을 update해주는게 맞겠군.
-        // socket.emit('share_game', { ...game, players: [...game.players, { session_id: session._id, role: character }], room_name: 1 } )
 
-        // setGlobalGame({ ...game, players: [...game.players, { session_id: session._id, role: character }], room_name: 1 });
+        //////////////롤 캐릭터 정보를 세션에 추가 해서 글로벌세션에 저장
+        setGlobalSession({...sessionDataObject})
+        ///롤 캐릭터 정보를 SS에도 저장
+        sessionStorage.setItem('ufoknSession', JSON.stringify({ ...sessionDataObject }))
       }
-      // setRole(character)
-      // console.log('-----------------------------')
+
+      setRole(character)
       setJoined(true);
-      // setId({ session_id: session._id, role: character })
-      // console.log('???????????')
 
       //update sessionStorage
       // if (sessionDataObject) {
@@ -153,16 +187,15 @@ export default function Instruction({ clients, axios, HOST, sessionDataObject, s
       //   sessionDataObject.role = role;
       //   await sessionStorage.setItem('ufoknSession', JSON.stringify(sessionDataObject));
       //   console.log('sessionStorage: ', sessionStorage.getItem('ufoknSession'))
-
       // }
 
     } else {
       console.log("You already joined a room, can't not join twice")
       return;
     }
-    console.log("game changed: ", { ...game, players: [...game.players, { session_id: session._id, role: character }], room_name: "1"})
-    socket.emit('join_room', "1", { ...game, players: [...game.players, { session_id: session._id, role: character }], room_name: "1" }, session._id)////////////////
 
+     ////////////////////////여기서 전체에 게임 내용을 쉐어하고 각각 페이지에서 받은 공통 globalGame 내용을 update해줌
+    socket.emit('join_room', "1", { ...game, players: [...game.players, { ...session, role: character }], room_name: "1" }, session._id)////////////////
   }
 
   return (

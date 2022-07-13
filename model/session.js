@@ -20,6 +20,7 @@ const SessionSchema = new Schema({
     },
     role: "",
     your_decisions: [],
+    game_id: { type: Schema.Types.ObjectId }
 })
 
 module.exports = Session = mongoose.model('session', SessionSchema);

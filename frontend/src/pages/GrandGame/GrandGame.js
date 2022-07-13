@@ -199,21 +199,37 @@ export default function GrandGame() {
 
     }
 
-    const updateToMongoDBSession = async (payload) => {
-        console.log('session data: ', sessionDataObject);
+    // const updateToMongoDBSession = async (payload) => {
+    //     console.log('session data: ', sessionDataObject);
 
-        const dataUpdate = async () => {
-            await axios.put(HOST + '/api/session', {...sessionDataObject, payload})
-                .then(data => {
-                    console.log('Session to MongoDB updated: ', data)
-                    // return data
-                })
-                .catch(err => console.log(err))
-        }
+    //     const dataUpdate = async () => {
+    //         await axios.put(HOST + '/api/session', {...sessionDataObject, payload})
+    //             .then(data => {
+    //                 console.log('Session to MongoDB updated: ', data)
+    //                 // return data
+    //             })
+    //             .catch(err => console.log(err))
+    //     }
 
-        await dataUpdate();
-        // navigate('/welcome');
-    }
+    //     await dataUpdate();
+    //     // navigate('/welcome');
+    // }
+
+    // const updateSessionToMongoDB = async () => {
+    //     console.log('session data would be updated: ', { ...globalSession, game_id: globalGame._id });
+
+    //     const dataUpdate = async (newSession) => {
+    //         await axios.put(HOST + '/api/session', newSession)
+    //             .then(data => {
+    //                 console.log('session data updated returned from MongoDB: ', data)
+    //                 // return data
+    //             })
+    //             .catch(err => console.log(err))
+    //     }
+
+    //     await dataUpdate({ ...JSON.parse(sessionStorage.getItem('ufoknSession')), game_id: JSON.parse(sessionStorage.getItem('ufoknGame'))._id });
+    //     // navigate('/welcome');
+    // }
 
     useEffect(() => {
         const getItem = async () => {
@@ -299,6 +315,7 @@ export default function GrandGame() {
             console.log(`New player joined a room #${room_name}: `, game, player_name)
             //위의 스텝은 아마 거의 필요없어 집니다, 글로벌 사용하니까요.
             setGlobalGame(game);
+            sessionStorage.setItem('ufoknGame', game);
             setGame(game)
             setGames([...games, game])
             console.log('game: ', game)
@@ -313,11 +330,24 @@ export default function GrandGame() {
         //     setGlobalGame(data);
         // })
 
+        //매번 글로벌게임 압데이트를 모든 참여 유저데이타에 해줌
+        socket.on("game_update", (data) => {
+            setGlobalGame(data);
+        })
+
+        socket.on('session_mongo_all', async () => {
+            console.log('session data testing....');
+            // console.log('globalSession: ', globalSession)
+            // console.log('session: ', session)
+            // console.log('globalGame._id: ', globalGame._id)
+            // await updateSessionToMongoDB()
+        })
+
         socket.on("game_start", () => {
             const gameOn = async () => {
                 //update sessionData in MongoDB
                 setGameStart(true)
-                await updateToMongoDBSession({role: role})
+                // await updateToMongoDBSession({role: role})
                 console.log("Game Start Go!")
             }
             gameOn();
@@ -959,7 +989,7 @@ export default function GrandGame() {
                     { step !== 2 && <Buttons/> }
                 </>
                     : 
-                    <Instruction clients={clients} axios={axios} HOST={HOST} sessionDataObject={sessionDataObject} setGameStart={setGameStart} id={id} setId={setId} handleRoleChange={handleRoleChange} canStartGame={canStartGame} setCanStartGame={setCanStartGame} game={game} setGame={setGame} socket={socket} giveRoleRandomly={giveRoleRandomly} session={session} setRole={setRole} role={role} normans={normanRoles} userQuantity={userQuantity} games={games} MAX_CLIENTS={MAX_CLIENTS} MIN_CLIENTS={MIN_CLIENTS} />
+                    <Instruction setGlobalSession={setGlobalSession} globalSession={globalSession} setGlobalGame={setGlobalGame} globalGame={globalGame} clients={clients} axios={axios} HOST={HOST} sessionDataObject={sessionDataObject} setGameStart={setGameStart} id={id} setId={setId} handleRoleChange={handleRoleChange} canStartGame={canStartGame} setCanStartGame={setCanStartGame} game={game} setGame={setGame} socket={socket} giveRoleRandomly={giveRoleRandomly} session={session} setRole={setRole} role={role} normans={normanRoles} userQuantity={userQuantity} games={games} MAX_CLIENTS={MAX_CLIENTS} MIN_CLIENTS={MIN_CLIENTS} />
                 } 
             </div>
         </div>

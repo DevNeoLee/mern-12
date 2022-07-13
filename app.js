@@ -48,7 +48,7 @@ let rooms = [];
 let room = null;
 let gameState = {};
 
-const MAX_CLIENTS = 7;
+const MAX_CLIENTS = 8;
 const MIN_CLIENTS = 5;
 
 //게임 웹소켓 로직
@@ -71,7 +71,7 @@ io.on("connection", socket => {
         let room_size = 1;
         let player_id = socket.id
 
-        if (room === undefined || room.size < 9) {
+        if (room === undefined || room.size < MAX_CLIENTS + 1 ) {
             socket.join(room_name)
             // socket.to('1').emit('welcome')
             room && console.log("몇: ", room.size)
@@ -87,7 +87,7 @@ io.on("connection", socket => {
 
 
             let newPlayers = game.players.map(p => {
-                if (p.session_id === session_id) {
+                if (p._id === session_id) {
                     return {...p, player_id: player_id}
                 } else {
                     return p
@@ -110,8 +110,18 @@ io.on("connection", socket => {
     //     io.in('1').emit('share_game', data)
     // })
 
-    socket.on("game_start", () => {
-        io.emit("game_start");
+    socket.on("game_update", (data, room_name) => {
+        io.in(room_name).emit('game_update', data);
+    })
+
+    socket.on('session_mongo_all', (room_name) => {
+        console.log('backend: session_mongo_all begins...room #', room_name)
+        // io.in(room_name).emit('session_mongo_all');
+        io.emit('session_mongo_all')
+    });
+
+    socket.on("game_start", (room_name) => {
+        io.in(room_name).emit('game_start');
     })
 
 
