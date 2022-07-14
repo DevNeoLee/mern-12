@@ -152,13 +152,10 @@ io.on("connection", socket => {
 
     socket.on('norman_message', (data) => {
         let room = io.sockets.adapter.rooms.get('1')
-        console.log('form content from norman: ', data)
         socket.broadcast.to('1').emit('norman_message', data)
     })
 
     socket.on('pete_message', (data) => {
-        let room = io.sockets.adapter.rooms.get('1')
-        console.log('form content from pete: ', data)
         socket.broadcast.to('1').emit('pete_message', data)
     })
 

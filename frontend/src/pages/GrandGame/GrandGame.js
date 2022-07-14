@@ -433,25 +433,19 @@ export default function GrandGame() {
 
         })
 
+        // normanDecisions = { 1: [], 2: [], 3: [], 4: [] }
         socket.on("norman_message", (data => {
             console.log('Norman data from Norman received: ', data)
-            console.log('current normanDecisions: ', normanDecisions)
-            // setNormanDecisions(prev => (
-            //     prev.map((ele, idx) => {
-            //         if (idx === (round - 1)) {
-            //             return { stay: data.stay, whichRoute: data.whichRoute, role: data.role }
-            //         } else {
-            //             return ele
-            //         }
-            //     })
 
-            // ))
+            // setGlobalGame(prev => ({ ...prev, pete_decisions: { ...prev.pete_decisions, [round]: data } }))
+            // setGlobalGame(prev => ({ ...prev, erica_messages: { ...prev.erica_messages, [round]: msg } }))
+
+            setGlobalGame(prev => ({ ...prev, norman_decisions: { ...prev.norman_decisions, [round]: [...prev.norman_decisions[round], data ]} }))
+
         }))
 
         socket.on("pete_message", (data => {
             console.log('Pete data from Pete received: ', data)
-            // console.log('current peteDecisions: ', peteDecisions)
-            // console.log('data.stay: poweroff?', data.stay)
 
             if (data.stay === 'poweroff') {
                 setElectricity('poweroff')
@@ -459,19 +453,7 @@ export default function GrandGame() {
                 setElectricity('poweron')
             }
 
-
-            // setPeteDecisions(prev => (
-                // prev.map((ele, idx) => {
-                //     if (idx === (round - 1)) {
-                //         return { stay: data.stay, whichRoute: data.whichRoute, role: data.role }
-                //     } else {
-                //         return ele
-                //     }
-                // })
-            // ))
-
-
-            console.log('pete data added to your states!')
+            setGlobalGame(prev => ({ ...prev, pete_decisions: { ...prev.pete_decisions, [round]: data } }))
         }))
 
         socket.on("norman_chat", (data) => {
@@ -719,16 +701,21 @@ export default function GrandGame() {
         }
     }
 
-     // peteDecisions ={stay: null, whichRoute: null } 
+     // peteDecisions = {stay: null, whichRoute: null } 
     // normanDecisions = { 1: [], 2: [], 3: [], 4: [] }
     const handleSubmitPete = (e) => {
         console.log('pete just submitted his decison form: ')
         e.preventDefault()
 
-        setPeteDecisions({stay: petePower, whichRoute: whichRoutePete});
+        const peteDecision = { stay: petePower, whichRoute: whichRoutePete, role: 'pete' }
+
+        setPeteDecisions(peteDecision);
         setElectricity(petePower)
 
-        socket.emit('pete_message', { stay: petePower, whichRoute: whichRoutePete, role: 'pete'})
+        setGlobalSession(prev => ({...prev, your_decisions: {...prev.your_decisions, [round]: peteDecision }}))
+        setSession(prev => ({ ...prev, your_decisions: { ...prev.your_decisions, [round]: peteDecision } }))
+
+        socket.emit('pete_message', peteDecision)
     }
 
     const handleChangePetePower = (e) => {
@@ -752,18 +739,20 @@ export default function GrandGame() {
         // console.log('Norman just submitted his form:')
         e.preventDefault()
 
-        console.log("norman stay: " + normanStay + "which route: " + whichRoute)
+        const normanDecision = { stay: normanStay, whichRoute: whichRoute, role: role };
 
-        setNormanDecisions(prev => ({...prev, [round]: [...prev[round], {stay: normanStay, whichRoute: whichRoute, role: role}]}))
+        console.log('normanDecision: ', normanDecision);
+
+        setNormanDecisions(prev => ({...prev, [round]: [...prev[round], normanDecision ]}))
         
         // setNormanStay(true)
         // setWhichRoute('')
-        
-        const normanData = {
-            stay: normanStay, whichRoute, role: role
-        }
+
+        setGlobalSession(prev => ({ ...prev, your_decisions: { ...prev.your_decisions, [round]: normanDecision } }))
+        setSession(prev => ({ ...prev, your_decisions: { ...prev.your_decisions, [round]: normanDecision } }))
+
         // socket interaction
-        socket.emit('norman_message', normanData)
+        socket.emit('norman_message', normanDecision)
 
     }
 
