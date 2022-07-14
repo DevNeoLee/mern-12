@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import "../../../App.css"
 
 import { HeartFill, HospitalFill, HouseFill, Lightning, LightningCharge, LightningChargeFill, LightningFill } from 'react-bootstrap-icons';
@@ -16,7 +16,7 @@ import { AiFillWechat } from 'react-icons/ai';
 
 import { Link } from "react-router-dom"
 
-export default function Pete2({ globalSession, setGlobalSession, data, handleChangeWhichRoutePete, whichRoutePete, handleChangePetePower, handleSubmitPete, popForm, setPopForm, messageFromErica, round, electricity, messageToPete, step, normanQuestion, petePower, peteHealth }) {
+export default function Pete2({ globalGame, setGlobalGame, globalSession, setGlobalSession, data, handleChangeWhichRoutePete, whichRoutePete, handleChangePetePower, handleSubmitPete, popForm, setPopForm, messageFromErica, round, electricity, messageToPete, step, normanQuestion, petePower, peteHealth }) {
 
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);
@@ -41,6 +41,11 @@ export default function Pete2({ globalSession, setGlobalSession, data, handleCha
     //         },
     //     ])
     // }
+    useEffect(() => {
+        console.log('globalGame: ', globalGame)
+        console.log('globalSession: ', globalSession)
+
+    }, [])
 
     const handlePeteForm = () => {
 

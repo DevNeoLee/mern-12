@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import "../../../App.css"
 
 import { HeartFill, HouseFill, HospitalFill, LightningFill } from 'react-bootstrap-icons';
@@ -15,7 +15,7 @@ import { AreaChart, Area, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tool
 
 import { Link } from "react-router-dom"
 
-export default function Erica2({ globalSession, setGlobalSession, data, waitPopupErica, setWaitPopupErica, players, handleSubmitErica, round, handleChangeWarning, handleChangeMessageToNorman, handleChangeMessageToPete, levelOfWarning, messageToNorman, messageToPete, ericaHealth, electricity, step, normanQuestion, normanHealth }) {
+export default function Erica2({ globalGame, setGlobalGame, globalSession, setGlobalSession, data, waitPopupErica, setWaitPopupErica, players, handleSubmitErica, round, handleChangeWarning, handleChangeMessageToNorman, handleChangeMessageToPete, levelOfWarning, messageToNorman, messageToPete, ericaHealth, electricity, step, normanQuestion, normanHealth }) {
 
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);
@@ -39,6 +39,12 @@ export default function Erica2({ globalSession, setGlobalSession, data, waitPopu
     //         },
     //     ])
     // }
+
+    useEffect(() => {
+        console.log('globalGame: ', globalGame)
+        console.log('globalSession: ', globalSession)
+
+    }, [])
 
     const getHouseChartData = () => {
 
@@ -135,8 +141,8 @@ export default function Erica2({ globalSession, setGlobalSession, data, waitPopu
 
     return (
         <>  
-            <div className={ popup ? `ericaPopup` : `ericaPopup ericaPopClose`}><EricaPopup setPopup={setPopup} /></div>
-            <div className={waitPopupErica ? `waitModal` : `waitModal waitModalClose`}><WaitModalErica setWaitPopupErica={setWaitPopupErica} /></div>
+            {/* <div className={ popup ? `ericaPopup` : `ericaPopup ericaPopClose`}><EricaPopup setPopup={setPopup} /></div> */}
+            {/* <div className={waitPopupErica ? `waitModal` : `waitModal waitModalClose`}><WaitModalErica setWaitPopupErica={setWaitPopupErica} /></div> */}
 
             <div className="gameBlockContainerErica">
                 <div className="topContainerErica">

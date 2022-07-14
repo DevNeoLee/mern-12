@@ -53,7 +53,13 @@ const MIN_CLIENTS = 5;
 
 //게임 웹소켓 로직
 io.on("connection", socket => {
-    
+    let gameRoomOne = io.sockets.adapter.rooms.get('1');
+
+    let gameRoomOneSize = 1;
+
+    let room_one_length = 1;
+
+ 
     console.log('io.engine.clientsCount!: ', io.engine.clientsCount) // 현재 몇명 접속
     
     //현재 몇명 접속 정보 이벤트
@@ -128,6 +134,8 @@ io.on("connection", socket => {
     socket.onAny((event, ...args) => {
         console.log('socket event: ', event, args)
         console.log('io.engine.clientsCount!: ', io.engine.clientsCount)
+        // console.log('room one users: ', gameRoomOneSize);
+        // console.log('room one length: ', room_size)
     })
 
 
@@ -138,21 +146,8 @@ io.on("connection", socket => {
     })
 
     socket.on('erica_message', (msg) => {
-        let room1 = io.sockets.adapter.rooms.get('1')
- 
-        console.log('room: ?', room)
-        console.log('room1: ?', room1)
-        console.log('messages from Erica: ', msg)
+
         io.in('1').emit('erica_message', msg)
-        // socket.to('1').emit('welcome', msg)
-        // socket.to('1').emit('welcome')
-
-        // room && console.log("몇: ", room.size)
-        // console.log("방들: ", socket.rooms)
-        // room && console.log("몇: ", room.size)
-        // console.log("사람들: ", io.sockets.adapter.rooms.get('1').size)
-        // console.log('who joined: ', socket.id)
-
     })
 
     socket.on('norman_message', (data) => {
@@ -203,6 +198,10 @@ io.on("connection", socket => {
             socket.broadcast.to('1').emit('norman_chat', data)
             console.log('backend received an event, norman_chat:', socket.id)
     })
+
+  
+
+    
 })
 
 server.listen(port, () => console.log(`Server is running on the port ${port}, from express server`))

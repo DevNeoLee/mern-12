@@ -88,11 +88,6 @@ export default function Instruction({ globalGame, setGlobalGame, globalSession, 
     ////////////////////////여기서 전체에 게임 내용을 쉐어하고 각각 페이지에서 받은 공통 globalGame 내용을 update해줌
     await socket.emit('game_update', gameResponse, "1")////////////////
 
-    
-    //다른 players들의 화면도 MongoDB에 그들의 세션또한 세로운 게임 자료와 함께 압데이트 되야 됨으로 
-    await socket.emit('session_mongo_all', "1")
-
-    
     //update sessionData in MongoDB 게임안에 있는 모든 사용자들의 세션을 압데 합니다.
     gameResponse.players.map(async (player) => {
       //각각 플레이어 마다 몽고데이터 세션을 압데 합니다. 
