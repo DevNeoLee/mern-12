@@ -152,11 +152,11 @@ io.on("connection", socket => {
 
     socket.on('norman_message', (data) => {
         let room = io.sockets.adapter.rooms.get('1')
-        socket.broadcast.to('1').emit('norman_message', data)
+        io.in('1').emit('norman_message', data)
     })
 
     socket.on('pete_message', (data) => {
-        socket.broadcast.to('1').emit('pete_message', data)
+        io.in('1').emit('pete_message', data)
     })
 
     socket.on("initial_connection", (socket) => {

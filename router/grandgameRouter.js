@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
         room_name: req.body.room_name,
         erica_messages: req.body.erica_messages,
         pete_decisions: req.body.pete_decisions,
-        norman_decisions: req.body.norman_decisions
+        norman_decisions: { 1: [], 2: [], 3: [], 4: [] }
     })
 
     newData.save();

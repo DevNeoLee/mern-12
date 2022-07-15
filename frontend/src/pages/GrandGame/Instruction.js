@@ -39,6 +39,7 @@ export default function Instruction({ globalGame, setGlobalGame, globalSession, 
 
   //make new game
   const createGame = async () => {
+    console.log('globalGame when the game Hello World: ', globalGame)
     const gameData = await fetch(HOST + '/api/grandgame', {
       "method": "POST", 
       "headers": {

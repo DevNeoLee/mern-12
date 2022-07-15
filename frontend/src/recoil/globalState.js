@@ -25,6 +25,6 @@ export const gameState = atom({
         chatting: [],
         erica_messages: [],
         pete_decisions: [],
-        norman_decisions: [],
+        norman_decisions: {1:[], 2: [], 3: [], 4: []}
     }
 })

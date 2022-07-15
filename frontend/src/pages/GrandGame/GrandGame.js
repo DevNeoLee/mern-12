@@ -156,14 +156,15 @@ export default function GrandGame() {
         room_name: "",
         players: [],
         chatting: [],
+        norman_decisions: { 1: [], 2: [], 3: [], 4: [] }
     });
 
     const [isGame, setIsGame] = useState(false);
 
     const [games, setGames] = useState(() => [
-        { room_name: "1", players: [], chatting: [] }, 
-        { room_name: "2", players: [], chatting: [] },
-        { room_name: "3", players: [], chatting: [] }
+        { room_name: "1", players: [], chatting: [], norman_decisions: { 1: [], 2: [], 3: [], 4: [] } }, 
+        { room_name: "2", players: [], chatting: [], norman_decisions: { 1: [], 2: [], 3: [], 4: [] } },
+        { room_name: "3", players: [], chatting: [], norman_decisions: { 1: [], 2: [], 3: [], 4: [] } }
     ])
 
     useEffect(() => {
