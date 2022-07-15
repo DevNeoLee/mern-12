@@ -9,7 +9,7 @@ import { Button, Form } from "react-bootstrap";
 import { useTransition, animated } from "react-spring";
 
 
-export default function NormanForm({ handleSubmitNorman, handleChangeWhichRoute, normanStay, handleChangeNormanStay, handleNormanForm, setPopForm}) {
+export default function NormanForm({ handleSubmitNorman, handleChangeWhichRoute, normanStay, handleChangeNormanStay, setPopForm}) {
 
     const [stay, setStay] = useState(false);
 

@@ -35,12 +35,13 @@ export default function Norman3({ setRound, setStep, setResultReady, ericaHealth
     }
 
     useEffect(() => {
-        setRound(prevround => prevround + 1)
-        const interval = setInterval(() => {
+
+        const interval = setTimeout(() => {
+            setRound(prevround => prevround + 1)
             setStep(1);
             setResultReady(false);
-        }, 2000);
-        return () => clearInterval(interval)
+        }, 5000);
+        return () => clearTimeout(interval)
     }, [])
 
     return (

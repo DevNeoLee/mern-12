@@ -263,6 +263,7 @@ export default function GrandGame() {
 
         console.log('userTaskCounter: ', userTaskDoneCounter)
         if (userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter + 1) {
+            setPopForm(false)
 
             //// calculate socres here///////
             // calculateScore(normanDecisions, peteDecisions)
@@ -280,6 +281,8 @@ export default function GrandGame() {
             setWhichRoute('')
             setNormanStay('')
 
+            setUserTaskDoneCounter(0)
+            // setWaitPopupErica(false)
 
             console.log('!!!!!!!calcuation done')
         } else {
@@ -419,7 +422,7 @@ export default function GrandGame() {
 
             setGlobalGame(prev => ({...prev, erica_messages: {...prev.erica_messages, [round]: msg}}))
             setUserTaskDoneCounter(prev => prev + 1)
-            setInterval(() => {
+            setTimeout(() => {
                 setPopForm(true)
                 setWaitPopupErica(true)
             }, 3000);
@@ -698,6 +701,7 @@ export default function GrandGame() {
      // peteDecisions = {stay: null, whichRoute: null } 
     // normanDecisions = { 1: [], 2: [], 3: [], 4: [] }
     const handleSubmitPete = (e) => {
+        setPopForm(false)
         console.log('pete just submitted his decison form: ')
         e.preventDefault()
 
@@ -730,6 +734,7 @@ export default function GrandGame() {
 
     //Norman handles
     const handleSubmitNorman = (e) => {
+        setPopForm(false)
         // console.log('Norman just submitted his form:')
         e.preventDefault()
 
@@ -747,7 +752,6 @@ export default function GrandGame() {
 
         // socket interaction
         socket.emit('norman_message', normanDecision)
-
     }
 
     const handleChangeNormanStay = (e) => {

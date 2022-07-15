@@ -28,12 +28,13 @@ export default function Pete3({ setRound, setStep, setResultReady, normanHealth,
     }
 
     useEffect(() => {
-        setRound(prevround => prevround + 1)
-        const interval = setInterval(() => {
+
+        const interval = setTimeout(() => {
             setStep(1);
             setResultReady(false);
-        }, 2000);
-        return () => clearInterval(interval)
+            setRound(prevround => prevround + 1)
+        }, 5000);
+        return () => clearTimeout(interval)
     }, [])
 
     return (
