@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
         game_begin: new Date(),
         game_end: req.body.game_end,
         players: req.body.players,
-        chatting: req.body.chatting,
+        chatting: { 1: [], 2: [], 3: [], 4: [] },
         room_name: req.body.room_name,
         erica_messages: req.body.erica_messages,
         pete_decisions: req.body.pete_decisions,

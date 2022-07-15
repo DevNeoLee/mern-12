@@ -133,7 +133,7 @@ export default function GrandGame() {
 
     const [chatReceived, setChatReceived] = useState({message: "", user_name: ""});
 
-    const [chatData, setChatData] = useState([]);
+    const [chatData, setChatData] = useState({ 1: [], 2: [], 3: [], 4: [] });
 
     const [userQuantity, setUserQuantity] = useState(0)
   
@@ -308,7 +308,7 @@ export default function GrandGame() {
     }, [chatReceived])
 
     useEffect(() => {
-        // console.log("chatData: ", chatData)
+        console.log("chatData: ", chatData)
     }, [chatData])
 
 
@@ -477,12 +477,16 @@ export default function GrandGame() {
             setUserTaskDoneCounter(prev => prev + 1)
         }))
 
+        // chatData = { 1: [], 2: [], 3: [], 4: [] }
         socket.on("norman_chat", (data) => {
             console.log('Norman is chatting on frontend received: ', data.message);
             setChatReceived(prev => ({ ...prev, message: data.message }));
             // console.log("hmm, role: ", data.role)
-            setChatData(prev => [...prev, { role: data.role, message: data.message }], console.log("chatData1: ", JSON.stringify(chatData)));
-            console.log("chatData2: ", JSON.stringify(chatData))
+
+            setChatData(prev => ({...prev, [round]: [...prev[round], data]}));
+
+            setGlobalGame(prev => ({ ...prev, chatting: { ...prev.chatting, [round]: [...prev.chatting[round], data]}}))
+            console.log("chatData Updated: ", data)
         })
     }
 

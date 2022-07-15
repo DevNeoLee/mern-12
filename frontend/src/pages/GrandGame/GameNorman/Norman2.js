@@ -166,17 +166,15 @@ export default function Norman2({ userTaskDoneCounter, globalGame, setGlobalGame
         return houseChartdata["Depth Estimate in 3 Hours"] = houseChartdata["Depth Estimate in 3 Hours"] - houseChartdata["Current Water Depth"]
     }
 
-    const sendChat =(message) => {
-        // console.log("Chat sent: ", message)
-        socket.emit("norman_chat", {message: message, role: role})
-        
-    }
-
     const handleChatSubmit = (e) => {
         e.preventDefault();
-       
-        setChatData(prev => [...prev, { role: 'You', message: chat}])
-        sendChat(chat)
+
+        const chatMessage = { role: role, message: chat, time: new Date() }
+
+        setChatData(prev => ({ ...prev, [round]: [...prev[round], chatMessage] }));
+        // setGlobalGame(prev => ({ ...prev, chatting: { ...prev.chatting, [round]: [...prev.chatting[round], chatMessage] } }))
+        // console.log("chatData Updated: ", chatData)
+        socket.emit("norman_chat", (chatMessage))
         setChat("")
     }
 
@@ -291,9 +289,9 @@ export default function Norman2({ userTaskDoneCounter, globalGame, setGlobalGame
                             <AiFillWechat size={30} color="white" /><span style={{ color: "white" }}> Neighborhood Chat App</span>
                             <h6>Discuss with other Normans (Neighbors)</h6>
                             <div className="chatScreen" id="message-container" ref={containerRef}>
-                                {chatData.map((data, i)=> (
+                                {chatData[round].map((data, i)=> (
                                 <div key={i}>
-                                        {data.role === "You" ? <span style={{ color: 'red', minWidth: "200px", backgroundColor: "white"}}>{data.role}</span> : <span style={{ color: 'green', minWidth: "200px", backgroundColor: "white"}}>{data.role}</span>}
+                                        {data.role === role ? <span style={{ color: 'red', minWidth: "200px", backgroundColor: "white"}}>You</span> : <span style={{ color: 'green', minWidth: "200px", backgroundColor: "white"}}>{data.role}</span>}
                                         : {data.message}
                                 </div>
                                 ))}
