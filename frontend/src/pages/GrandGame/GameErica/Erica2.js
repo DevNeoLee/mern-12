@@ -186,7 +186,6 @@ export default function Erica2({ userTaskDoneCounter, globalGame, setGlobalGame,
                         </div>
                     </div>
                     <div className="rightContainerErica">
-                                <p>{userTaskDoneCounter}</p>
                         <div className="gameBlock">
                             <div className="gameRound">
                                 <h2>Round {round}</h2>

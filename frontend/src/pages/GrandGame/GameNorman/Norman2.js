@@ -194,7 +194,6 @@ export default function Norman2({ userTaskDoneCounter, globalGame, setGlobalGame
 
 
             <div className="gameBlockContainer">
-                <p>{userTaskDoneCounter}</p>
                 <div className="leftContainer">
                     <div className="gameBlock3">
                         <div className="gamelogoline">
@@ -415,7 +414,7 @@ export default function Norman2({ userTaskDoneCounter, globalGame, setGlobalGame
                                     </div> */}
                                     <div className="alertMessage">
                                         <p className="">
-                                            {messageFromErica.messageToNorman}
+                                            {messageFromErica.toNorman}
                                         </p>
                                         {messageFromErica && <div style={{ display: "flex"}}>
                                             <div style={{ color: "blue", marginRight: "0.5rem"}}>Current Level of Warning:  </div> {messageFromErica.levelOfWarning}

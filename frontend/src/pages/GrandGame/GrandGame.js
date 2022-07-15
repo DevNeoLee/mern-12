@@ -264,7 +264,8 @@ export default function GrandGame() {
     useEffect(()=> {
 
         console.log('userTaskCounter: ', userTaskDoneCounter)
-        if (userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter + 1) {
+        if ((userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter + 1 && round === 1) || 
+            (userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter )) {
             setPopForm(false)
 
             //// calculate socres here///////
