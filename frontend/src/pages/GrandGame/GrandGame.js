@@ -261,40 +261,44 @@ export default function GrandGame() {
     // peteDecisions =[stay: null, whichRoute: null }] 
     // normanDecisions = { 1: [], 2: [], 3: [], 4: [] }
 
-    useEffect(()=> {
+    useEffect( () => {
+        const roundDone = async () => {
+            console.log('userTaskCounter: ', userTaskDoneCounter);
 
-        console.log('userTaskCounter: ', userTaskDoneCounter)
-        if ((userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter + 1 && round === 1) || 
-            (userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter )) {
-            setPopForm(false)
+            if ((userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter + 1 && round === 1) || 
+                (userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter )) {
+                setPopForm(false)
+    
+                //// calculate socres here///////
+                // calculateScore(normanDecisions, peteDecisions)
+    
+                //// Mongo Game Update /////
+                await updateToMongoDBGame(globalGame)
+    
+                // render result page /////
+                setResultReady(true)
+    
+                ///그리고 모든 이전 스테이트 최기화!
+                setPeteDecisions([])
+                setWhichRoutePete('')
+                setPetePower('')
+                setWhichRoute('')
+                setNormanStay('')
+                setMessageFromErica('')
+                setMessageToNorman('')
+                setMessageToPete('')
+    
+    
+                setUserTaskDoneCounter(0)
+                // setWaitPopupErica(false)
+    
+                console.log('!!!!!!!calcuation done')
+            } else {
+                console.log("result page is not ready yet: " + 'NormanDecisions: ' + JSON.stringify(normanDecisions) + 'PeteDecisions: ' + JSON.stringify(peteDecisions))
+            } 
+        }
 
-            //// calculate socres here///////
-            // calculateScore(normanDecisions, peteDecisions)
-            //// feed the date /////
-
-
-            // render result page /////
-
-            setResultReady(true)
-
-            ///그리고 모든 이전 스테이트 최기화!
-            setPeteDecisions([])
-            setWhichRoutePete('')
-            setPetePower('')
-            setWhichRoute('')
-            setNormanStay('')
-            setMessageFromErica('')
-            setMessageToNorman('')
-            setMessageToPete('')
-
-
-            setUserTaskDoneCounter(0)
-            // setWaitPopupErica(false)
-
-            console.log('!!!!!!!calcuation done')
-        } else {
-            console.log("result page is not ready yet: " + 'NormanDecisions: ' + JSON.stringify(normanDecisions) + 'PeteDecisions: ' + JSON.stringify(peteDecisions))
-        } 
+        roundDone();
 
     }, [normanDecisions, ericaDecisions, peteDecisions, globalGame, globalSession, session, game])
 
@@ -332,22 +336,35 @@ export default function GrandGame() {
 
     }
 
-    // const updateToMongoDBSession = async (payload) => {
-    //     console.log('session data: ', sessionDataObject);
+    const updateToMongoDBSession = async (payload) => {
+        console.log('session data: ', sessionDataObject);
 
-    //     const dataUpdate = async () => {
-    //         await axios.put(HOST + '/api/session', {...sessionDataObject, payload})
-    //             .then(data => {
-    //                 console.log('Session to MongoDB updated: ', data)
-    //                 // return data
-    //             })
-    //             .catch(err => console.log(err))
-    //     }
+        const dataUpdate = async () => {
+            await axios.put(HOST + '/api/session', payload)
+                .then(data => {
+                    console.log('Session to MongoDB updated: ', data)
+                    // return data
+                })
+                .catch(err => console.log(err))
+        }
 
-    //     await dataUpdate();
-    //     // navigate('/welcome');
-    // }
+        await dataUpdate();
+    }
 
+    const updateToMongoDBGame = async (payload) => {
+        console.log('global game object: ', globalGame);
+
+        const dataUpdate = async () => {
+            await axios.put(HOST + '/api/grandgame', payload)
+                .then(data => {
+                    console.log('Game to MongoDB updated: ', data)
+                    // return data
+                })
+                .catch(err => console.log(err))
+        }
+
+        await dataUpdate();
+    }
 
     //먼저 소켓 접속
     const connectToSocket = () => {
@@ -707,7 +724,7 @@ export default function GrandGame() {
 
      // peteDecisions = {stay: null, whichRoute: null } 
     // normanDecisions = { 1: [], 2: [], 3: [], 4: [] }
-    const handleSubmitPete = (e) => {
+    const handleSubmitPete = async (e) => {
         setPopForm(false)
         console.log('pete just submitted his decison form: ')
         e.preventDefault()
@@ -721,6 +738,8 @@ export default function GrandGame() {
         setSession(prev => ({ ...prev, your_decisions: { ...prev.your_decisions, [round]: peteDecision } }))
 
         socket.emit('pete_message', peteDecision)
+
+        await updateToMongoDBSession({ ...globalSession, your_decisions: { ...globalSession.your_decisions, [round]: peteDecision } })
     }
 
     const handleChangePetePower = (e) => {
@@ -740,7 +759,7 @@ export default function GrandGame() {
     // normanDecisions = { 1: [], 2: [], 3: [], 4: [] }
 
     //Norman handles
-    const handleSubmitNorman = (e) => {
+    const handleSubmitNorman = async (e) => {
         setPopForm(false)
         // console.log('Norman just submitted his form:')
         e.preventDefault()
@@ -757,8 +776,12 @@ export default function GrandGame() {
         setGlobalSession(prev => ({ ...prev, your_decisions: { ...prev.your_decisions, [round]: normanDecision } }))
         setSession(prev => ({ ...prev, your_decisions: { ...prev.your_decisions, [round]: normanDecision } }))
 
+        
         // socket interaction
         socket.emit('norman_message', normanDecision)
+
+        //Update to MongoDB
+        await updateToMongoDBSession({ ...globalSession, your_decisions: { ...globalSession.your_decisions, [round]: normanDecision } })
     }
 
     const handleChangeNormanStay = (e) => {
@@ -774,12 +797,12 @@ export default function GrandGame() {
     //ericaDecisions = { 1: {}, 2: {}, 3: {}, 4: {} }
     //
     //erica communicating through SOCKET  + to do: save to MongoDB
-    const handleSubmitErica = (e) => {
+    const handleSubmitErica = async (e) => {
         e.preventDefault()
         // console.log('erica just submitted her messages:')
 
         const messages = {
-            toNorman: messageToNorman, toPete: messageToPete, levelOfWarning: levelOfWarning
+            toNorman: messageToNorman, toPete: messageToPete, levelOfWarning: levelOfWarning, role: role
         }
 
         setEricaDecisions(prev => ({...prev, [round]: messages })) 
@@ -789,7 +812,7 @@ export default function GrandGame() {
         // socket interaction
         socket.emit('erica_message', messages)
 
-
+        await updateToMongoDBSession({ ...globalSession, your_decisions: { ...globalSession.your_decisions, [round]: messages } })
 
         setLevelOfWarning('')
         setMessageToNorman('')

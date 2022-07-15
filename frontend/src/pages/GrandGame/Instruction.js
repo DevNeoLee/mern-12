@@ -139,21 +139,21 @@ export default function Instruction({ globalGame, setGlobalGame, globalSession, 
     // setRole(role)
   }
 
-     const updateToMongoDBSession = async (payload) => {
-        console.log('session data: ', sessionDataObject);
+  const updateToMongoDBSession = async (payload) => {
+    console.log('session data: ', sessionDataObject);
 
-        const dataUpdate = async () => {
-            await axios.put(HOST + '/api/session', payload)
-                .then(data => {
-                    console.log('Session to MongoDB updated: ', data)
-                    // return data
-                })
-                .catch(err => console.log(err))
-        }
-
-        await dataUpdate();
-        // navigate('/welcome');
+    const dataUpdate = async () => {
+        await axios.put(HOST + '/api/session', payload)
+            .then(data => {
+                console.log('Session to MongoDB updated: ', data)
+                // return data
+            })
+            .catch(err => console.log(err))
     }
+
+    await dataUpdate();
+    // navigate('/welcome');
+  }
 
   const handleJoin = async () => {
     console.log('join clicked i: ')
