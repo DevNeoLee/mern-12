@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useTransition, useSpring, animated } from "react-spring";
 
 
-export default function Norman3({ setRound, setStep, setResultReady, ericaHealth, petePower, peteHealth, whichRoute, normanStay, round, normanHealth, waterDepthEndupNorman, electricity}) {
+export default function Norman3({ GAME_ROUND, setRound, setStep, setResultReady, ericaHealth, petePower, peteHealth, whichRoute, normanStay, round, normanHealth, waterDepthEndupNorman, electricity}) {
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -40,6 +40,10 @@ export default function Norman3({ setRound, setStep, setResultReady, ericaHealth
             setRound(prevround => prevround + 1)
             setStep(1);
             setResultReady(false);
+
+            if (round === GAME_ROUND ) {
+                navigate('/instructionformpostgame')
+            }
         }, 5000);
         return () => clearTimeout(interval)
     }, [])

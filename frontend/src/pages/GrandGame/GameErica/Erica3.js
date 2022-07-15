@@ -7,7 +7,7 @@ import { useTransition, animated } from "react-spring";
 import { useEffect } from "react";
 
 
-export default function Erica3({ setRound, setStep, setResultReady, petePower, round, ericaHealth, peteHealth, normanHealth, normanStay, messagesStorageErica }) {
+export default function Erica3({ GAME_ROUND, setRound, setStep, setResultReady, petePower, round, ericaHealth, peteHealth, normanHealth, normanStay, messagesStorageErica }) {
     const transition = useTransition(true, {
         from: { x: 500, y: 0, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1 },
@@ -33,6 +33,10 @@ export default function Erica3({ setRound, setStep, setResultReady, petePower, r
             setStep(1);
             setResultReady(false);
             setRound(prevround => prevround + 1)
+
+            if (round === GAME_ROUND  ) {
+                navigate('/instructionformpostgame')
+            }
         }, 5000);
         return () => clearTimeout(interval)
     }, [])
