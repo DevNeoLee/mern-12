@@ -15,7 +15,7 @@ import { AreaChart, Area, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tool
 
 import { Link } from "react-router-dom"
 
-export default function Erica2({ globalGame, setGlobalGame, globalSession, setGlobalSession, data, waitPopupErica, setWaitPopupErica, players, handleSubmitErica, round, handleChangeWarning, handleChangeMessageToNorman, handleChangeMessageToPete, levelOfWarning, messageToNorman, messageToPete, ericaHealth, electricity, step, normanQuestion, normanHealth }) {
+export default function Erica2({ userTaskDoneCounter, globalGame, setGlobalGame, globalSession, setGlobalSession, data, waitPopupErica, setWaitPopupErica, players, handleSubmitErica, round, handleChangeWarning, handleChangeMessageToNorman, handleChangeMessageToPete, levelOfWarning, messageToNorman, messageToPete, ericaHealth, electricity, step, normanQuestion, normanHealth }) {
 
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);
@@ -186,6 +186,7 @@ export default function Erica2({ globalGame, setGlobalGame, globalSession, setGl
                         </div>
                     </div>
                     <div className="rightContainerErica">
+                                <p>{userTaskDoneCounter}</p>
                         <div className="gameBlock">
                             <div className="gameRound">
                                 <h2>Round {round}</h2>

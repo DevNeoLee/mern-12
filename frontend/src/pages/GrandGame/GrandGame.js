@@ -43,6 +43,7 @@ export default function GrandGame() {
     const [step, setStep] = useState(0)
     const [id, setId] = useState({})
     
+    const [userTaskDoneCounter, setUserTaskDoneCounter] = useState(0);
     const [socket, setSocket] = useState(null)
 
     const [round, setRound] = useState(1)
@@ -259,25 +260,17 @@ export default function GrandGame() {
     // normanDecisions = { 1: [], 2: [], 3: [], 4: [] }
 
     useEffect(()=> {
-        console.log('normanDecisions: ', normanDecisions)
-        console.log("Pete data, 'stay' came?: ", peteDecisions['stay'] )
-        console.log('roomOneSize: ', roomOneSize)
 
-        //모든 노만의 답들이 다  도착 했는지. 현제 방의 크기에서 핏과 에리카 두명의 숫자를 빼준 수. 
-        if (normanDecisions[round].length === roomOneSize - 2) {
-            setNormanDecisionsComplete(true);
-        }
+        console.log('userTaskCounter: ', userTaskDoneCounter)
+        if (userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter + 1) {
 
-        //만약 노만과 피터가 자료를 서로 보내줘서 두명의 자료가 모두 압데이트 되어 모두 null이 아니라면
-        if (normanDecisionsComplete && (peteDecisions['stay'])) {
-
-            ////// calculate socres here///////
+            //// calculate socres here///////
             // calculateScore(normanDecisions, peteDecisions)
-            ////// feed the date /////
+            //// feed the date /////
 
 
-            //// render result page /////
-            
+            // render result page /////
+
             setResultReady(true)
 
             ///그리고 모든 이전 스테이트 최기화!
@@ -291,9 +284,9 @@ export default function GrandGame() {
             console.log('!!!!!!!calcuation done')
         } else {
             console.log("result page is not ready yet: " + 'NormanDecisions: ' + JSON.stringify(normanDecisions) + 'PeteDecisions: ' + JSON.stringify(peteDecisions))
-        }
+        } 
 
-    },[normanDecisions, peteDecisions])
+    }, [normanDecisions, ericaDecisions, peteDecisions, globalGame, globalSession, session, game])
 
 
     useEffect(() => {
@@ -425,7 +418,7 @@ export default function GrandGame() {
             setMessageFromErica(msg)
 
             setGlobalGame(prev => ({...prev, erica_messages: {...prev.erica_messages, [round]: msg}}))
-            
+            setUserTaskDoneCounter(prev => prev + 1)
             setInterval(() => {
                 setPopForm(true)
                 setWaitPopupErica(true)
@@ -442,7 +435,7 @@ export default function GrandGame() {
             // setGlobalGame(prev => ({ ...prev, erica_messages: { ...prev.erica_messages, [round]: msg } }))
 
             setGlobalGame(prev => ({ ...prev, norman_decisions: { ...prev.norman_decisions, [round]: [...prev.norman_decisions[round], data ]} }))
-
+            setUserTaskDoneCounter(prev => prev + 1)
         }))
 
         socket.on("pete_message", (data => {
@@ -453,8 +446,8 @@ export default function GrandGame() {
             } else if (data.stay === 'poweron') {
                 setElectricity('poweron')
             }
-
             setGlobalGame(prev => ({ ...prev, pete_decisions: { ...prev.pete_decisions, [round]: data } }))
+            setUserTaskDoneCounter(prev => prev + 1)
         }))
 
         socket.on("norman_chat", (data) => {
@@ -814,21 +807,21 @@ export default function GrandGame() {
     const ericas = [
         <Erica0 step={step} role setRole />,
         <Erica1 step={step} round={round} />,
-        <Erica2 globalGame={globalGame} setGlobalGame={setGlobalGame} globalSession={globalSession} setGlobalSession={setGlobalSession} data={data} setWaitPopupErica={setWaitPopupErica} waitPopupErica={waitPopupErica} handleSubmitErica={handleSubmitErica} round={round} handleChangeWarning={handleChangeWarning} handleChangeMessageToNorman={handleChangeMessageToNorman} handleChangeMessageToPete={handleChangeMessageToPete} levelOfWarning={levelOfWarning} messageToPete={messageToPete} messageToNorman={messageToNorman} ericaHealth={ericaHealth} players={players}/>,
+        <Erica2 userTaskDoneCounter={userTaskDoneCounter} globalGame={globalGame} setGlobalGame={setGlobalGame} globalSession={globalSession} setGlobalSession={setGlobalSession} data={data} setWaitPopupErica={setWaitPopupErica} waitPopupErica={waitPopupErica} handleSubmitErica={handleSubmitErica} round={round} handleChangeWarning={handleChangeWarning} handleChangeMessageToNorman={handleChangeMessageToNorman} handleChangeMessageToPete={handleChangeMessageToPete} levelOfWarning={levelOfWarning} messageToPete={messageToPete} messageToNorman={messageToNorman} ericaHealth={ericaHealth} players={players}/>,
         <Erica3 step={step} setRound={setRound} setStep={setStep} setResultReady={setResultReady} petePower={petePower} normanHealth={normanHealth} peteHealth={peteHealth} round={round} ericaHealth={ericaHealth} messagesStorageErica={messagesStorageErica} normanStay={normanStay} />,
     ];
     
     const normans = [
         <Norman0 step={step} />,
         <Norman1 step={step} round={round}/>,
-        <Norman2 globalGame={globalGame} setGlobalGame={setGlobalGame} globalSession={globalSession} setGlobalSession={setGlobalSession} step={step} data={data} handleChangeWhichRoute={handleChangeWhichRoute} normanStay={normanStay} handleSubmitNorman={handleSubmitNorman} handleChangeNormanStay={handleChangeNormanStay} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} normanHealth={normanHealth} messageToNorman={messageToNorman} role={role} messageFromErica={messageFromErica} socket={socket} setChatData={setChatData} chatData={chatData}/>,
+        <Norman2 userTaskDoneCounter={userTaskDoneCounter} globalGame={globalGame} setGlobalGame={setGlobalGame} globalSession={globalSession} setGlobalSession={setGlobalSession} step={step} data={data} handleChangeWhichRoute={handleChangeWhichRoute} normanStay={normanStay} handleSubmitNorman={handleSubmitNorman} handleChangeNormanStay={handleChangeNormanStay} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} normanHealth={normanHealth} messageToNorman={messageToNorman} role={role} messageFromErica={messageFromErica} socket={socket} setChatData={setChatData} chatData={chatData}/>,
         <Norman3 step={step} setRound={setRound} setStep={setStep} setResultReady={setResultReady} sround={round} peteHealth={peteHealth} ericaHealth={ericaHealth} whichRoute={whichRoute} normanStay={normanStay} electricity={electricity} normanHealth={normanHealth} waterDepthEndupNorman={waterDepthEndupNorman} petePower={petePower}/>,
     ];
     
     const petes = [
         <Pete0 step={step} />,
         <Pete1 step={step} round={round} />,
-        <Pete2 step={step} globalGame={globalGame} setGlobalGame={setGlobalGame} globalSession={globalSession} setGlobalSession={setGlobalSession} data={data} handleChangePetePower={handleChangePetePower} handleSubmitPete={handleSubmitPete} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} peteHealth={peteHealth} petePower={petePower} whichRoutePete={whichRoutePete} normanStay={normanStay} handleChangeWhichRoutePete={handleChangeWhichRoutePete} messageToPete={messageToPete} messageFromErica={messageFromErica}/>,
+        <Pete2 userTaskDoneCounter={userTaskDoneCounter} step={step} globalGame={globalGame} setGlobalGame={setGlobalGame} globalSession={globalSession} setGlobalSession={setGlobalSession} data={data} handleChangePetePower={handleChangePetePower} handleSubmitPete={handleSubmitPete} popForm={popForm} setPopForm={setPopForm} round={round} electricity={electricity} normanQuestion={normanQuestion} peteHealth={peteHealth} petePower={petePower} whichRoutePete={whichRoutePete} normanStay={normanStay} handleChangeWhichRoutePete={handleChangeWhichRoutePete} messageToPete={messageToPete} messageFromErica={messageFromErica}/>,
         <Pete3 step={step} setRound={setRound} setStep={setStep} setResultReady={setResultReady} round={round} normanHealth={normanHealth} ericaHealth={ericaHealth} peteHealth={peteHealth} whichRoutePete={whichRoutePete} electricity={electricity} petePower={petePower} waterDepthEndupPete={waterDepthEndupPete}/>
     ];
     
