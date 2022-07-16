@@ -278,6 +278,12 @@ export default function GrandGame() {
                 // render result page /////
                 setResultReady(true)
     
+                // sessionStorage에다가 저장해 주어 이걸 다음 다른 페이지들에게 정확히 패스해 줄수 있다. 
+                sessionStorage.setItem('ufoknGame', globalGame)
+                
+
+                console.log('sessonStorage, game: ', sessionStorage.getItem('ufoknGame'))
+
                 ///그리고 모든 이전 스테이트 최기화!
                 setPeteDecisions([])
                 setWhichRoutePete('')
@@ -292,6 +298,8 @@ export default function GrandGame() {
     
                 setUserTaskDoneCounter(0)
                 setWaitPopupErica(false)
+
+
     
                 console.log('!!!!!!!calcuation done')
             } else {
@@ -445,7 +453,7 @@ export default function GrandGame() {
 
             setMessageFromErica(msg)
 
-            setGlobalGame(prev => ({...prev, erica_messages: {...prev.erica_messages, [round]: msg}}))
+            setGlobalGame(prev => ({...prev, erica_messages: {...prev.erica_messages, [round]: [...prev.erica_messages[round], msg]}}))
             setUserTaskDoneCounter(prev => prev + 1)
             setTimeout(() => {
                 setPopForm(true)
@@ -474,7 +482,7 @@ export default function GrandGame() {
             } else if (data.stay === 'poweron') {
                 setElectricity('poweron')
             }
-            setGlobalGame(prev => ({ ...prev, pete_decisions: { ...prev.pete_decisions, [round]: data } }))
+            setGlobalGame(prev => ({ ...prev, pete_decisions: { ...prev.pete_decisions, [round]: [...prev.pete_decisions[round], data ]} }))
             setUserTaskDoneCounter(prev => prev + 1)
         }))
 
@@ -744,6 +752,11 @@ export default function GrandGame() {
 
         socket.emit('pete_message', peteDecision)
 
+        // sessionStorage에다가 저장해 주어 이걸 다음 다른 페이지들에게 정확히 패스해 줄수 있다. 
+        sessionStorage.setItem('ufoknSession', JSON.stringify({ ...globalSession, your_decisions: { ...globalSession.your_decisions, [round]: peteDecision } }))
+
+        console.log('sessonStorage, Session: ', JSON.parse(sessionStorage.getItem('ufoknSession')))
+
         await updateToMongoDBSession({ ...globalSession, your_decisions: { ...globalSession.your_decisions, [round]: peteDecision } })
     }
 
@@ -785,6 +798,11 @@ export default function GrandGame() {
         // socket interaction
         socket.emit('norman_message', normanDecision)
 
+        // sessionStorage에다가 저장해 주어 이걸 다음 다른 페이지들에게 정확히 패스해 줄수 있다. 
+        sessionStorage.setItem('ufoknSession', JSON.stringify({ ...globalSession, your_decisions: { ...globalSession.your_decisions, [round]: normanDecision } }))
+
+        console.log('sessonStorage, Session: ', JSON.parse(sessionStorage.getItem('ufoknSession')))
+
         //Update to MongoDB
         await updateToMongoDBSession({ ...globalSession, your_decisions: { ...globalSession.your_decisions, [round]: normanDecision } })
     }
@@ -810,6 +828,7 @@ export default function GrandGame() {
             toNorman: messageToNorman, toPete: messageToPete, levelOfWarning: levelOfWarning, role: role
         }
 
+
         setEricaDecisions(prev => ({...prev, [round]: messages })) 
 
         setGlobalSession(prev => ({...prev, your_decisions: {...prev.your_decisions, [round]: messages}}))
@@ -817,7 +836,13 @@ export default function GrandGame() {
         // socket interaction
         socket.emit('erica_message', messages)
 
+        // sessionStorage에다가 저장해 주어 이걸 다음 다른 페이지들에게 정확히 패스해 줄수 있다. 
+        sessionStorage.setItem('ufoknSession', JSON.stringify({ ...globalSession, your_decisions: { ...globalSession.your_decisions, [round]: messages } }))
+
+        console.log('sessonStorage, Session: ', JSON.parse(sessionStorage.getItem('ufoknSession')))
+
         await updateToMongoDBSession({ ...globalSession, your_decisions: { ...globalSession.your_decisions, [round]: messages } })
+
 
         setLevelOfWarning('')
         setMessageToNorman('')
