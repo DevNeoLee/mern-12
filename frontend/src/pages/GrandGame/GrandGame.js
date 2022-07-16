@@ -131,8 +131,6 @@ export default function GrandGame() {
     const [waterDepthEndupNorman, setWaterDepthEndupNorman] = useState(0)
     const [waterDepthEndupPete, setWaterDepthEndupPete] = useState(0)
 
-    const [chatReceived, setChatReceived] = useState({message: "", user_name: ""});
-
     const [chatData, setChatData] = useState({ 1: [], 2: [], 3: [], 4: [] });
 
     const [userQuantity, setUserQuantity] = useState(0)
@@ -308,11 +306,6 @@ export default function GrandGame() {
         roundDone();
 
     }, [normanDecisions, ericaDecisions, peteDecisions, globalGame, globalSession, setGlobalSession, setGlobalGame])
-
-
-    // useEffect(() => {
-    //     console.log("chatReceived: ", chatReceived)
-    // }, [chatReceived])
 
     // useEffect(() => {
     //     console.log("chatData: ", chatData)
@@ -490,8 +483,6 @@ export default function GrandGame() {
         socket.on("norman_chat", (data) => {
             console.log('Norman is chatting on frontend received: ', data.message);
             console.log('chat data received: ', data)
-            setChatReceived(data);
-            // console.log("hmm, role: ", data.role)
 
             setChatData(prev => ({...prev, [round]: [...prev[round], data]}));
 

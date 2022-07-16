@@ -171,8 +171,7 @@ export default function Norman2({ userTaskDoneCounter, globalGame, setGlobalGame
 
         const chatMessage = { role: role, message: chat, time: new Date() }
 
-        setChatData(prev => ({ ...prev, [round]: [...prev[round], chatMessage] }));
-        // setGlobalGame(prev => ({ ...prev, chatting: { ...prev.chatting, [round]: [...prev.chatting[round], chatMessage] } }))
+        setGlobalGame(prev => ({ ...prev, chatting: { ...prev.chatting, [round]: [...prev.chatting[round], chatMessage] } }))
         // console.log("chatData Updated: ", chatData)
         socket.emit("norman_chat", (chatMessage))
         setChat("")

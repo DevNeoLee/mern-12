@@ -193,7 +193,6 @@ io.on("connection", socket => {
             let room = io.sockets.adapter.rooms.get('1')
             console.log('chat content from Norman: ', data)
             socket.broadcast.to('1').emit('norman_chat', data)
-            console.log('backend received an event, norman_chat:', socket.id)
     })
 
   
