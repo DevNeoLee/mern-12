@@ -192,48 +192,49 @@ export default function GrandGame() {
     }, [])
 
     useEffect(() => {
-        const setSession = () => {
-            sessionStorage.setItem('ufoknSession', JSON.stringify(session))
-            console.log('Your session data in userEffect[session]; ', session)
-        }
-            
-        setSession()
-    }, [session])
+        sessionStorage.setItem('ufoknSession', JSON.stringify(globalSession))
+        console.log('Your global session data in userEffect[session]; ', globalSession)
+   
+    }, [globalSession])
 
     useEffect(()=> {
-        console.log('globalSession: ', globalSession)
+        sessionStorage.setItem('ufoknGame', JSON.stringify(globalGame))
         console.log('globalGame: ', globalGame)
 
-    }, [globalGame, globalSession])
+    }, [globalGame])
 
-    useEffect(() => {
-        const updateGames = async () => {
-            console.log('game updated!')
-            await sessionStorage.setItem('ufoknGame', JSON.stringify(game))
-            console.log('Your Game data in userEffect[game];', game)
+    // useEffect(() => {
+    //     const updateGames = async () => {
+    //         console.log('game updated!')
+    //         await sessionStorage.setItem('ufoknGame', JSON.stringify(game))
+    //         console.log('Your Game data in userEffect[game];', game)
     
-            let newGames = games.map(g => {
-                if (g.room_name === game.room_name) {
-                    return game
-                } else {
-                    return g
-                }
-            })
-            setGames(newGames)
-            console.log('Your Global Session on useEffect[game]', globalSession)
-            console.log('Your Global Game on useEffect[game]', globalGame)
-        }
-        updateGames();
-        // socket.emit("join_room", game.room_name, game, session._id) ////////////////////////////////
-    }, [game])
+    //         let newGames = games.map(g => {
+    //             if (g.room_name === game.room_name) {
+    //                 return game
+    //             } else {
+    //                 return g
+    //             }
+    //         })
+    //         setGames(newGames)
+    //         console.log('Your Global Session on useEffect[game]', globalSession)
+    //         console.log('Your Global Game on useEffect[game]', globalGame)
+    //     }
+    //     updateGames();
+    // }, [game])
 
 
     useEffect(() => {
         console.log("ericaMessage to norman:", messageToNorman)
+
+    }, [messageToNorman])
+
+    useEffect(() => {
         console.log("ericaMessage to pete:", messageToPete)
 
-    }, [messageToNorman, messageToPete])
+    }, [messageToPete])
 
+    
     useEffect(() => {
         const average = (peteHealth + normanHealth * 3) / 4;
         setEricaHealth(average.toFixed())
@@ -252,9 +253,6 @@ export default function GrandGame() {
         }
     }, [])
 
-    useEffect(() => {
-        // console.log("messages storage Erica: ", JSON.stringify(messagesStorageErica))
-    }, [messagesStorageErica])
 
     
 /////////////////////////////////////////////////////////                   Round Complete Decision Logic                                 ///////////////////////////////////////////////////////////////////////////////////
@@ -309,16 +307,16 @@ export default function GrandGame() {
 
         roundDone();
 
-    }, [normanDecisions, ericaDecisions, peteDecisions, globalGame, globalSession, session, game])
+    }, [normanDecisions, ericaDecisions, peteDecisions, globalGame, globalSession, setGlobalSession, setGlobalGame])
 
 
-    useEffect(() => {
-        console.log("chatReceived: ", chatReceived)
-    }, [chatReceived])
+    // useEffect(() => {
+    //     console.log("chatReceived: ", chatReceived)
+    // }, [chatReceived])
 
-    useEffect(() => {
-        console.log("chatData: ", chatData)
-    }, [chatData])
+    // useEffect(() => {
+    //     console.log("chatData: ", chatData)
+    // }, [chatData])
 
 
 
@@ -450,16 +448,18 @@ export default function GrandGame() {
 
         socket.on("erica_message", (msg) => {
             console.log('Erica message from Erica received: ', msg)
-
+            console.log('aaa')
             setMessageFromErica(msg)
-
+            console.log('bbb')
             setGlobalGame(prev => ({...prev, erica_messages: {...prev.erica_messages, [round]: [...prev.erica_messages[round], msg]}}))
+            console.log('ccc')
             setUserTaskDoneCounter(prev => prev + 1)
+            console.log('ddd')
             setTimeout(() => {
                 setPopForm(true)
                 setWaitPopupErica(true)
             }, 3000);
-
+            console.log('eee')
 
         })
 
@@ -489,7 +489,8 @@ export default function GrandGame() {
         // chatData = { 1: [], 2: [], 3: [], 4: [] }
         socket.on("norman_chat", (data) => {
             console.log('Norman is chatting on frontend received: ', data.message);
-            setChatReceived(prev => ({ ...prev, message: data.message }));
+            console.log('chat data received: ', data)
+            setChatReceived(data);
             // console.log("hmm, role: ", data.role)
 
             setChatData(prev => ({...prev, [round]: [...prev[round], data]}));

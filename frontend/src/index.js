@@ -6,10 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { RecoilRoot } from 'recoil';
 
 ReactDOM.render(
-  <React.StrictMode>
     <RecoilRoot>
         <App />
-    </RecoilRoot>
-  </React.StrictMode>,
+    </RecoilRoot>,
   document.getElementById('root')
 );

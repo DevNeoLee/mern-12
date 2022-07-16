@@ -152,6 +152,7 @@ export default function Pete2({ userTaskDoneCounter, globalGame, setGlobalGame, 
             {/* <div className={popForm ? `peteForm` : `peteForm peteFormClose`}><PeteForm handleChangeWhichRoutePete={handleChangeWhichRoutePete} whichRoutePete={whichRoutePete}  handleSubmitPete={handleSubmitPete} handleChangePetePower={handleChangePetePower} petePower={petePower}/></div> */}
             <div className={popForm ? `peteForm` : `peteForm peteFormClose`}>{popForm && <PeteForm handleChangeWhichRoutePete={handleChangeWhichRoutePete} whichRoutePete={whichRoutePete} handleSubmitPete={handleSubmitPete} handleChangePetePower={handleChangePetePower} petePower={petePower} />}</div>
             <div className={waitPopup ? `waitModal` : `waitModal waitModalClose`}><WaitModalPete handleWaitModal={handleWaitModal} /></div>
+            {userTaskDoneCounter}
 
             <div className="gameBlockContainer">
                 <div className="leftContainer">

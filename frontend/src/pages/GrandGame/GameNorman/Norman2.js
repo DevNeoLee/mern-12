@@ -189,7 +189,7 @@ export default function Norman2({ userTaskDoneCounter, globalGame, setGlobalGame
             <div className={popup ? `normanPopup` : `normanPopup normanPopClose`}><NormanPopup setPopup={setPopup} /></div>
             <div className={popForm ? `normanForm` : `normanForm normanFormClose`}><NormanForm handleChangeWhichRoute={handleChangeWhichRoute} handleSubmitNorman={handleSubmitNorman} handleChangeNormanStay={handleChangeNormanStay} normanStay={normanStay} setPopForm={setPopForm} handleNormanForm={handleNormanForm}/></div>
             <div className={waitPopup ? `waitModal` : `waitModal waitModalClose`}><WaitModalNorman handleWaitModal={handleWaitModal} /></div>
-
+            {userTaskDoneCounter}
 
             <div className="gameBlockContainer">
                 <div className="leftContainer">
