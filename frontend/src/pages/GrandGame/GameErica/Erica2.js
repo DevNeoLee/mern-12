@@ -141,8 +141,8 @@ export default function Erica2({ userTaskDoneCounter, globalGame, setGlobalGame,
 
     return (
         <>  
-            {/* <div className={ popup ? `ericaPopup` : `ericaPopup ericaPopClose`}><EricaPopup setPopup={setPopup} /></div> */}
-            {/* <div className={waitPopupErica ? `waitModal` : `waitModal waitModalClose`}><WaitModalErica setWaitPopupErica={setWaitPopupErica} /></div> */}
+            <div className={ popup ? `ericaPopup` : `ericaPopup ericaPopClose`}><EricaPopup setPopup={setPopup} /></div>
+            <div className={waitPopupErica ? `waitModal` : `waitModal waitModalClose`}><WaitModalErica setWaitPopupErica={setWaitPopupErica} /></div>
 
             <div className="gameBlockContainerErica">
                 <div className="topContainerErica">

@@ -266,7 +266,7 @@ export default function GrandGame() {
             console.log('userTaskCounter: ', userTaskDoneCounter);
 
             if ((userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter + 1 && round === 1) || 
-                (userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter )) {
+                (userTaskDoneCounter !== 0 && roomOneSize === userTaskDoneCounter + 1)) {
                 setPopForm(false)
     
                 //// calculate socres here///////
@@ -287,10 +287,11 @@ export default function GrandGame() {
                 setMessageFromErica('')
                 setMessageToNorman('')
                 setMessageToPete('')
+ 
     
     
                 setUserTaskDoneCounter(0)
-                // setWaitPopupErica(false)
+                setWaitPopupErica(false)
     
                 console.log('!!!!!!!calcuation done')
             } else {
