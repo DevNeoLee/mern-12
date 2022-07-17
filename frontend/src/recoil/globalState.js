@@ -22,9 +22,9 @@ export const gameState = atom({
         game_begin: "",
         game_end: "",
         players: [],
-        chatting: [],
-        erica_messages: [],
-        pete_decisions: [],
-        norman_decisions: {1:[], 2: [], 3: [], 4: []}
+        chatting: { 1: [], 2: [], 3: [], 4: [] },
+        norman_decisions: { 1: [] , 2: [] , 3: [] , 4: []  },
+        pete_decisions: { 1: [] , 2: [] , 3: [] , 4: []  },
+        erica_messages: { 1: [] , 2: [] , 3: [] , 4: []  }
     }
 })
