@@ -88,7 +88,7 @@ export default function GrandGame() {
     const [roundFinished, setRoundFinished] = useState(false)
     const [resultReady, setResultReady] = useState(false)//////////true <-> false 로 step값과 함께 페이지 이동 결정함
 
-    const [peteDecisions, setPeteDecisions] = useState({ stay: null, whichRoute: null });
+    const [peteDecisions, setPeteDecisions] = useState({ 1: {}, 2: {}, 3: {}, 4: {} });
 
     const [normanDecisions, setNormanDecisions] = useState({1: [], 2: [], 3: [], 4: []})
 
@@ -156,16 +156,16 @@ export default function GrandGame() {
     const [game, setGame] = useState({
         room_name: "",
         players: [],
-        chatting: [],
-        norman_decisions: { 1: [], 2: [], 3: [], 4: [] }
+        chatting: { 1: [], 2: [], 3: [], 4: [] },
+        norman_decisions: { 1: {}, 2:{}, 3: {}, 4: {} }
     });
 
     const [isGame, setIsGame] = useState(false);
 
     const [games, setGames] = useState(() => [
-        { room_name: "1", players: [], chatting: [], norman_decisions: { 1: [], 2: [], 3: [], 4: [] } }, 
-        { room_name: "2", players: [], chatting: [], norman_decisions: { 1: [], 2: [], 3: [], 4: [] } },
-        { room_name: "3", players: [], chatting: [], norman_decisions: { 1: [], 2: [], 3: [], 4: [] } }
+        { room_name: "1", players: [], chatting: {}, norman_decisions: { 1: {}, 2: {}, 3: {}, 4: {} } }, 
+        { room_name: "2", players: [], chatting: {}, norman_decisions: { 1: {}, 2: {}, 3: {}, 4: {} } },
+        { room_name: "3", players: [], chatting: {}, norman_decisions: { 1: {}, 2: {}, 3: {}, 4: {} } }
     ])
 
     useEffect(() => {
@@ -444,7 +444,10 @@ export default function GrandGame() {
             console.log('aaa')
             setMessageFromErica(msg)
             console.log('bbb')
-            setGlobalGame(prev => ({...prev, erica_messages: {...prev.erica_messages, [round]: [...prev.erica_messages[round], msg]}}))
+            setGlobalGame(prev => ({...prev, erica_messages: {...prev.erica_messages, [round]: msg}}))
+     
+
+
             console.log('ccc')
             setUserTaskDoneCounter(prev => prev + 1)
             console.log('ddd')
@@ -463,7 +466,9 @@ export default function GrandGame() {
             // setGlobalGame(prev => ({ ...prev, pete_decisions: { ...prev.pete_decisions, [round]: data } }))
             // setGlobalGame(prev => ({ ...prev, erica_messages: { ...prev.erica_messages, [round]: msg } }))
 
-            setGlobalGame(prev => ({ ...prev, norman_decisions: { ...prev.norman_decisions, [round]: [...prev.norman_decisions[round], data ]} }))
+            setGlobalGame(prev => ({ ...prev, norman_decisions: { ...prev.norman_decisions, [round]: data} }))
+     
+
             setUserTaskDoneCounter(prev => prev + 1)
         }))
 
@@ -475,7 +480,8 @@ export default function GrandGame() {
             } else if (data.stay === 'poweron') {
                 setElectricity('poweron')
             }
-            setGlobalGame(prev => ({ ...prev, pete_decisions: { ...prev.pete_decisions, [round]: [...prev.pete_decisions[round], data ]} }))
+            setGlobalGame(prev => ({ ...prev, pete_decisions: { ...prev.pete_decisions, [round]: data} }))
+    
             setUserTaskDoneCounter(prev => prev + 1)
         }))
 
@@ -486,7 +492,7 @@ export default function GrandGame() {
 
             setChatData(prev => ({...prev, [round]: [...prev[round], data]}));
 
-            setGlobalGame(prev => ({ ...prev, chatting: { ...prev.chatting, [round]: [...prev.chatting[round], data]}}))
+            setGlobalGame(prev => ({ ...prev, chatting: { ...prev.chatting, [round]: data}}))
             console.log("chatData Updated: ", data)
         })
     }
@@ -824,6 +830,7 @@ export default function GrandGame() {
         setEricaDecisions(prev => ({...prev, [round]: messages })) 
 
         setGlobalSession(prev => ({...prev, your_decisions: {...prev.your_decisions, [round]: messages}}))
+
         setSession(prev => ({ ...prev, your_decisions: { ...prev.your_decisions, [round]: messages } }))
         // socket interaction
         socket.emit('erica_message', messages)

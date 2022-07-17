@@ -19,7 +19,7 @@ const SessionSchema = new Schema({
     generalSurvey: {
     },
     role: "",
-    your_decisions: [],
+    your_decisions: {},
     game_id: { type: Schema.Types.ObjectId }
 })
 

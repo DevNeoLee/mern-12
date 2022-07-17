@@ -22,8 +22,8 @@ router.post('/', (req, res) => {
         players: req.body.players,
         chatting: { 1: [], 2: [], 3: [], 4: [] },
         room_name: req.body.room_name,
-        erica_messages: { 1: [], 2: [], 3: [], 4: [] },
-        pete_decisions: { 1: [], 2: [], 3: [], 4: [] },
+        erica_messages: { 1: {}, 2: {}, 3: {}, 4: {} },
+        pete_decisions: { 1: {}, 2: {}, 3: {}, 4: {} },
         norman_decisions: { 1: [], 2: [], 3: [], 4: [] }
     })
 
